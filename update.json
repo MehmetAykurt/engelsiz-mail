@@ -1,6 +1,6 @@
 {
-  "surum": "1.4.0",
-  "link": "https://github.com/MehmetAykurt/engelsiz-mail/releases/download/v1.4.0/Engelsiz-Mail-v1.4.0.nvda-addon",
-  "sha256": "aca56a3430e168cb9caa18c18e12a0597cbe95d85985285ffa1082db0d161da6",
-  "aciklama": "Engelsiz Mail 1.4.0 sürümü; e-posta listesinde isteğe bağlı ön izleme, Türkçe karakter ve MIME kodlaması iyileştirilmiş ön izleme çözümleme, Delete tuşu ile silme, Silerken Onay Sor ayarı, Gönderilen E-postalar ve Taslaklar klasörlerinde Kime bilgisinin gösterilmesi, e-posta okuma penceresinde Kime bilgisi, yeni e-posta bildirimi, bildirim kontrol aralığı ayarı, sesle ve mesajla bildirim seçenekleri, gönderen ve konu bilgisini bildirme seçenekleri, varsayılan sistem sesi veya kullanıcı tanımlı WAV dosyasıyla bildirim verme, aynı e-posta için tekrar bildirim verilmesini engelleyen son bildirim kaydı, e-postayı TXT veya EML biçiminde kaydetme, daha önce kaydedilmiş EML dosyasını açma, sağ tık menüsünün sadeleştirilmesi, bildirim, ön izleme, silme ve dosya işlemlerinde çeşitli erişilebilirlik ve odak iyileştirmeleri içermektedir."
+  "surum": "1.5.0",
+  "link": "https://github.com/MehmetAykurt/engelsiz-mail/releases/download/v1.5.0/Engelsiz-Mail-v1.5.0.nvda-addon",
+  "sha256": "2ec5f0c41a10b305c40f32a286ed398cf3717eea0b5cce2b672ca99e633dcf7e",
+  "aciklama": "Bu sürümde kişi yönetimi, kişilerden alıcı seçme, sağ tık menüsünden yanıtlama ve iletme, klasör sayılarını duyurma, bildirim sesi denetimi, sistem renkleri, odak davranışı, e-posta çözümleme, güvenlik ve performans alanlarında çeşitli iyileştirmeler yapılmıştır."
 }

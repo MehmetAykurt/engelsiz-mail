@@ -73,7 +73,7 @@
     <h1>Engelsiz Mail NVDA Eklentisi</h1>
 
     <p><strong>Eklenti adı:</strong> Engelsiz Mail</p>
-    <p><strong>Sürüm:</strong> 1.4.0</p>
+    <p><strong>Sürüm:</strong> 1.5.0</p>
     <p><strong>Geliştirici:</strong> Mehmet Aykurt</p>
     <p><strong>E-posta:</strong> <a href="mailto:m.aykurt38@gmail.com">m.aykurt38@gmail.com</a></p>
     <p><strong>Resmî web sayfası:</strong> <a href="https://mehmetaykurt.com.tr/erisilebilirlik/engelsiz-mail.html">Engelsiz Mail (mehmetaykurt.com.tr)</a></p>
@@ -84,6 +84,7 @@
     <ol>
         <li><a href="#hakkinda">Eklenti Hakkında</a></li>
         <li><a href="#amac">Eklentinin Amacı</a></li>
+        <li><a href="#one-cikanlar">Son Sürümde Öne Çıkanlar</a></li>
         <li><a href="#guvenlik">Güvenlik ve Gizlilik</a></li>
         <li><a href="#baglanti">Google Hesabına Bağlanma</a></li>
         <li><a href="#ana-pencere">Ana Pencere ve Menü Yapısı</a></li>
@@ -107,7 +108,7 @@
 
     <p>Engelsiz Mail, NVDA ekran okuyucusu kullanıcıları için geliştirilen erişilebilir bir e-posta eklentisidir.</p>
 
-    <p>Bu eklenti; e-posta okuma, yeni e-posta yazma, yanıtlama, iletme, taslak oluşturma, arşivleme, taşıma, silme, ön izleme, yeni e-posta bildirimi, e-postayı kaydetme, EML dosyası açma, bağlantı denetimi ve görünüm ayarları gibi temel işlemleri klavye odaklı ve erişilebilir bir arayüzle sunar.</p>
+    <p>Bu eklenti; e-posta okuma, yeni e-posta yazma, yanıtlama, iletme, taslak oluşturma, kişi yönetimi, kişilerden alıcı seçme, arşivleme, taşıma, silme, klasörlerde toplam ve okunmamış e-posta sayısını duyurma, ön izleme, yeni e-posta bildirimi, e-postayı kaydetme, EML dosyası açma, bağlantı denetimi ve görünüm ayarları gibi temel işlemleri klavye odaklı ve erişilebilir bir arayüzle sunar.</p>
 
     <p>Engelsiz Mail, Google tarafından geliştirilmiş resmî bir Google ürünü değildir. Mehmet Aykurt tarafından NVDA kullanıcılarının erişilebilirlik ihtiyacına yönelik olarak geliştirilmiş bağımsız bir eklentidir.</p>
 
@@ -119,8 +120,10 @@
 
     <ol>
         <li>E-posta klasörlerine klavye ile kolay erişim sağlamak.</li>
+        <li>Klasörlerdeki toplam ve okunmamış e-posta sayılarını anlaşılır biçimde duyurmak.</li>
         <li>Gelen e-postaları sade ve okunabilir biçimde görüntülemek.</li>
         <li>Yeni e-posta yazma, yanıtlama ve iletme işlemlerini erişilebilir hâle getirmek.</li>
+        <li>Kişiler listesi oluşturarak alıcı seçme işlemlerini kolaylaştırmak.</li>
         <li>Taslak, arşiv, taşıma ve silme işlemlerini daha anlaşılır biçimde sunmak.</li>
         <li>E-posta listesinde isteğe bağlı ön izleme sunmak.</li>
         <li>Yeni e-posta geldiğinde sesli veya mesajlı bildirim verebilmek.</li>
@@ -129,7 +132,11 @@
         <li>Görünüm ayarlarıyla farklı kullanıcı ihtiyaçlarına uygun okuma ve yazma deneyimi sağlamak.</li>
     </ol>
 
-    <h2 id="guvenlik">3. Güvenlik ve Gizlilik</h2>
+    <h2 id="one-cikanlar">3. Son Sürümde Öne Çıkanlar</h2>
+
+    <p>Bu sürümde kişi yönetimi, kişilerden alıcı seçme, klasör toplam ve okunmamış sayılarını duyurma, sistem renklerini kullanma, gönderilen adresleri isteğe bağlı otomatik kaydetme, bildirim sesini dinleme, açık pencereyi öne getirme, e-posta çözümleme, güvenlik ve performans alanlarında iyileştirmeler yapılmıştır.</p>
+
+    <h2 id="guvenlik">4. Güvenlik ve Gizlilik</h2>
 
     <p>Engelsiz Mail; e-posta adresinizi, Google uygulama şifrenizi, kişi geçmişinizi, e-posta içeriklerinizi veya ekli dosyalarınızı herhangi bir üçüncü taraf sunucuya göndermez. Gmail bağlantısı, kullanıcının bilgisayarı ile Google sunucuları arasında kurulur.</p>
 
@@ -141,11 +148,13 @@
 
     <p>Yardım menüsünde yer alan <strong>Öneri ve Görüş Bildir...</strong> seçeneği, yalnızca kullanıcı formu doldurup gönder düğmesine bastığında e-posta gönderir. Eklenti, kullanıcı onayı olmadan geliştiriciye otomatik veri göndermez.</p>
 
-    <h2 id="baglanti">4. Google Hesabına Bağlanma</h2>
+    <p>Klasörlerdeki toplam ve okunmamış e-posta sayılarının daha hızlı duyurulabilmesi için yalnızca klasör sayı bilgileri yerel olarak saklanabilir. Bu önbellek e-posta içeriklerini, ekli dosyaları veya uygulama şifresini içermez.</p>
 
-    <p>Engelsiz Mail eklentisini kullanabilmek için Google hesabınızda iki adımlı doğrulamanın açık olması ve bu eklenti için bir uygulama şifresi oluşturmanız gerekir. Google ile giriş özelliği için gerekli başvurular yapılmıştır. Gelecek sürümlerde uygulanabilir olacaktır.</p>
+    <h2 id="baglanti">5. Google Hesabına Bağlanma</h2>
 
-    <h3>4.1. İki Adımlı Doğrulamayı Açma</h3>
+    <p>Engelsiz Mail eklentisini kullanabilmek için Google hesabınızda iki adımlı doğrulamanın açık olması ve bu eklenti için bir uygulama şifresi oluşturmanız gerekir. Eklenti, Gmail hesabına IMAP ve SMTP üzerinden bağlanır.</p>
+
+    <h3>5.1. İki Adımlı Doğrulamayı Açma</h3>
 
     <p>Aşağıdaki bağlantıdan Google hesabınızın iki adımlı doğrulama sayfasına ulaşabilirsiniz:</p>
 
@@ -153,7 +162,7 @@
 
     <p>Sayfa açıldığında Google hesabınızla oturum açmanız veya kimliğinizi doğrulamanız istenebilir. Sayfadaki yönergeleri izleyerek iki adımlı doğrulamayı etkinleştirin.</p>
 
-    <h3>4.2. Uygulama Şifresi Oluşturma</h3>
+    <h3>5.2. Uygulama Şifresi Oluşturma</h3>
 
     <p>İki adımlı doğrulama etkinleştirildikten sonra aşağıdaki bağlantıdan uygulama şifresi sayfasına ulaşabilirsiniz:</p>
 
@@ -165,7 +174,7 @@
         <p><strong>Not:</strong> Bazı Google hesaplarında uygulama şifresi seçeneği görünmeyebilir. Bu durum hesap türüne, güvenlik ayarlarına, kurumsal hesap politikasına veya Google’ın güvenlik tercihine bağlı olabilir.</p>
     </div>
 
-    <h3>4.3. Engelsiz Mail İçinden Hesap Bilgisi Kaydetme</h3>
+    <h3>5.3. Engelsiz Mail İçinden Hesap Bilgisi Kaydetme</h3>
 
     <ol>
         <li>Engelsiz Mail ana penceresini <strong>NVDA + Shift + M</strong> kısayoluyla veya NVDA menüsündeki <strong>Araçlar &gt; Engelsiz Mail</strong> seçeneğiyle açın.</li>
@@ -179,7 +188,7 @@
 
     <p>Bilgiler kaydedildikten sonra Engelsiz Mail ana penceresi üzerinden e-postalarınızı kullanmaya başlayabilirsiniz. Hesap bilgisi yoksa ana pencere yine açılır ve kullanıcı, Dosya menüsündeki Bağlan seçeneğine yönlendirilir.</p>
 
-    <h2 id="ana-pencere">5. Ana Pencere ve Menü Yapısı</h2>
+    <h2 id="ana-pencere">6. Ana Pencere ve Menü Yapısı</h2>
 
     <p>Engelsiz Mail ana penceresi açıldığında gelen kutusu etkinleştirilerek e-posta listesi yüklenir.</p>
 
@@ -193,30 +202,31 @@
         <li><strong>Yardım</strong></li>
     </ul>
 
-    <h3>5.1. Dosya Menüsü</h3>
+    <h3>6.1. Dosya Menüsü</h3>
 
     <ul>
         <li><strong>Yeni E-posta Yaz</strong>: Yeni e-posta oluşturma penceresini açar.</li>
         <li><strong>Bağlan...</strong>: Gmail hesabı için e-posta adresi ve Google uygulama şifresinin girildiği bağlantı penceresini açar.</li>
-        <li><strong>Bağlantıyı Denetle...</strong>: Hesap, IMAP, SMTP ve klasör erişimini ayrıntılı biçimde denetler.</li>
+        <li><strong>Bağlantıyı Denetle...</strong>: Hesap, IMAP, SMTP 465, SMTP 587 ve klasör erişimini ayrıntılı biçimde denetler.</li>
         <li><strong>Kaydet...</strong>: Seçili e-postayı TXT veya EML biçiminde kaydetmek için kullanılır.</li>
         <li><strong>Aç...</strong>: Daha önce kaydedilmiş bir EML dosyasını seçerek Gelen Kutusu içinde açılabilecek şekilde ekler.</li>
         <li><strong>Hesap Bilgilerini Sil</strong>: Kayıtlı e-posta adresini ve uygulama şifresini siler.</li>
         <li><strong>Çıkış</strong>: Engelsiz Mail ana penceresini kapatır.</li>
     </ul>
 
-    <h3>5.2. Düzen Menüsü</h3>
+    <h3>6.2. Düzen Menüsü</h3>
 
     <ul>
         <li><strong>Tümünü İşaretle</strong>: Listede görünen tüm e-postaları işaretler.</li>
         <li><strong>İşaretleri Kaldır</strong>: Tüm e-posta işaretlerini kaldırır.</li>
+        <li><strong>Kişiler...</strong>: Kişi oluşturma, düzenleme, silme ve kayıtlı kişilerden alıcı seçme işlemleri için kişiler penceresini açar.</li>
         <li><strong>Arşive Gönder</strong>: İşaretli veya seçili e-postaları seçilen arşiv klasörüne gönderir.</li>
         <li><strong>Arşiv Klasörlerini Yönet...</strong>: Arşiv klasörlerini oluşturma, yeniden adlandırma ve silme penceresini açar.</li>
         <li><strong>Sil</strong>: İşaretli veya seçili e-postaları siler.</li>
         <li><strong>Yenile</strong>: Seçili klasördeki e-posta listesini yeniden yükler.</li>
     </ul>
 
-    <h3>5.3. Görünüm Menüsü</h3>
+    <h3>6.3. Görünüm Menüsü</h3>
 
     <ul>
         <li><strong>Yazı Tipi...</strong>: Engelsiz Mail pencerelerinde kullanılan yazı tipini değiştirir.</li>
@@ -224,21 +234,23 @@
         <li><strong>Yazı Stili...</strong>: Normal, kalın, italik veya kalın italik görünüm seçilmesini sağlar.</li>
         <li><strong>Metin Rengi...</strong>: Eklenti içindeki metin rengini değiştirir.</li>
         <li><strong>Arka Plan Rengi...</strong>: Eklenti içindeki arka plan rengini değiştirir.</li>
+        <li><strong>Sistem Renklerini Kullan</strong>: Engelsiz Mail pencerelerinde Windows sistem renklerini kullanır.</li>
         <li><strong>Varsayılan Görünüme Dön</strong>: Yazı tipi, yazı boyutu, yazı stili, metin rengi ve arka plan rengini varsayılan değerlere döndürür.</li>
     </ul>
 
-    <p>Görünüm ayarları yalnızca Engelsiz Mail pencerelerinde görünen yazıları etkiler. Gönderilen e-postanın biçimini değiştirmez.</p>
+    <p>Görünüm ayarları yalnızca Engelsiz Mail pencerelerinde görünen yazıları etkiler. Gönderilen e-postanın biçimini değiştirmez. Sistem renklerini kullan seçeneği etkinleştirildiğinde, metin ve arka plan renkleri Windows’un geçerli sistem renklerine göre uygulanır.</p>
 
-    <h3>5.4. Ayarlar Menüsü</h3>
+    <h3>6.4. Ayarlar Menüsü</h3>
 
     <ul>
         <li><strong>E-posta Sayısı...</strong>: Bir klasörde kaç e-postanın listeleneceğini belirler. Varsayılan değer 25’tir. Kabul edilen aralık 1 ile 100 arasındadır.</li>
         <li><strong>Ön İzleme</strong>: E-posta listesinde kısa içerik bilgisinin okunup okunmayacağını belirler.</li>
         <li><strong>Silerken Onay Sor</strong>: Silme işlemlerinden önce onay penceresi gösterilip gösterilmeyeceğini belirler. Varsayılan olarak açıktır.</li>
+        <li><strong>Gönderilen e-posta adreslerini otomatik kaydet</strong>: Gönderilen e-postalardaki alıcı adreslerinin adres geçmişine otomatik eklenip eklenmeyeceğini belirler.</li>
         <li><strong>Bildirimler...</strong>: Yeni e-posta bildirimi, kontrol aralığı, sesli bildirim, mesajlı bildirim, gönderen/konu okuma ve bildirim sesi ayarlarını düzenler.</li>
     </ul>
 
-    <h3>5.5. Yardım Menüsü</h3>
+    <h3>6.5. Yardım Menüsü</h3>
 
     <ul>
         <li><strong>Yardım Kılavuzu</strong>: Bu kullanım kılavuzunu açar.</li>
@@ -247,7 +259,7 @@
         <li><strong>Öneri ve Görüş Bildir...</strong>: Geliştiriciye öneri, görüş veya sorun bildirimi göndermek için erişilebilir bildirim penceresini açar.</li>
     </ul>
 
-    <h2 id="kisayollar">6. Klavye Kısayolları</h2>
+    <h2 id="kisayollar">7. Klavye Kısayolları</h2>
 
     <table>
         <caption>Temel klavye kısayolları</caption>
@@ -260,7 +272,7 @@
         <tbody>
             <tr>
                 <td><kbd>NVDA</kbd> + <kbd>Shift</kbd> + <kbd>M</kbd></td>
-                <td>Engelsiz Mail ana penceresini açar.</td>
+                <td>Engelsiz Mail ana penceresini açar. Pencere zaten açıksa öne getirir ve e-posta listesine odaklanır.</td>
             </tr>
             <tr>
                 <td><kbd>Alt</kbd></td>
@@ -317,7 +329,7 @@
         </tbody>
     </table>
 
-    <h2 id="klasorler">7. Klasörler ve E-posta İşlemleri</h2>
+    <h2 id="klasorler">8. Klasörler ve E-posta İşlemleri</h2>
 
     <p>Engelsiz Mail ana penceresinde Gmail hesabınızdaki temel klasörlere ulaşabilirsiniz. Varsayılan klasörler şunlardır:</p>
 
@@ -332,19 +344,23 @@
 
     <p>Gmail hesabınızda oluşturduğunuz özel klasörler veya etiketler de uygun olduğunda listede gösterilir. Klasör değiştirildiğinde, Ayarlar menüsünde belirlenen e-posta sayısı kadar son e-posta listelenir.</p>
 
-    <h3>7.1. E-posta Okuma</h3>
+    <p>Klasörler üzerinde dolaşırken ilgili klasördeki toplam e-posta sayısı ve okunmamış e-posta sayısı duyurulur. Bu bilginin daha hızlı okunabilmesi için son bilinen klasör sayıları yerel olarak saklanır; eklenti açıldığında klasör sayıları arka planda güncellenir.</p>
+
+    <h3>8.1. E-posta Okuma</h3>
 
     <p>Bir e-posta üzerinde <strong>Enter</strong> tuşuna basıldığında e-posta okuma penceresi açılır. Pencere <strong>Esc</strong> tuşuyla veya Kapat düğmesiyle kapatılabilir.</p>
 
-    <h3>7.2. İşaretleme</h3>
+    <h3>8.2. İşaretleme</h3>
 
     <p>E-posta listesinde <strong>Boşluk</strong> tuşu ile e-posta işaretlenebilir veya işareti kaldırılabilir. Birden fazla e-posta üzerinde işlem yapılacaksa işaretleme yöntemi kullanılabilir.</p>
 
-    <h3>7.3. Sağ Tık Menüsü</h3>
+    <h3>8.3. Sağ Tık Menüsü</h3>
 
     <p>E-posta listesinde sağ tık menüsü kullanılabilir. Sağ tık menüsünde şu seçenekler bulunur:</p>
 
     <ol>
+        <li>Yanıtla</li>
+        <li>İlet</li>
         <li>Arşive Gönder</li>
         <li>Taşı</li>
         <li>Sil</li>
@@ -353,7 +369,7 @@
         <li>İşaretleri Kaldır</li>
     </ol>
 
-    <h3>7.4. Silme İşlemleri</h3>
+    <h3>8.4. Silme İşlemleri</h3>
 
     <p>Gelen Kutusu veya benzeri normal klasörlerde silme işlemi e-postayı Çöp Kutusu’na taşır. Çöp Kutusu içinde yapılan silme işlemi kalıcı silme anlamına gelebilir. Bu nedenle Engelsiz Mail, Çöp Kutusu içinde silme yapılırken ayrıca uyarı verir.</p>
 
@@ -363,41 +379,51 @@
 
     <p><strong>Delete</strong> tuşu, seçili veya işaretli e-postaları silmek için kullanılabilir.</p>
 
-    <h2 id="eposta-yazma">8. Yeni E-posta Yazma, Yanıtlama ve İletme</h2>
+    <h2 id="eposta-yazma">9. Yeni E-posta Yazma, Yanıtlama ve İletme</h2>
 
-    <h3>8.1. Yeni E-posta Yazma</h3>
+    <h3>9.1. Yeni E-posta Yazma</h3>
 
-    <p>Yeni e-posta yazmak için <strong>Dosya &gt; Yeni E-posta Yaz</strong> seçeneğini veya <strong>Alt + N</strong> kısayolunu kullanabilirsiniz. Açılan pencerede alıcı, konu, e-posta metni ve ekli dosya alanları bulunur.</p>
+    <p>Yeni e-posta yazmak için <strong>Dosya &gt; Yeni E-posta Yaz</strong> seçeneğini veya <strong>Alt + N</strong> kısayolunu kullanabilirsiniz. Açılan pencerede alıcı, konu, e-posta metni ve ekli dosya alanları bulunur. Kayıtlı kişilerden bir veya birden fazla alıcı seçilerek alıcı alanına eklenebilir.</p>
 
     <p>E-posta hazırlanırken <strong>Gönder</strong> düğmesiyle e-posta gönderilebilir. Gönderilmeden saklanmak istenirse <strong>Taslaklara Kaydet</strong> düğmesi kullanılabilir.</p>
 
-    <h3>8.2. Yanıtlama</h3>
+    <h3>9.2. Kişilerden Alıcı Seçme</h3>
 
-    <p>Bir e-posta okuma penceresinde <strong>Yanıtla</strong> seçeneği kullanıldığında yanıt penceresi açılır. Yanıtlanan e-postanın konuşma zinciri bilgileri korunur.</p>
+    <p>Düzen menüsündeki <strong>Kişiler...</strong> seçeneğiyle kişiler penceresi açılabilir. Bu pencerede ad, soyad ve e-posta adresiyle kişi oluşturulabilir; kayıtlı kişiler düzenlenebilir veya silinebilir.</p>
 
-    <h3>8.3. İletme</h3>
+    <p>Yeni e-posta yazma, yanıtlama, iletme ve taslak düzenleme pencerelerinde kayıtlı kişilerden alıcı seçme desteği vardır. Birden fazla kişi seçilerek alıcı alanına birlikte eklenebilir.</p>
 
-    <p>Bir e-postayı başka bir alıcıya göndermek için e-posta okuma penceresindeki <strong>İlet</strong> seçeneği kullanılabilir. Kullanıcı, gerekirse Dosya Ekle düğmesiyle yeni ekli dosyalar ekleyebilir.</p>
+    <h3>9.3. Gönderilen Adreslerin Otomatik Kaydı</h3>
 
-    <h2 id="taslaklar">9. Taslak Yönetimi</h2>
+    <p>Ayarlar menüsündeki <strong>Gönderilen e-posta adreslerini otomatik kaydet</strong> seçeneği etkinse, gönderilen e-postalardaki alıcı adresleri adres geçmişine eklenir. Bu seçenek kapatılırsa gönderilen adresler otomatik kaydedilmez.</p>
+
+    <h3>9.4. Yanıtlama</h3>
+
+    <p>Bir e-posta okuma penceresinde veya e-posta listesi sağ tık menüsünde <strong>Yanıtla</strong> seçeneği kullanıldığında yanıt penceresi açılır. Yanıtlanan e-postanın konuşma zinciri bilgileri korunur.</p>
+
+    <h3>9.5. İletme</h3>
+
+    <p>Bir e-postayı başka bir alıcıya göndermek için e-posta okuma penceresindeki veya e-posta listesi sağ tık menüsündeki <strong>İlet</strong> seçeneği kullanılabilir. Kullanıcı, gerekirse Dosya Ekle düğmesiyle yeni ekli dosyalar ekleyebilir.</p>
+
+    <h2 id="taslaklar">10. Taslak Yönetimi</h2>
 
     <p>Engelsiz Mail’de taslaklar yalnızca okunabilen e-postalar değildir. Taslaklar klasöründeki e-postalar düzenlenebilir, gönderilebilir, silinebilir veya yeniden taslaklara kaydedilebilir.</p>
 
-    <h3>9.1. Yeni Taslak Oluşturma</h3>
+    <h3>10.1. Yeni Taslak Oluşturma</h3>
 
     <p>Yeni e-posta yazma penceresinde alıcı, konu veya e-posta metni alanlarından biri doldurulduktan sonra <strong>Taslaklara Kaydet</strong> düğmesine basılırsa e-posta Gmail Taslaklar klasörüne kaydedilir.</p>
 
     <p>Yeni e-posta penceresinde <strong>Esc</strong> tuşuna basıldığında ve içerik boş değilse, eklenti değişiklikleri taslaklara kaydedip kaydetmeyeceğinizi sorar.</p>
 
-    <h3>9.2. Taslak Düzenleme</h3>
+    <h3>10.2. Taslak Düzenleme</h3>
 
     <p>Taslaklar klasöründe bir taslak üzerinde <strong>Enter</strong> tuşuna basıldığında normal okuma penceresi yerine <strong>Taslak Düzenle</strong> penceresi açılır. Bu pencerede alıcı, konu, e-posta metni ve ekler düzenlenebilir.</p>
 
-    <h3>9.3. Taslağı Gönderme, Kaydetme veya Silme</h3>
+    <h3>10.3. Taslağı Gönderme, Kaydetme veya Silme</h3>
 
     <p>Taslak düzenleme penceresinde <strong>Gönder</strong>, <strong>Taslaklara Kaydet</strong>, <strong>Taslağı Sil</strong> ve <strong>İptal</strong> seçenekleri bulunur. Gönderilen veya silinen taslak, işlem başarılı olduğunda Taslaklar klasöründen kaldırılır. Yeniden kaydedilen taslak, güncellenmiş hâliyle Taslaklar klasöründe yer alır.</p>
 
-    <h2 id="arsiv">10. Arşiv ve Taşıma İşlemleri</h2>
+    <h2 id="arsiv">11. Arşiv ve Taşıma İşlemleri</h2>
 
     <p>Düzen menüsündeki <strong>Arşiv Klasörlerini Yönet...</strong> seçeneğiyle arşiv klasörleri yönetilebilir.</p>
 
@@ -413,13 +439,13 @@
 
     <p>Sağ tık menüsündeki <strong>Taşı</strong> seçeneğiyle seçili e-posta başka bir klasöre taşınabilir. Taşıma hedefleri Gelen Kutusu ve özel arşiv klasörleridir. Çöp Kutusu taşıma hedefi olarak verilmez; e-postayı Çöp Kutusu’na taşımak için <strong>Sil</strong> seçeneği kullanılır.</p>
 
-    <h2 id="ekler">11. Ekli Dosyalar</h2>
+    <h2 id="ekler">12. Ekli Dosyalar</h2>
 
     <p>Yeni e-posta, yanıt, iletme ve taslak düzenleme pencerelerinde dosya ekleme desteği vardır. <strong>Dosya Ekle</strong> düğmesiyle gönderilecek dosyalar seçilebilir; <strong>Eki Kaldır</strong> düğmesiyle seçili ek listeden çıkarılabilir.</p>
 
     <p>Gelen bir e-postada ekli dosya varsa e-posta okuma penceresinde <strong>Ekleri Kaydet</strong> düğmesi görünür. Ekler, Windows kullanıcı klasörünüzdeki İndirilenler klasörü altında, e-posta konusuna göre oluşturulan ayrı bir klasöre kaydedilir.</p>
 
-    <h2 id="baglanti-denetimi">12. Bağlantıyı Denetle</h2>
+    <h2 id="baglanti-denetimi">13. Bağlantıyı Denetle</h2>
 
     <p>Dosya menüsündeki <strong>Bağlantıyı Denetle...</strong> seçeneği, eklentinin hesap ve bağlantı durumunu ayrıntılı biçimde denetler.</p>
 
@@ -434,36 +460,37 @@
         <li>IMAP kullanıcı doğrulaması</li>
         <li>Gmail klasör listesi</li>
         <li>Temel klasörlerin seçilebilirliği</li>
-        <li>SMTP kullanıcı doğrulaması</li>
+        <li>SMTP 465 SSL kullanıcı doğrulaması</li>
+        <li>SMTP 587 STARTTLS kullanıcı doğrulaması</li>
     </ol>
 
     <p>Denetim sonunda önce kısa bir özet gösterilir. Ayrıntılar, <strong>Ayrıntıları Görüntüle</strong> düğmesiyle incelenebilir.</p>
 
-    <h2 id="kaydet-eml">13. Kaydetme ve EML Açma</h2>
+    <h2 id="kaydet-eml">14. Kaydetme ve EML Açma</h2>
 
     <p>Engelsiz Mail, seçili e-postayı dosya olarak kaydetmeyi ve daha önce kaydedilmiş EML dosyalarını açmayı destekler.</p>
 
-    <h3>13.1. E-postayı Kaydetme</h3>
+    <h3>14.1. E-postayı Kaydetme</h3>
 
     <p>Dosya menüsündeki <strong>Kaydet...</strong> seçeneğiyle seçili e-posta TXT veya EML biçiminde kaydedilebilir. TXT biçimi okunabilir metin çıktısı sağlar. EML biçimi ise e-postanın başlık ve gövde yapısını koruyan posta dosyasıdır.</p>
 
     <p>Kaydetme sırasında dosya adı e-posta konusuna göre güvenli biçimde oluşturulur. Aynı adlı dosya varsa mevcut dosyanın üzerine yazılmaması için yeni ad üretilir.</p>
 
-    <h3>13.2. EML Dosyası Açma</h3>
+    <h3>14.2. EML Dosyası Açma</h3>
 
     <p>Dosya menüsündeki <strong>Aç...</strong> seçeneğiyle daha önce kaydedilmiş bir EML dosyası seçilebilir. Açılan pencerede kullanıcıdan daha önce kaydedilmiş EML dosyasını seçmesi istenir.</p>
 
     <p>Seçilen EML dosyası, Gmail hesabındaki Gelen Kutusu içinde okunabilecek şekilde eklenir. Böylece kullanıcı, kaydettiği e-postayı ayrıca başka bir posta programına ihtiyaç duymadan Engelsiz Mail içinden okuyabilir.</p>
 
-    <h2 id="bildirim-onizleme">14. Bildirimler ve Ön İzleme</h2>
+    <h2 id="bildirim-onizleme">15. Bildirimler ve Ön İzleme</h2>
 
-    <h3>14.1. Ön İzleme</h3>
+    <h3>15.1. Ön İzleme</h3>
 
     <p>Ayarlar menüsündeki <strong>Ön İzleme</strong> seçeneği etkinleştirildiğinde, e-posta listesinde e-postanın kısa içerik bilgisi de okunur. Bu özellik kapalıysa liste yalnızca temel e-posta bilgilerini okur.</p>
 
-    <p>Ön izleme metinleri Türkçe karakterleri koruyacak, HTML kalıntılarını temizleyecek ve MIME kodlamalarını çözümleyecek şekilde işlenir. Buna rağmen bazı özel biçimli e-postalarda ön izleme eksik veya farklı görünebilir. Böyle durumlarda e-postayı Enter ile açarak tam içeriği okuyabilirsiniz.</p>
+    <p>Ön izleme metinleri Türkçe karakterleri koruyacak, HTML kalıntılarını temizleyecek, Base64 ve quoted-printable gibi MIME kodlamalarını çözümleyecek şekilde işlenir. Çok parçalı e-postalarda uygun metin veya HTML bölümü seçilmeye çalışılır. Buna rağmen bazı özel biçimli e-postalarda ön izleme eksik veya farklı görünebilir. Böyle durumlarda e-postayı Enter ile açarak tam içeriği okuyabilirsiniz.</p>
 
-    <h3>14.2. Yeni E-posta Bildirimleri</h3>
+    <h3>15.2. Yeni E-posta Bildirimleri</h3>
 
     <p>Ayarlar menüsündeki <strong>Bildirimler...</strong> seçeneğiyle yeni e-posta bildirimi yapılandırılabilir.</p>
 
@@ -477,13 +504,14 @@
         <li>Gönderen adresini bildirme</li>
         <li>Konu bilgisini bildirme</li>
         <li>Varsayılan sistem sesi veya kullanıcı tanımlı WAV dosyası seçme</li>
+        <li>Seçilen bildirim sesini dinleme</li>
     </ol>
 
     <p>Kontrol aralığı 5 ile 60 dakika arasında seçilebilir. Varsayılan kontrol aralığı 30 dakikadır. İnternet bağlantısı yoksa veya Gmail sunucusuna ulaşılamıyorsa eklenti kullanıcıyı gereksiz yere rahatsız etmeden sonraki kontrol zamanını bekler.</p>
 
-    <p>Kullanıcı tanımlı bildirim sesi için yalnızca WAV dosyası seçilebilir. Dosya bulunamazsa veya geçerli değilse eklenti varsayılan sistem sesiyle bildirim vermeye devam eder.</p>
+    <p>Kullanıcı tanımlı bildirim sesi için yalnızca WAV dosyası seçilebilir. Dosya bulunamazsa veya geçerli değilse eklenti varsayılan sistem sesiyle bildirim vermeye devam eder. Seçilen ses dosyası, bildirim ayarları penceresinden dinlenerek kontrol edilebilir.</p>
 
-    <h2 id="gorunum">15. Görünüm Ayarları</h2>
+    <h2 id="gorunum">16. Görünüm Ayarları</h2>
 
     <p>Görünüm menüsü, Engelsiz Mail pencerelerinde görünen yazıların kullanıcı ihtiyacına göre ayarlanmasını sağlar.</p>
 
@@ -495,12 +523,13 @@
         <li>Yazı Stili</li>
         <li>Metin Rengi</li>
         <li>Arka Plan Rengi</li>
+        <li>Sistem Renklerini Kullan</li>
         <li>Varsayılan Görünüme Dön</li>
     </ol>
 
     <p>Bu ayarlar yalnızca Engelsiz Mail içindeki görünümü etkiler. Gönderilen e-postanın biçimini değiştirmez.</p>
 
-    <h2 id="oneri-gorus">16. Öneri ve Görüş Bildirme</h2>
+    <h2 id="oneri-gorus">17. Öneri ve Görüş Bildirme</h2>
 
     <p>Engelsiz Mail, kullanıcı deneyimine göre gelişen bir eklenti olarak tasarlanmıştır. Yardım menüsündeki <strong>Öneri ve Görüş Bildir...</strong> seçeneğiyle geliştiriciye doğrudan bildirim gönderilebilir.</p>
 
@@ -508,7 +537,7 @@
 
     <p>Öneri, görüş ve düşüncelerinizi paylaşmanız Engelsiz Mail’in gelişmesine katkı sağlar.</p>
 
-    <h2 id="kisayol-degistirme">17. Eklenti Açma Kısayolunu Değiştirme</h2>
+    <h2 id="kisayol-degistirme">18. Eklenti Açma Kısayolunu Değiştirme</h2>
 
     <p>Engelsiz Mail için varsayılan açma kısayolu <strong>NVDA + Shift + M</strong> olarak belirlenmiştir. Bu kısayolu NVDA Girdi Hareketleri bölümünden değiştirebilirsiniz.</p>
 
@@ -522,7 +551,7 @@
         <li>Pencereyi onaylayarak kapatın.</li>
     </ol>
 
-    <h2 id="sinirlar">18. Bilinen Sınırlar ve Dikkat Edilecek Hususlar</h2>
+    <h2 id="sinirlar">19. Bilinen Sınırlar ve Dikkat Edilecek Hususlar</h2>
 
     <ul>
         <li>Engelsiz Mail, Gmail hesabı ile IMAP ve SMTP üzerinden çalışır. Gmail hesabınızda IMAP erişiminin açık olması gerekebilir.</li>
@@ -530,13 +559,14 @@
         <li>İnternet bağlantısı yoksa veya uygulama şifresi hatalıysa e-posta listesi yüklenemez.</li>
         <li>Çok büyük ekli dosyalarda gönderme, kaydetme ve taslaklara ekleme işlemleri bağlantı hızına göre zaman alabilir.</li>
         <li>Ön izleme özelliği açık olduğunda, e-posta listesi yüklenirken ek içerik çözümleme yapılacağı için listeleme süresi uzayabilir.</li>
+        <li>Klasör sayı bilgileri yerel önbellekten hızlı okunabilir; eklenti açıldıktan sonra bu bilgiler arka planda güncellenir.</li>
         <li>Bildirimler, belirlenen kontrol aralığına göre çalışır. Bu nedenle yeni e-posta bildirimi anlık değil, seçilen aralığa bağlıdır.</li>
         <li>Kullanıcı tanımlı bildirim sesi için WAV dosyası kullanılmalıdır.</li>
         <li>Gmail’in etiket ve klasör davranışı klasik masaüstü posta programlarından farklı olabilir. Özellikle Tüm Postalar ve Çöp Kutusu klasörlerinde ek uyarılar dikkate alınmalıdır.</li>
         <li>Öneri ve Görüş Bildir özelliği, bildirim gönderebilmek için bağlı Gmail hesabını kullanır. Hesap bilgisi yoksa önce Dosya menüsünden Bağlan seçeneğiyle hesap bilgisi kaydedilmelidir.</li>
     </ul>
 
-    <h2 id="iletisim">19. Lisans, İletişim ve Geliştirici Bilgisi</h2>
+    <h2 id="iletisim">20. Lisans, İletişim ve Geliştirici Bilgisi</h2>
 
     <p>Engelsiz Mail, GNU Genel Kamu Lisansı, sürüm 2.0 kapsamında özgür yazılım olarak yayımlanmıştır. Kaynak kodun incelenmesi, değiştirilmesi ve lisans koşulları çerçevesinde yeniden dağıtılması mümkündür.</p>
 

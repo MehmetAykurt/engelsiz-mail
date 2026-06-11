@@ -2,41 +2,89 @@
 <html lang="tr">
 <head>
 <meta charset="utf-8">
-<title>Engelsiz Mail 1.4.0 - Ne Yeni</title>
+<title>Engelsiz Mail - Ne Yeni</title>
 </head>
 <body>
-<h1>Engelsiz Mail 1.4.0 Sürümünde Yapılan Yenilikler</h1>
 
-<ol>
-<li>Eklentinin diğer dillere çevrilebilmesi için gerekli çalışmalar başlatıldı.</li>
-<li>E-posta listesinde ön izleme desteği eklendi.</li>
-<li>Ayarlar menüsüne Ön İzleme seçeneği eklendi. Bu seçenek etkinse e-posta listesinde kısa içerik bilgisi okunur.</li>
-<li>Ön izleme metinlerinde Türkçe karakter, quoted-printable, Base64 ve HTML içerik çözümleme davranışı iyileştirildi.</li>
-<li>Delete tuşu ile seçili veya işaretli e-postaları silme desteği eklendi.</li>
-<li>Ayarlar menüsüne Silerken Onay Sor seçeneği eklendi. Bu seçenek kapatılırsa silme işlemlerinde onay penceresi gösterilmez.</li>
-<li>Gönderilen E-postalar ve Taslaklar klasörlerinde liste bilgisi iyileştirildi. Bu klasörlerde kendi e-posta adresiniz yerine alıcı bilgisi, yani Kime alanı gösterilir.</li>
-<li>E-posta okuma penceresine Kime bilgisi eklendi.</li>
-<li>Yeni e-posta bildirimi özelliği eklendi.</li>
-<li>Bildirimler ayar penceresi eklendi.</li>
-<li>Bildirim kontrol aralığı 5 ile 60 dakika arasında seçilebilir hâle getirildi. Varsayılan kontrol aralığı 30 dakikadır.</li>
-<li>Sesle bildirim ve mesajla bildirim seçenekleri eklendi.</li>
-<li>Bildirimlerde gönderen adresini ve konu bilgisini okuma seçenekleri eklendi.</li>
-<li>Bildirim sesi için varsayılan sistem sesi ve kullanıcı tanımlı WAV dosyası seçenekleri eklendi.</li>
-<li>Yeni e-posta bildiriminin aynı e-posta için tekrar tekrar verilmemesi amacıyla son bildirim bilgisi kaydedilir hâle getirildi.</li>
-<li>Dosya menüsüne e-postayı TXT veya EML olarak kaydetme desteği eklendi.</li>
-<li>Dosya menüsüne daha önce kaydedilmiş EML dosyasını açma desteği eklendi.</li>
-<li>Kaydedilmiş EML dosyası seçildiğinde ileti, Gelen Kutusu içinde okunabilecek şekilde eklenir.</li>
-<li>Sağ tık menüsü sadeleştirildi ve gereksiz Aç seçeneği kaldırıldı.</li>
-<li>Silme, ön izleme ve bildirim ayarlarının kaydedilme davranışı iyileştirildi.</li>
-<li>Bildirim, ön izleme, silme ve dosya işlemlerinde NVDA konuşma ve odak davranışı iyileştirildi.</li>
-</ol>
-<p><h2>Google ile Giriş Hakkında</h2>
-Engelsiz Mail için Google OAuth ile giriş ve Gmail API kullanımı konusunda çalışma yapılmıştır. Bu yapı, kullanıcıların uygulama şifresi oluşturmadan doğrudan Google hesabı üzerinden izin vererek eklentiyi kullanabilmesini amaçlamaktadır.
-<br>
-Ancak Google, Gmail verilerine erişim sağlayan bazı kısıtlı izinler için CASA Tier 2 Security Assessment adı verilen yıllık güvenlik değerlendirmesi talep etmektedir. Bu değerlendirme yetkili güvenlik laboratuvarları tarafından yürütülmekte ve maliyet gerektirmektedir.
-<br>
-Engelsiz Mail, bireysel olarak geliştirilen, ücretsiz sunulan ve görme engelli kullanıcıların erişilebilirlik ihtiyacına yönelik hazırlanmış bir NVDA eklentisidir. Bu nedenle Google ile giriş özelliği, yıllık değerlendirme sürecinin maliyeti ve sürdürülebilirliği netleşene kadar beklemeye alınmıştır.
-Bu konuda da gerekli çalışmalar devam etmektedir.</p>
+<h1>Engelsiz Mail v1.5.0 Sürümünde Yapılan Yenilikler</h1>
+
+<p>
+Engelsiz Mail’in geliştirilmesi sürecinde görüş, öneri ve geri bildirimleriyle katkıda bulunan bütün kullanıcılarımıza içten teşekkürlerimi sunarım.
+Bu eklenti, görme engelli kullanıcıların e-posta işlemlerini NVDA ekran okuyucusu ile daha erişilebilir, daha hızlı ve daha güvenli biçimde gerçekleştirebilmesi amacıyla geliştirilmeye devam etmektedir.
+</p>
+
+<p>
+Bu sürümde kullanıcı deneyimini güçlendiren yeni özellikler eklenmiş; menüler, odak davranışları, bildirimler, e-posta çözümleme işlemleri ve genel kararlılık üzerinde çeşitli iyileştirmeler yapılmıştır.
+</p>
+
+<h2>Yeni Özellikler</h2>
+
+<ul>
+<li>Düzen menüsüne Kişiler bölümü eklendi.</li>
+<li>Kişi oluşturma, düzenleme ve silme desteği eklendi.</li>
+<li>Yeni e-posta yazarken oluşturulan kişiler listesinden bir veya birden fazla e-posta adresi seçip alıcı alanına ekleme desteği sağlandı.</li>
+<li>E-posta listesi sağ tık menüsüne Yanıtla ve İlet seçenekleri eklendi.</li>
+<li>Gönderilen e-posta adreslerinin otomatik olarak kaydedilip kaydedilmeyeceği kullanıcı tercihine bırakıldı.</li>
+<li>Ayarlar menüsüne Gönderilen e-posta adreslerini otomatik kaydet seçeneği eklendi.</li>
+<li>Görünüm menüsüne Sistem Renklerini Kullan seçeneği eklendi.</li>
+<li>Bildirim ayarlarında seçilen ses dosyasını dinleme desteği eklendi.</li>
+</ul>
+
+<h2>Klasör ve Liste İyileştirmeleri</h2>
+
+<ul>
+<li>Klasörler üzerinde dolaşırken ilgili klasördeki toplam e-posta sayısı ve okunmamış e-posta sayısı duyurulacak şekilde geliştirme yapıldı.</li>
+<li>Klasör sayı bilgilerinin daha hızlı okunabilmesi için kalıcı klasör sayısı önbelleği eklendi.</li>
+<li>Eklenti açıldığında klasör sayı bilgilerinin arka planda güncellenmesi sağlandı.</li>
+<li>Kullanıcı klasörler arasında dolaşırken son bilinen klasör bilgisi daha hızlı duyurulacak şekilde düzenleme yapıldı.</li>
+</ul>
+
+<h2>Erişilebilirlik ve Odak İyileştirmeleri</h2>
+
+<ul>
+<li>Pencereler arasında geçiş ve odak davranışları iyileştirildi.</li>
+<li>Engelsiz Mail penceresi arka planda açıkken kısayola tekrar basıldığında pencerenin öne getirilmesi ve e-posta listesine odaklanması sağlandı.</li>
+<li>Menü, liste, giriş alanı ve ileti pencerelerinde ekran okuyucu ile daha anlaşılır kullanım için çeşitli düzenlemeler yapıldı.</li>
+<li>NVDA konuşma ve odak davranışını olumsuz etkileyebilecek bazı durumlar giderildi.</li>
+</ul>
+
+<h2>E-posta Okuma ve Çözümleme İyileştirmeleri</h2>
+
+<ul>
+<li>E-posta içeriklerinin çözümlenmesi geliştirildi.</li>
+<li>HTML içerikli e-postalarda ön izleme ve metin temizleme davranışı iyileştirildi.</li>
+<li>Base64 ve quoted-printable kodlamalı içeriklerin çözümlenmesi güçlendirildi.</li>
+<li>Türkçe karakterlerin daha doğru görüntülenmesi ve okunması için karakter kodlaması işlemleri geliştirildi.</li>
+<li>Çok parçalı e-postalarda metin ve HTML bölümlerinden daha doğru içerik üretilebilmesi için iyileştirmeler yapıldı.</li>
+</ul>
+
+<h2>Bildirim Sistemi İyileştirmeleri</h2>
+
+<ul>
+<li>Yeni e-posta bildirimlerinin daha güvenilir çalışması için iyileştirmeler yapıldı.</li>
+<li>Bildirimlerde gönderen, konu ve mesaj içeriği seçeneklerinin daha kontrollü çalışması sağlandı.</li>
+<li>Aynı e-posta için gereksiz tekrar bildirim verilmesini azaltmaya yönelik düzenlemeler yapıldı.</li>
+<li>Bildirim sesleri ve kullanıcı tanımlı ses dosyalarıyla ilgili kullanım deneyimi iyileştirildi.</li>
+</ul>
+
+<h2>Güvenlik ve Kararlılık İyileştirmeleri</h2>
+
+<ul>
+<li>Uygulama şifresinin güvenli biçimde saklanmasına yönelik mevcut yapı korundu ve ilgili işlemler güçlendirildi.</li>
+<li>IMAP veri okuma işlemleri daha güvenli hâle getirildi.</li>
+<li>Bozuk veya okunamayan JSON ayar dosyalarının korunması için yedekleme davranışı eklendi.</li>
+<li>Büyük e-posta ve ek dosya işlemlerinde kararlılığı artırmak amacıyla güvenlik sınırları geliştirildi.</li>
+<li>Gmail bağlantısı, klasör işlemleri, arşivleme, taşıma ve silme işlemlerinde hata yönetimi iyileştirildi.</li>
+<li>Kod yapısında bakım, okunabilirlik ve kararlılık açısından çeşitli düzenlemeler yapıldı.</li>
+</ul>
+
+<h2>Performans İyileştirmeleri</h2>
+
+<ul>
+<li>Klasör bilgileri ve e-posta listesi işlemlerinde hız iyileştirmeleri yapıldı.</li>
+<li>Gereksiz beklemeleri azaltmak ve kullanıcıya daha hızlı geri bildirim vermek için bazı arka plan işlemleri düzenlendi.</li>
+<li>Eklentinin genel tepki süresini iyileştirmeye yönelik kod düzenlemeleri yapıldı.</li>
+</ul>
 
 </body>
 </html>
