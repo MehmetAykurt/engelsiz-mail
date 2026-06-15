@@ -1,6 +1,6 @@
 {
-  "surum": "1.5.0",
-  "link": "https://github.com/MehmetAykurt/engelsiz-mail/releases/download/v1.5.0/Engelsiz-Mail-v1.5.0.nvda-addon",
-  "sha256": "2ec5f0c41a10b305c40f32a286ed398cf3717eea0b5cce2b672ca99e633dcf7e",
-  "aciklama": "Bu sürümde kişi yönetimi, kişilerden alıcı seçme, sağ tık menüsünden yanıtlama ve iletme, klasör sayılarını duyurma, bildirim sesi denetimi, sistem renkleri, odak davranışı, e-posta çözümleme, güvenlik ve performans alanlarında çeşitli iyileştirmeler yapılmıştır."
+  "surum": "1.5.5",
+  "link": "https://github.com/MehmetAykurt/engelsiz-mail/releases/download/v1.5.5/Engelsiz-Mail-v1.5.5.nvda-addon",
+  "sha256": "a43122c7fd66d6e171eeeee662e22679616a47144b2c9915da614efb2d9f8e43",
+  "aciklama": "Bu sürümde, kullanıcıların tercihleri ve geri bildirimleri doğrultusunda yeni özellikler eklenmiş; menüler, odak davranışları, bildirimler, e-posta çözümleme işlemleri ve genel kararlılık üzerinde çeşitli iyileştirmeler yapılmıştır."
 }
