@@ -1,0 +1,137 @@
+# -*- coding: utf-8 -*-
+# Engelsiz Mail
+# Telif Hakkı (C) 2026 Mehmet Aykurt
+
+import globalPluginHandler
+import gui
+import wx
+import ui
+
+from .logger import hata_kaydet
+from .ui_helpers import (
+    arka_plan_gorevlerinin_bitmesini_bekle,
+    pencere_kullanilabilir_mi,
+)
+from .notifications import BildirimYoneticisi
+from .startup_sync import BaslangicSenkronizasyonYoneticisi
+from .pending_deletions import BekleyenSilmeYoneticisi
+
+
+BILDIRIM_YONETICISI = None
+BASLANGIC_SENKRONIZASYON_YONETICISI = None
+BEKLEYEN_SILME_YONETICISI = None
+
+
+def bildirim_yoneticisini_yenile():
+    """Ayar değişikliğinden sonra arka plan bildirim yöneticisini günceller."""
+    try:
+        yonetici = globals().get("BILDIRIM_YONETICISI")
+        if yonetici:
+            yonetici.ayarlari_yenile()
+    except Exception as e:
+        hata_kaydet("Bildirim yöneticisi yenilenemedi.", e)
+
+
+class GlobalPlugin(globalPluginHandler.GlobalPlugin):
+    scriptCategory = "Engelsiz Mail"
+
+    def __init__(self):
+        super().__init__()
+        self.tools_menu = gui.mainFrame.sysTrayIcon.toolsMenu
+        self.gelen_penceresi = None
+
+        global BILDIRIM_YONETICISI
+        BILDIRIM_YONETICISI = BildirimYoneticisi()
+        global BASLANGIC_SENKRONIZASYON_YONETICISI
+        BASLANGIC_SENKRONIZASYON_YONETICISI = BaslangicSenkronizasyonYoneticisi()
+        global BEKLEYEN_SILME_YONETICISI
+        BEKLEYEN_SILME_YONETICISI = BekleyenSilmeYoneticisi()
+
+        self.main_item = self.tools_menu.Append(wx.ID_ANY, "&Engelsiz Mail")
+        gui.mainFrame.sysTrayIcon.Bind(wx.EVT_MENU, self.ac_gelen, self.main_item)
+
+    def terminate(self):
+        try:
+            global BILDIRIM_YONETICISI
+            if BILDIRIM_YONETICISI:
+                BILDIRIM_YONETICISI.durdur()
+                BILDIRIM_YONETICISI = None
+            global BASLANGIC_SENKRONIZASYON_YONETICISI
+            if BASLANGIC_SENKRONIZASYON_YONETICISI:
+                BASLANGIC_SENKRONIZASYON_YONETICISI.durdur()
+                BASLANGIC_SENKRONIZASYON_YONETICISI = None
+            global BEKLEYEN_SILME_YONETICISI
+            if BEKLEYEN_SILME_YONETICISI:
+                BEKLEYEN_SILME_YONETICISI.durdur()
+                BEKLEYEN_SILME_YONETICISI = None
+            arka_plan_gorevlerinin_bitmesini_bekle(0.5)
+
+            gui.mainFrame.sysTrayIcon.Unbind(wx.EVT_MENU, id=self.main_item.GetId())
+            try:
+                self.tools_menu.Remove(self.main_item)
+            except Exception:
+                self.tools_menu.Remove(self.main_item.GetId())
+            if pencere_kullanilabilir_mi(getattr(self, "gelen_penceresi", None)):
+                self.gelen_penceresi.Close()
+        except Exception as e:
+            hata_kaydet("Menü öğesi kaldırılırken hata oluştu.", e)
+        super().terminate()
+
+    def ac_gelen(self, event):
+        self.pencereyi_baslat(menuden_geldi=True)
+
+    def script_gelen_ac(self, gesture):
+        """Engelsiz Mail penceresini açar."""
+        self.pencereyi_baslat(menuden_geldi=False)
+
+    def _gelen_penceresi_kapandi(self, event):
+        if event.GetEventObject() is self.gelen_penceresi:
+            self.gelen_penceresi = None
+        event.Skip()
+
+    def pencereyi_one_getir(self, pencere):
+        try:
+            if hasattr(pencere, "one_getir_ve_odaklan"):
+                return bool(pencere.one_getir_ve_odaklan())
+            if pencere.IsIconized():
+                pencere.Iconize(False)
+            if not pencere.IsShown():
+                pencere.Show(True)
+            pencere.Raise()
+            pencere.SetFocus()
+            return True
+        except Exception as e:
+            hata_kaydet("Açık pencere öne getirilemedi.", e)
+            return False
+
+    def pencereyi_baslat(self, menuden_geldi=False):
+        def ac():
+            if pencere_kullanilabilir_mi(getattr(self, "gelen_penceresi", None)):
+                getirildi = self.pencereyi_one_getir(self.gelen_penceresi)
+                if not getirildi:
+                    ui.message("Engelsiz Mail penceresi zaten açık, ancak öne getirilemedi.")
+                return
+
+            try:
+                from .ui.main_window import GelenKutusuPenceresi
+            except Exception as e:
+                hata_kaydet("Engelsiz Mail ana penceresi yüklenemedi.", e)
+                ui.message("Engelsiz Mail açılırken hata oluştu. Ayrıntı için NVDA günlüğünü kontrol edin.")
+                return
+
+            try:
+                pencere = GelenKutusuPenceresi(gui.mainFrame, bildirim_yoneticisini_yenile)
+                self.gelen_penceresi = pencere
+                pencere.Bind(wx.EVT_WINDOW_DESTROY, self._gelen_penceresi_kapandi)
+                pencere.Show()
+                pencere.Raise()
+
+                if not pencere.hesap_bilgisi_var_mi():
+                    wx.CallAfter(pencere.hesap_bilgisi_eksik_uyarisi_goster)
+            except Exception as e:
+                self.gelen_penceresi = None
+                hata_kaydet("Engelsiz Mail ana penceresi açılamadı.", e)
+                ui.message("Engelsiz Mail açılırken hata oluştu. Ayrıntı için NVDA günlüğünü kontrol edin.")
+        wx.CallAfter(ac)
+
+    __gestures = {"kb:nvda+shift+m": "gelen_ac"}

@@ -2,32 +2,109 @@
 <html lang="tr">
 <head>
 <meta charset="utf-8">
-<title>Engelsiz Mail - Ne Yeni</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Engelsiz Mail 1.7.0 - Ne Yeni?</title>
 </head>
 <body>
 
-<h1>Engelsiz Mail v1.5.5 Sürümünde Yapılan Yenilikler</h1>
+<h1>Engelsiz Mail 1.7.0 Sürümündeki Yenilikler</h1>
 
-<p>
-Engelsiz Mail’in geliştirilmesi sürecinde görüş, öneri ve geri bildirimleriyle katkıda bulunan bütün kullanıcılarımıza içten teşekkürlerimi sunarım.
-Bu eklenti, görme engelli kullanıcıların e-posta işlemlerini NVDA ekran okuyucusu ile daha erişilebilir, daha hızlı ve daha güvenli biçimde gerçekleştirebilmesi amacıyla özenle geliştirilmeye devam etmektedir.
-</p>
+<p>Bu sürümde kullanım hızı, çevrimdışı erişim, veri güvenliği ve genel kararlılık geliştirilmiştir.</p>
 
-<p>
-Bu sürümde, kullanıcıların tercihleri ve geri bildirimleri doğrultusunda yeni özellikler eklenmiş; menüler, odak davranışları, bildirimler, e-posta çözümleme işlemleri ve genel kararlılık üzerinde çeşitli iyileştirmeler yapılmıştır.
-</p>
+<h2>Kullanıcıya Yansıyan Yenilikler</h2>
 
-<h2>Yeni Özellikler</h2>
+<h3>Klavye ve Menü Kullanımı</h3>
 
 <ul>
-<li>E-posta açıldığında imlecin doğrudan içerik satırına odaklanması sağlandı.</li>
-<li>Bilhassa grup yazışmalarında, konu ile gönderen bilgisi arasında gereksiz biçimde okunan aracı servis ifadeleri temizlendi.</li>
-<li>Bir e-posta üzerinde Shift+Delete tuşlarıyla kalıcı silme seçeneği eklendi.</li>
-<li>Ana pencerede Eskeyp tuşuna basarak eklentinin kapatılması sağlandı.<br>
-Not: Bu kullanıcı tercihine bağlı olup, ayarlar menüsünden ilgili seçeneği işaretleyebilirsiniz.</li>
-<li>Kullanım alışkanlıklarına daha uygun olması için çeşitli kısayollarda düzenlemeler yapıldı.</li>
-<li>Gereksiz beklemeleri azaltmak ve kullanıcıya daha hızlı geri bildirim vermek amacıyla bazı arka plan işlemleri yeniden düzenlendi.</li>
-<li>Eklentinin genel tepki süresini ve kullanım akıcılığını iyileştirmeye yönelik kod düzenlemeleri yapıldı.</li>
+<li>Ayarların içe / dışa aktarılması sağlandı.</li>
+<li>Menüde genel düzenlemeler yapıldı.</li>
+<li>Dosya menüsünün erişim tuşu Alt+D olarak düzenlendi. Bağlan için Alt+B, Bağlantıyı Denetle için F9, Arşiv Klasörlerini Yönet için Alt+Shift+R, Kişiler için Alt+K ve İmza için Alt+I kısayolları eklendi.</li>
+<li>Yanıtla için Ctrl+R, İlet için Ctrl+Shift+F ve Yardım Kılavuzu için F1 kısayolları eklendi.</li>
+<li>İşaretleri kaldırma kısayolu Ctrl+Shift+A olarak güncellendi.</li>
+<li>E-postayı TXT veya EML biçiminde kaydetmek için Ctrl+S, EML dosyasını Gelen Kutusu'na aktarmak için Ctrl+O kısayolu eklendi.</li>
+<li>Yazma ve taslak düzenleme pencerelerine Ctrl+Enter ile gönderme desteği eklendi.</li>
+<li>Menü erişim harfleri gözden geçirilerek eksikler tamamlandı ve aynı menü içindeki çakışmalar giderildi.</li>
+<li>E-posta menüsündeki Sil seçeneği, Sil ve Kalıcı Sil komutlarını içeren bir alt menü olarak yeniden düzenlendi.</li>
+<li>İleti sağ tık menüsü Yanıtla, İlet, Taşı ve Sil seçenekleriyle sadeleştirildi.</li>
+</ul>
+
+<h3>Arama ve Bağlantılar</h3>
+
+<ul>
+<li>Ctrl+F ile gönderen, konu veya içerikte arama; sonucu açma ve bulunduğu klasöre gitme desteği eklendi.</li>
+<li>Metin yazmadan kullanılabilen Okunmamış E-postalar ve Okunmuş E-postalar arama türleri eklendi.</li>
+<li>E-posta metnindeki HTTP ve HTTPS bağlantılarının ayrı satırdan başlaması sağlandı.</li>
+<li>L ve Shift+L ile bağlantılar arasında dolaşma, C ile bağlantıyı kopyalama ve T ile varsayılan tarayıcıda açma desteği eklendi.</li>
+</ul>
+
+<h3>Konuşmalar ve E-posta Okuma</h3>
+
+<ul>
+<li>Gmail konuşmalarını listede tek satırda gösterebilen isteğe bağlı Konuşmaları Grupla ayarı eklendi.</li>
+<li>Gruplanan konuşmaların bütün iletilerinin tek pencerede, en yeni ileti ilk sırada olacak biçimde okunması sağlandı.</li>
+<li>Konuşma içinde N ile sonraki, P ile önceki iletinin başlangıcına gitme kısayolları eklendi.</li>
+<li>Re, Fw ve Fwd konu zincirlerinin Yanıtlanmış ve İletilmiş ifadeleriyle gösterilmesi sağlandı.</li>
+<li>Gruplanan konuşmalarda okundu, silme, arşivleme ve taşıma işlemlerinin konuşmanın tamamına uygulanması sağlandı.</li>
+<li>Konuşma içinden yanıtlama en son ileti üzerinden yapılıyor ve konuşmadaki ekler birlikte sunuluyor.</li>
+<li>Bir e-posta okunduğunda aynı Gmail iletisinin farklı klasör veya etiketlerdeki yerel kayıtlarının da okundu durumuna geçirilmesi sağlandı.</li>
+<li>Düz metin e-postalarda ve imzalarda Enter tuşuyla oluşturulan satır sonlarının okuma penceresinde korunması sağlandı.</li>
+</ul>
+
+<h3>E-posta Oluşturma, Bilgi, Gizli ve İmza</h3>
+
+<ul>
+<li>Yeni e-posta, yanıt, iletme ve taslak düzenleme pencerelerine Bilgi ve Gizli alıcı alanları eklendi.</li>
+<li>Gizli alıcıların adresleri e-posta başlıklarında gösterilmeden teslim listesine eklenerek gönderim gizliliği korundu.</li>
+<li>E-posta okuma penceresinde Bilgi alıcılarının yalnızca mevcut olduğunda gösterilmesi sağlandı.</li>
+<li>E-posta menüsüne çok satırlı imza alanı ile Sil, Kaydet ve İptal düğmelerini içeren tek bir İmza seçeneği eklendi. Kayıtlı imza yalnızca sıfırdan oluşturulan yeni e-postalara otomatik olarak ekleniyor.</li>
+<li>Hesap ayarlarına, gönderilen e-postalarda kullanılacak görünen ad alanı eklendi.</li>
+</ul>
+
+<h3>Bildirimler, Ön İzleme ve Yenileme</h3>
+
+<ul>
+<li>Ön İzleme açıkken yeni gelen veya ön izlemesi eksik e-postaların liste yüklendikten sonra arka planda hazırlanması sağlandı. İşlem yalnızca listede gösterilecek e-postalarla sınırlandırıldı.</li>
+<li>Yeni e-posta bildirimlerinin yalnızca kontrol anında hâlâ okunmamış olan yeni iletiler için verilmesi sağlandı.</li>
+<li>Liste yenilendiğinde odaktaki e-postanın ve liste konumunun korunması iyileştirildi.</li>
+<li>Boş klasör bilgi satırının pencere açılışında NVDA tarafından iki kez okunması önlendi.</li>
+</ul>
+
+<h3>Klasör ve Silme İşlemleri</h3>
+
+<ul>
+<li>E-posta ve klasör görünümü tek bir erişilebilir liste üzerinde birleştirildi. E-posta listesinden Escape tuşuyla klasör görünümüne dönme desteği eklendi.</li>
+<li>Gönderilen E-postalar üzerinde sağ tıklayarak bütün gönderilmiş iletileri tek işlemle Çöp Kutusu'na taşımak için Gönderilenleri Çöp Kutusu'na Taşı seçeneği eklendi.</li>
+<li>Çöp Kutusu üzerinde sağ tıklayarak bütün e-postaları tek işlemle kalıcı silmek için Çöp Kutusunu Boşalt seçeneği eklendi.</li>
+<li>Spam üzerinde sağ tıklayarak bütün spam e-postalarını tek işlemle kalıcı silmek için Spam Klasörünü Boşalt seçeneği eklendi.</li>
+<li>Silme isteklerinin bağlantı kesilse bile saklanıp daha sonra yeniden denenmesi sağlandı.</li>
+</ul>
+
+<h3>Çevrimdışı Kullanım ve Yerel Veritabanı</h3>
+
+<ul>
+<li>E-posta başlıkları, gövdeleri, ön izlemeleri ve uygun ekler için yerel önbellek desteği eklendi.</li>
+<li>Önbellekte bulunan e-postaların daha hızlı açılması ve bağlantı yokken okunabilmesi sağlandı.</li>
+<li>NVDA açıldıktan sonra e-posta önbelleğinin sessizce güncellenmesi sağlandı.</li>
+<li>E-posta gövdeleri ve ekler için disk kotası ile güvenli boş alan denetimleri eklendi.</li>
+<li>Bozuk yerel e-posta veritabanının yedeklenerek yeniden oluşturulması sağlandı.</li>
+<li>Ayarlar menüsüne yerel posta veritabanını, çevrimdışı gövdeleri ve önbelleğe alınmış ekleri güvenli biçimde temizleyen Yerel Veritabanını Sıfırla seçeneği eklendi.</li>
+</ul>
+
+<h2>Teknik İyileştirmeler</h2>
+
+<ul>
+<li>Tek dosyalı eski yapı, görevlerine göre ayrılmış modüler bir mimariye dönüştürüldü.</li>
+<li>Elle yazılmış protokol istemcileri yerine CPython 3.13.12 imaplib ve smtplib modüllerine geçildi.</li>
+<li>E-posta ve klasör verileri sürümlü SQLite veritabanında saklanacak biçimde yeniden tasarlandı; başlık, gövde, ön izleme ve ek eşitleme işlemleri birbirinden bağımsız hizmetlere ayrıldı.</li>
+<li>Arka plan görevlerinin güvenliği hesap ve klasör denetimleriyle güçlendirildi. İşlem kimliği denetimleri genişletilerek geciken görev sonuçlarının yanlış listeye veya kapatılmış pencereye uygulanması önlendi.</li>
+<li>Gönderim, taslak, taşıma, arşivleme ve silme işlemlerinde eşzamanlılık güvenliği güçlendirildi.</li>
+<li>SMTP yedek bağlantısında sonucu belirsiz e-postaların ikinci kez gönderilmesi engellendi.</li>
+<li>Büyük e-postalar indirilmeden önce sunucudaki boyut bilgisinin denetlenmesi sağlandı.</li>
+<li>Yerel ek dosyaları için güvenli yol, benzersiz ad ve bütünlük denetimleri eklendi.</li>
+<li>Veritabanı bütünlük denetimi, WAL bakımı ve kullanılmayan önbellek temizliği eklendi.</li>
+<li>Yerel veritabanı sıfırlanırken ana veritabanı, WAL/SHM dosyaları ve ek önbelleği birlikte temizleniyor. Bekleyen silme işlemleri varsa sıfırlama güvenlik amacıyla durduruluyor.</li>
+<li>Ayar dosyasına şema sürümü eklenerek gelecekteki yapılandırma geçişleri güvenli hâle getirildi.</li>
+<li>NVDA eklenti giriş noktası yalnızca başlatma ve kapatma işlemlerini yönetecek biçimde sadeleştirildi.</li>
 </ul>
 
 </body>
