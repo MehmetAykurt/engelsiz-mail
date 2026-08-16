@@ -1,6 +1,15 @@
 # -*- coding: utf-8 -*-
 """Arayüzden bağımsız Gmail taslak kaydetme hizmeti."""
 
+# NVDA eklenti çevirilerini bu modül için etkinleştir.
+try:
+    import addonHandler
+    addonHandler.initTranslation()
+except (ImportError, AttributeError):
+    # NVDA dışındaki otomatik testlerde Türkçe kaynak metni aynen kullan.
+    _ = lambda metin: metin
+
+
 from email.policy import SMTP
 
 from .errors import MailHatasi
@@ -28,7 +37,7 @@ def taslagi_sunucuya_kaydet(
         ayarlar = ayarlari_yukle()
     ayarlar = dict(ayarlar)
     if not ayarlar.get("eposta") or not ayarlar.get("sifre"):
-        raise MailHatasi("Hesap bilgileri eksik.")
+        raise MailHatasi(_("Hesap bilgileri eksik."))
 
     mesaj = eposta_mesaji_olustur(
         ayarlar["eposta"],
@@ -54,4 +63,4 @@ def taslagi_sunucuya_kaydet(
             except (OSError, ValueError, imaplib.IMAP4.error) as e:
                 hata_kaydet(f"Taslak kaydetme denemesi başarısız: {aday_klasor}", e)
 
-    raise MailHatasi("Taslak, Gmail'in Taslaklar klasörüne kaydedilemedi.")
+    raise MailHatasi(_("Taslak, Gmail'in Taslaklar klasörüne kaydedilemedi."))

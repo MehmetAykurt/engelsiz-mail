@@ -1,5 +1,14 @@
 # -*- coding: utf-8 -*-
 
+
+# NVDA eklenti çevirilerini bu modül için etkinleştir.
+try:
+    import addonHandler
+    addonHandler.initTranslation()
+except (ImportError, AttributeError):
+    # NVDA dışındaki otomatik testlerde Türkçe kaynak metni aynen kullan.
+    _ = lambda metin: metin
+
 import hashlib
 import os
 import time
@@ -7,6 +16,7 @@ import time
 import globalVars
 
 from .logger import hata_kaydet
+from .folders import klasor_gorunen_adi
 from .storage import guvenli_json_oku, guvenli_json_yaz
 
 KLASOR_SAYISI_ONBELLEK_DOSYASI = os.path.join(globalVars.appArgs.configPath, "engelsiz-mail", "klasor_sayilari.json")
@@ -14,27 +24,28 @@ KLASOR_SAYISI_ONBELLEK_DOSYASI = os.path.join(globalVars.appArgs.configPath, "en
 
 def klasor_sayisi_mesaji(kategori_adi, klasor_bilgisi=None, listelenen_sayi=None):
     """Klasör toplamı ve okunmamış sayısı için kısa NVDA bildirimi üretir."""
-    kategori_adi = str(kategori_adi or "Klasör").strip() or "Klasör"
+    kategori_adi = str(kategori_adi or "").strip()
+    kategori_adi = klasor_gorunen_adi(kategori_adi) if kategori_adi else _("Klasör")
     bilgi = klasor_bilgisi if isinstance(klasor_bilgisi, dict) else {}
     toplam = bilgi.get("messages")
     okunmamis = bilgi.get("unseen")
 
-    parcalar = [f"{kategori_adi} klasörü hazır."]
+    parcalar = [_('{0} klasörü hazır.').format(kategori_adi)]
     if isinstance(toplam, int) and toplam >= 0:
         if isinstance(okunmamis, int) and okunmamis > 0:
-            parcalar.append(f"Toplam {toplam} ileti, {okunmamis} okunmamış.")
+            parcalar.append(_('Toplam {0} e-posta, {1} okunmamış.').format(toplam, okunmamis))
         elif isinstance(okunmamis, int):
-            parcalar.append(f"Toplam {toplam} ileti. Okunmamış ileti yok.")
+            parcalar.append(_('Toplam {0} e-posta. Okunmamış e-posta yok.').format(toplam))
         else:
-            parcalar.append(f"Toplam {toplam} ileti.")
+            parcalar.append(_('Toplam {0} e-posta.').format(toplam))
     elif isinstance(okunmamis, int) and okunmamis > 0:
-        parcalar.append(f"{okunmamis} okunmamış ileti var.")
+        parcalar.append(_('{0} okunmamış e-posta var.').format(okunmamis))
 
     if isinstance(listelenen_sayi, int):
         if listelenen_sayi > 0:
-            parcalar.append(f"{listelenen_sayi} e-posta listelendi.")
+            parcalar.append(_('{0} e-posta listelendi.').format(listelenen_sayi))
         else:
-            parcalar.append("Gösterilecek e-posta yok.")
+            parcalar.append(_("Gösterilecek e-posta yok."))
     return " ".join(parcalar)
 
 
@@ -49,13 +60,13 @@ def klasor_secimi_sayisi_mesaji(kategori_adi=None, klasor_bilgisi=None):
     okunmamis = bilgi.get("unseen")
 
     if isinstance(toplam, int) and toplam == 0:
-        return "İleti yok."
+        return _("E-posta yok.")
     if isinstance(toplam, int) and toplam > 0:
         if isinstance(okunmamis, int) and okunmamis > 0:
-            return f"Toplam {toplam} ileti, {okunmamis} okunmamış."
-        return f"Toplam {toplam} ileti."
+            return _('Toplam {0} e-posta, {1} okunmamış.').format(toplam, okunmamis)
+        return _('Toplam {0} e-posta.').format(toplam)
     if isinstance(okunmamis, int) and okunmamis > 0:
-        return f"{okunmamis} okunmamış ileti var."
+        return _('{0} okunmamış e-posta var.').format(okunmamis)
     return ""
 
 

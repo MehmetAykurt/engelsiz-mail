@@ -1,6 +1,15 @@
 # -*- coding: utf-8 -*-
 """Engelsiz Mail arşiv işlemleri."""
 
+# NVDA eklenti çevirilerini bu modül için etkinleştir.
+try:
+    import addonHandler
+    addonHandler.initTranslation()
+except (ImportError, AttributeError):
+    # NVDA dışındaki otomatik testlerde Türkçe kaynak metni aynen kullan.
+    _ = lambda metin: metin
+
+
 import wx
 import gui
 import ui
@@ -49,7 +58,7 @@ def _arsiv_gorev_baglami(pencere, kategori_korumali=False):
 
 def _konulu_eposta_ifadesi(konu):
     konu = konu_gosterimini_duzenle(str(konu or "").strip() or "Konusuz")
-    return f"{konu} konulu e-posta"
+    return _('{0} konulu e-posta').format(konu)
 
 
 def _arsiv_basari_mesaji(adet, hedef_isim, konu=None, tum_postalar=False):
@@ -57,11 +66,11 @@ def _arsiv_basari_mesaji(adet, hedef_isim, konu=None, tum_postalar=False):
     hedef_isim = str(hedef_isim or "").strip() or "hedef"
     if tum_postalar:
         if adet == 1:
-            return f"{_konulu_eposta_ifadesi(konu)} için {hedef_isim} arşiv etiketi eklendi. Tüm Postalar'da görünmeye devam edebilir."
-        return f"{adet} e-postaya {hedef_isim} arşiv etiketi eklendi. Tüm Postalar'da görünmeye devam edebilirler."
+            return _('{0} için {1} arşiv etiketi eklendi. Tüm Postalarda görünmeye devam edebilir.').format(_konulu_eposta_ifadesi(konu), hedef_isim)
+        return _('{0} e-postaya {1} arşiv etiketi eklendi. Tüm Postalarda görünmeye devam edebilirler.').format(adet, hedef_isim)
     if adet == 1:
-        return f"{_konulu_eposta_ifadesi(konu)} {hedef_isim} arşivine taşındı."
-    return f"{adet} e-posta {hedef_isim} arşivine taşındı."
+        return _('{0} {1} arşivine taşındı.').format(_konulu_eposta_ifadesi(konu), hedef_isim)
+    return _('{0} e-posta {1} arşivine taşındı.').format(adet, hedef_isim)
 
 
 def _arsiv_yonetimi_sonrasi_klasorleri_guncelle(pencere, hedef_klasor=None, eski_klasor=None):
@@ -91,10 +100,10 @@ def _hedef_arsiv_onbellegini_guncelle(ayarlar, hedef_isim, hedef_klasor):
         with ImapBaglantisi(ayarlar) as imap:
             tip, _secim = imap.select(hedef_klasor, readonly=True)
             if tip != "OK":
-                raise MailHatasi("Hedef arşiv klasörü önbellek için açılamadı.")
+                raise MailHatasi(_("Hedef arşiv klasörü önbellek için açılamadı."))
             tip, arama_verisi = imap.uid("SEARCH", "ALL")
             if tip != "OK":
-                raise MailHatasi("Hedef arşiv UID listesi alınamadı.")
+                raise MailHatasi(_("Hedef arşiv UID listesi alınamadı."))
             klasor_basliklarini_senkronize_et(
                 imap,
                 ayarlar.get("eposta", ""),
@@ -112,19 +121,19 @@ def hedef_arsiv_onbellegini_guncelle(ayarlar, hedef_isim, hedef_klasor):
 
 def tum_postalar_arsiv_onayi_al(adet):
     soru = (
-        "Seçili e-postaya özel arşiv etiketi eklenecektir. Tüm Postalar Gmail'in ana görünümü olduğu için e-posta burada görünmeye devam edebilir. Devam etmek istiyor musunuz?"
+        _("Seçili e-postaya özel arşiv etiketi eklenecektir. Tüm Postalar Gmail'in ana görünümü olduğu için e-posta burada görünmeye devam edebilir. Devam etmek istiyor musunuz?")
         if adet == 1
-        else f"Seçili {adet} e-postaya özel arşiv etiketi eklenecektir. Tüm Postalar Gmail'in ana görünümü olduğu için e-postalar burada görünmeye devam edebilir. Devam etmek istiyor musunuz?"
+        else _("Seçili {0} e-postaya özel arşiv etiketi eklenecektir. Tüm Postalar Gmail'in ana görünümü olduğu için e-postalar burada görünmeye devam edebilir. Devam etmek istiyor musunuz?").format(adet)
     )
-    return gui.messageBox(soru, "Tüm Postalar Arşivleme Uyarısı", wx.YES_NO | wx.ICON_WARNING) == wx.YES
+    return gui.messageBox(soru, _("Tüm Postalar için arşivleme uyarısı"), wx.YES_NO | wx.ICON_WARNING) == wx.YES
 
 
 def arsiv_klasorlerini_yonet(pencere, event=None):
     if pencere.yukleniyor:
-        ui.message("Devam eden işlem tamamlandıktan sonra yeniden deneyin.")
+        ui.message(_("Devam eden işlem tamamlandıktan sonra yeniden deneyin."))
         return
     if not pencere.hesap_bilgisi_var_mi():
-        ui.message("Arşiv klasörlerini yönetmek için önce Hesap menüsünden Bağlan seçeneğiyle Gmail hesabınızı bağlayın.")
+        ui.message(_("Arşiv klasörlerini yönetmek için önce Hesap menüsünden Bağlan seçeneğiyle Gmail hesabınızı bağlayın."))
         return
     dlg = ArsivYonetimPenceresi(pencere, pencere.ozel_klasorler, pencere)
     guvenli_modal_goster(dlg, pencere.liste, pencere)
@@ -152,11 +161,11 @@ def arsiv_silindi_sonrasi_guncelle(pencere, silinen_klasor_adi):
 
 def arsiv_secim_goster(pencere, sids, kaynak_klasor=None):
     if not sids:
-        ui.message("Arşivlenecek e-posta bulunamadı.")
+        ui.message(_("Arşivlenecek e-posta bulunamadı."))
         return
     sids = tuple(str(sid) for sid in sids if str(sid or "").strip())
     if not sids:
-        ui.message("Arşivlenecek e-posta bulunamadı.")
+        ui.message(_("Arşivlenecek e-posta bulunamadı."))
         return
     kaynak_klasor = kaynak_klasor or pencere.aktif_klasor()
     adet = len(sids)
@@ -170,7 +179,7 @@ def arsiv_secim_goster(pencere, sids, kaynak_klasor=None):
             return
         hedef = dlg.secilen_isim
         if not hedef:
-            ui.message("Lütfen hedef arşiv klasörünü seçin. Arşiv yoksa E-posta menüsünden Arşiv Klasörlerini Yönet seçeneğiyle yeni arşiv oluşturun.")
+            ui.message(_("Lütfen hedef arşiv klasörünü seçin. Arşiv yoksa E-posta menüsünden Arşiv Klasörlerini Yönet seçeneğiyle yeni arşiv oluşturun."))
             return
 
         baglam = _arsiv_gorev_baglami(pencere, kategori_korumali=True)
@@ -180,9 +189,9 @@ def arsiv_secim_goster(pencere, sids, kaynak_klasor=None):
         baglam["konu"] = konu
         jeton = arka_plan_gorev_jetonu_olustur(pencere, "posta_degistirme", baglam)
         mesaj_soyle_ve_sonra_calistir(
-            f"E-postalar {hedef} klasörüne arşivleniyor."
+            _('E-postalar {0} klasörüne arşivleniyor.').format(hedef)
             if adet > 1
-            else f"E-posta {hedef} klasörüne arşivleniyor.",
+            else _('E-posta {0} klasörüne arşivleniyor.').format(hedef),
             lambda: arka_planda_calistir(
                 pencere.sunucudan_ozel_arsivle,
                 sids,
@@ -203,7 +212,7 @@ def arsiv_klasoru_olustur(pencere, klasor_adi):
     baglam["hesap"] = ayarlar.get("eposta", "")
     jeton = arka_plan_gorev_jetonu_olustur(pencere, "arsiv_klasor_yonetimi", baglam)
     mesaj_soyle_ve_sonra_calistir(
-        "Arşiv oluşturuluyor.",
+        _("Arşiv oluşturuluyor."),
         lambda: arka_planda_calistir(
             pencere.sunucudan_arsiv_olustur_thread,
             klasor_adi,
@@ -222,15 +231,15 @@ def sunucudan_arsiv_olustur_thread(pencere, klasor_adi, ayarlar, jeton):
             hedef = imap_klasor_adi_hazirla(klasor_adi)
             tip, _veri = imap.create(hedef)
             if tip != "OK":
-                raise MailHatasi("Arşiv klasörü oluşturulamadı.")
-        gorev_icin_guvenli_call_after(jeton, ui.message, f"{klasor_adi} arşiv klasörü oluşturuldu.")
+                raise MailHatasi(_("Arşiv klasörü oluşturulamadı."))
+        gorev_icin_guvenli_call_after(jeton, ui.message, _('{0} arşiv klasörü oluşturuldu.').format(klasor_adi))
         gorev_icin_guvenli_call_after(jeton, _arsiv_yonetimi_sonrasi_klasorleri_guncelle, pencere, klasor_adi)
     except MailHatasi as e:
         hata_kaydet(str(e))
         gorev_icin_guvenli_call_after(jeton, ui.message, str(e))
     except Exception as e:
         hata_kaydet("Arşiv klasörü oluşturulamadı.", e)
-        gorev_icin_guvenli_call_after(jeton, ui.message, "Arşiv klasörü oluşturulurken bir hata oluştu.")
+        gorev_icin_guvenli_call_after(jeton, ui.message, _("Arşiv klasörü oluşturulurken bir hata oluştu."))
 
 
 def arsiv_klasoru_yeniden_adlandir(pencere, eski_ad, yeni_ad):
@@ -239,7 +248,7 @@ def arsiv_klasoru_yeniden_adlandir(pencere, eski_ad, yeni_ad):
     baglam["hesap"] = ayarlar.get("eposta", "")
     jeton = arka_plan_gorev_jetonu_olustur(pencere, "arsiv_klasor_yonetimi", baglam)
     mesaj_soyle_ve_sonra_calistir(
-        "Arşiv yeniden adlandırılıyor.",
+        _("Arşiv yeniden adlandırılıyor."),
         lambda: arka_planda_calistir(
             pencere.sunucudan_arsiv_yeniden_adlandir_thread,
             eski_ad,
@@ -256,28 +265,28 @@ def sunucudan_arsiv_yeniden_adlandir_thread(pencere, eski_ad, yeni_ad, ayarlar, 
     try:
         eski_ad = str(eski_ad or "").strip()
         if not eski_ad:
-            raise MailHatasi("Arşiv adı boş olamaz.")
+            raise MailHatasi(_("Arşiv adı boş olamaz."))
         yeni_ad = arsiv_klasor_adini_dogrula(yeni_ad, baglam["ozel_klasorler"], eski_ad)
         with ImapBaglantisi(ayarlar) as imap:
             eski_hedef = baglam["klasor_haritasi"].get(eski_ad, imap_klasor_adi_hazirla(eski_ad))
             yeni_hedef = imap_klasor_adi_hazirla(yeni_ad)
             tip, _veri = imap.rename(eski_hedef, yeni_hedef)
             if tip != "OK":
-                raise MailHatasi("Arşiv klasörü yeniden adlandırılamadı.")
+                raise MailHatasi(_("Arşiv klasörü yeniden adlandırılamadı."))
         try:
             klasoru_yerelde_pasif_yap(
                 ayarlar.get("eposta", ""), eski_hedef
             )
         except Exception as e:
             hata_kaydet("Yeniden adlandırılan eski arşiv yerel veritabanında güncellenemedi.", e)
-        gorev_icin_guvenli_call_after(jeton, ui.message, f"{eski_ad} arşivi {yeni_ad} olarak yeniden adlandırıldı.")
+        gorev_icin_guvenli_call_after(jeton, ui.message, _('{0} arşivi {1} olarak yeniden adlandırıldı.').format(eski_ad, yeni_ad))
         gorev_icin_guvenli_call_after(jeton, _arsiv_yonetimi_sonrasi_klasorleri_guncelle, pencere, yeni_ad, eski_ad)
     except MailHatasi as e:
         hata_kaydet(str(e))
         gorev_icin_guvenli_call_after(jeton, ui.message, str(e))
     except Exception as e:
         hata_kaydet("Arşiv klasörü yeniden adlandırılamadı.", e)
-        gorev_icin_guvenli_call_after(jeton, ui.message, "Arşiv klasörü yeniden adlandırılırken bir hata oluştu.")
+        gorev_icin_guvenli_call_after(jeton, ui.message, _("Arşiv klasörü yeniden adlandırılırken bir hata oluştu."))
 
 
 def arsiv_klasoru_sil(pencere, klasor_adi):
@@ -286,7 +295,7 @@ def arsiv_klasoru_sil(pencere, klasor_adi):
     baglam["hesap"] = ayarlar.get("eposta", "")
     jeton = arka_plan_gorev_jetonu_olustur(pencere, "arsiv_klasor_yonetimi", baglam)
     mesaj_soyle_ve_sonra_calistir(
-        "Arşiv siliniyor.",
+        _("Arşiv siliniyor."),
         lambda: arka_planda_calistir(
             pencere.sunucudan_arsiv_sil_thread,
             klasor_adi,
@@ -304,19 +313,19 @@ def sunucudan_arsiv_sil_thread(pencere, klasor_adi, ayarlar, jeton):
             hedef = baglam["klasor_haritasi"].get(klasor_adi, imap_klasor_adi_hazirla(klasor_adi))
             tip, _veri = imap.delete(hedef)
             if tip != "OK":
-                raise MailHatasi("Arşiv klasörü silinemedi.")
+                raise MailHatasi(_("Arşiv klasörü silinemedi."))
         try:
             klasoru_yerelde_pasif_yap(ayarlar.get("eposta", ""), hedef)
         except Exception as e:
             hata_kaydet("Silinen arşiv yerel veritabanında güncellenemedi.", e)
-        gorev_icin_guvenli_call_after(jeton, ui.message, "Arşiv klasörü silindi.")
+        gorev_icin_guvenli_call_after(jeton, ui.message, _("Arşiv klasörü silindi."))
         gorev_icin_guvenli_call_after(jeton, pencere.arsiv_silindi_sonrasi_guncelle, klasor_adi)
     except MailHatasi as e:
         hata_kaydet(str(e))
         gorev_icin_guvenli_call_after(jeton, ui.message, str(e))
     except Exception as e:
         hata_kaydet("Arşiv klasörü silinemedi.", e)
-        gorev_icin_guvenli_call_after(jeton, ui.message, baglanti_hatasi_kullanici_mesaji(e, "Silme işlemi sırasında bir hata oluştu."))
+        gorev_icin_guvenli_call_after(jeton, ui.message, baglanti_hatasi_kullanici_mesaji(e, _("Silme işlemi sırasında bir hata oluştu.")))
 
 
 def sunucudan_ozel_arsivle(pencere, ids, hedef_isim, mevcut_klasor, ayarlar, jeton):
@@ -324,7 +333,7 @@ def sunucudan_ozel_arsivle(pencere, ids, hedef_isim, mevcut_klasor, ayarlar, jet
     klasor_haritasi = baglam["klasor_haritasi"]
     kategori = baglam["kategori"]
     try:
-        uidler = uid_kumesi_hazirla(ids, "Arşivlenecek e-posta bulunamadı.")
+        uidler = uid_kumesi_hazirla(ids, _("Arşivlenecek e-posta bulunamadı."))
         adet = max(1, int(baglam.get("adet") or len(ids) or 1))
         konu = baglam.get("konu")
         tum_postalar = False
@@ -332,18 +341,18 @@ def sunucudan_ozel_arsivle(pencere, ids, hedef_isim, mevcut_klasor, ayarlar, jet
         with ImapBaglantisi(ayarlar) as imap:
             imap_gmail_etiket_destegini_dogrula(imap)
             tip, _veri = imap.select(mevcut_klasor, readonly=False)
-            imap_ok_mu(tip, "Kaynak klasör açılamadı.")
+            imap_ok_mu(tip, _("Kaynak klasör açılamadı."))
 
             hedef_etiket = gmail_etiket_ifadesi(hedef_isim, hedef_klasor, klasor_haritasi, kategori, mevcut_klasor)
             if not hedef_etiket:
-                raise MailHatasi("Hedef arşiv etiketi hazırlanamadı.")
+                raise MailHatasi(_("Hedef arşiv etiketi hazırlanamadı."))
             gmail_etiket_ekle_ve_kaynak_kaldir(
                 imap,
                 uidler,
                 hedef_etiket,
                 mevcut_klasor,
-                "E-postalar hedef arşiv etiketine eklenemedi.",
-                "E-postalar kaynak etiketinden kaldırılamadı.",
+                _("E-postalar hedef arşiv etiketine eklenemedi."),
+                _("E-postalar kaynak etiketinden kaldırılamadı."),
                 klasor_haritasi,
                 baglam["ozel_klasorler"],
                 kategori,
@@ -367,20 +376,20 @@ def sunucudan_ozel_arsivle(pencere, ids, hedef_isim, mevcut_klasor, ayarlar, jet
             hedef_klasor,
         )
         gorev_icin_guvenli_call_after(jeton, ui.message, mesaj)
-        gorev_icin_guvenli_call_after(jeton, pencere.yenilemeyi_gecikmeli_tetikle, "Liste yenileniyor...", kategori, None, None, True)
+        gorev_icin_guvenli_call_after(jeton, pencere.yenilemeyi_gecikmeli_tetikle, _("Liste yenileniyor..."), kategori, None, None, True)
     except MailHatasi as e:
         hata_kaydet(str(e))
         gorev_icin_guvenli_call_after(jeton, ui.message, str(e))
-        gorev_icin_guvenli_call_after(jeton, pencere.yenilemeyi_gecikmeli_tetikle, "Liste yenileniyor...", kategori, None, None, False)
+        gorev_icin_guvenli_call_after(jeton, pencere.yenilemeyi_gecikmeli_tetikle, _("Liste yenileniyor..."), kategori, None, None, False)
     except Exception as e:
         hata_kaydet("Arşivleme işlemi başarısız oldu.", e)
-        gorev_icin_guvenli_call_after(jeton, ui.message, "Arşivleme sırasında bir hata oluştu.")
-        gorev_icin_guvenli_call_after(jeton, pencere.yenilemeyi_gecikmeli_tetikle, "Liste yenileniyor...", kategori, None, None, False)
+        gorev_icin_guvenli_call_after(jeton, ui.message, _("Arşivleme sırasında bir hata oluştu."))
+        gorev_icin_guvenli_call_after(jeton, pencere.yenilemeyi_gecikmeli_tetikle, _("Liste yenileniyor..."), kategori, None, None, False)
 
 
 def arsive_gonder_menu(pencere, event=None):
     if getattr(pencere, "liste_modu", LISTE_MODU_EPOSTA) != LISTE_MODU_EPOSTA:
-        ui.message("Arşivlemek için önce bir klasöre girin ve e-posta seçin.")
+        ui.message(_("Arşivlemek için önce bir klasöre girin ve e-posta seçin."))
         return
     secili_idler = list(pencere.isaretliler)
     if not secili_idler:
@@ -388,6 +397,6 @@ def arsive_gonder_menu(pencere, event=None):
         if indeks != -1 and indeks < len(pencere.mailler):
             secili_idler.append(pencere.mailler[indeks]["id"])
     if not secili_idler:
-        ui.message("Lütfen arşive göndermek için e-posta seçin.")
+        ui.message(_("Lütfen arşive göndermek için e-posta seçin."))
         return
     pencere.arsiv_secim_goster(secimleri_uidlere_genislet(pencere.mailler, secili_idler))

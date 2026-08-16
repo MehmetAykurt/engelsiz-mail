@@ -1,6 +1,15 @@
 # -*- coding: utf-8 -*-
 # Engelsiz Mail - ek dosya yardımcıları
 
+
+# NVDA eklenti çevirilerini bu modül için etkinleştir.
+try:
+    import addonHandler
+    addonHandler.initTranslation()
+except (ImportError, AttributeError):
+    # NVDA dışındaki otomatik testlerde Türkçe kaynak metni aynen kullan.
+    _ = lambda metin: metin
+
 import mimetypes
 import os
 from email import policy as email_policy
@@ -11,6 +20,7 @@ from .errors import MailHatasi
 from .logger import hata_kaydet
 from .text_utils import (
     duz_metni_ekran_okuyucu_icin_temizle,
+    eposta_baytlarini_metne_coz,
     guvenli_coz,
     html_icerik_gibi_gorunuyor_mu,
     html_temizle,
@@ -89,7 +99,7 @@ def _ek_verisini_al(parca):
 def _metin_parcasini_coz(parca):
     try:
         icerik = parca.get_content()
-        if isinstance(icerik, str):
+        if isinstance(icerik, str) and "�" not in icerik:
             return icerik
     except Exception:
         pass
@@ -97,15 +107,7 @@ def _metin_parcasini_coz(parca):
     veri = parca.get_payload(decode=True)
     if veri is None:
         return str(parca.get_payload() or "")
-    karakter_kumeleri = [parca.get_content_charset(), "utf-8", "windows-1254", "iso-8859-9", "latin-1"]
-    for karakter_kumesi in karakter_kumeleri:
-        if not karakter_kumesi:
-            continue
-        try:
-            return veri.decode(karakter_kumesi)
-        except (LookupError, UnicodeDecodeError):
-            continue
-    return veri.decode("utf-8", errors="replace")
+    return eposta_baytlarini_metne_coz(veri, parca.get_content_charset() or "utf-8")
 
 
 def mesaj_metni_ve_ekleri_cikar(mesaj, ayrintili=False):
@@ -129,12 +131,12 @@ def mesaj_metni_ve_ekleri_cikar(mesaj, ayrintili=False):
                     boyut = len(veri)
                     if boyut > AZAMI_EK_ONBELLEK_TEK_BOYUTU:
                         atlanan_ekler.append(
-                            f"{temiz_ad} ({dosya_boyutu_metni(boyut)}): tek ek güvenlik sınırını aşıyor"
+                            _('{0} ({1}): tek ek güvenlik sınırını aşıyor').format(temiz_ad, dosya_boyutu_metni(boyut))
                         )
                         continue
                     if toplam_ek_boyutu + boyut > AZAMI_EK_ONBELLEK_TOPLAM_BOYUTU:
                         atlanan_ekler.append(
-                            f"{temiz_ad} ({dosya_boyutu_metni(boyut)}): toplam ek güvenlik sınırını aşıyor"
+                            _('{0} ({1}): toplam ek güvenlik sınırını aşıyor').format(temiz_ad, dosya_boyutu_metni(boyut))
                         )
                         continue
                     ekler.append((temiz_ad, veri))
@@ -165,14 +167,14 @@ def mesaj_metni_ve_ekleri_cikar(mesaj, ayrintili=False):
     if atlanan_ekler:
         ek_notu = [
             "",
-            "Not: Bazı ekler çok büyük olduğu için belleğe yüklenmedi ve bu pencereden kaydedilemez ya da iletilemez.",
-            f"Tek ek sınırı: {dosya_boyutu_metni(AZAMI_EK_ONBELLEK_TEK_BOYUTU)}.",
-            f"Toplam ek sınırı: {dosya_boyutu_metni(AZAMI_EK_ONBELLEK_TOPLAM_BOYUTU)}.",
-            "Atlanan ekler:",
+            _("Not: Bazı ekler çok büyük olduğu için belleğe yüklenmedi ve bu pencereden kaydedilemez ya da iletilemez."),
+            _('Tek ek sınırı: {0}.').format(dosya_boyutu_metni(AZAMI_EK_ONBELLEK_TEK_BOYUTU)),
+            _('Toplam ek sınırı: {0}.').format(dosya_boyutu_metni(AZAMI_EK_ONBELLEK_TOPLAM_BOYUTU)),
+            _("Atlanan ekler:"),
         ]
         ek_notu.extend(f"- {satir}" for satir in atlanan_ekler[:20])
         if len(atlanan_ekler) > 20:
-            ek_notu.append(f"- Ayrıca {len(atlanan_ekler) - 20} ek daha atlandı.")
+            ek_notu.append(_('- Ayrıca {0} ek daha atlandı.').format(len(atlanan_ekler) - 20))
         duz_metin = (duz_metin + "\n" + "\n".join(ek_notu)).strip()
 
     if ayrintili:
@@ -197,12 +199,10 @@ def ham_eposta_boyutunu_denetle(ham_veri, islem_adi="E-posta"):
     """Aşırı büyük ham e-postaların NVDA'yı veya belleği zorlamasını engeller."""
     boyut = len(ham_veri or b"")
     if boyut <= 0:
-        raise MailHatasi("E-posta içeriği boş döndü.")
+        raise MailHatasi(_("E-posta içeriği boş döndü."))
     if boyut > AZAMI_EPOSTA_ISLEME_BOYUTU:
         raise MailHatasi(
-            f"{islem_adi} çok büyük. Bu işlem için en çok "
-            f"{dosya_boyutu_metni(AZAMI_EPOSTA_ISLEME_BOYUTU)} boyutunda e-posta işlenebilir. "
-            "E-postayı Gmail web arayüzünden veya başka bir posta istemcisinden açmayı deneyin."
+            _('{0} çok büyük. Bu işlem için en çok {1} boyutunda e-posta işlenebilir. E-postayı Gmail web arayüzünden veya başka bir posta istemcisinden açmayı deneyin.').format(islem_adi, dosya_boyutu_metni(AZAMI_EPOSTA_ISLEME_BOYUTU))
         )
     return boyut
 
@@ -212,12 +212,12 @@ def eml_dosya_boyutunu_denetle(dosya_yolu):
     try:
         boyut = os.path.getsize(dosya_yolu)
     except OSError as e:
-        raise MailHatasi("EML dosya boyutu okunamadı.") from e
+        raise MailHatasi(_("EML dosya boyutu okunamadı.")) from e
     if boyut <= 0:
-        raise MailHatasi("EML dosyası boş görünüyor.")
+        raise MailHatasi(_("EML dosyası boş görünüyor."))
     if boyut > AZAMI_EML_DOSYA_BOYUTU:
         raise MailHatasi(
-            f"EML dosyası çok büyük. En çok {dosya_boyutu_metni(AZAMI_EML_DOSYA_BOYUTU)} boyutunda EML dosyası açılabilir."
+            _('EML dosyası çok büyük. En çok {0} boyutunda EML dosyası açılabilir.').format(dosya_boyutu_metni(AZAMI_EML_DOSYA_BOYUTU))
         )
     return boyut
 
@@ -225,17 +225,17 @@ def eml_dosya_boyutunu_denetle(dosya_yolu):
 def eml_verisini_dogrula(ham_veri):
     """Ham verinin başlıkları bulunan gerçek bir EML ileti olduğunu doğrular."""
     if not isinstance(ham_veri, (bytes, bytearray)) or not bytes(ham_veri).strip():
-        raise MailHatasi("EML dosyası boş görünüyor.")
+        raise MailHatasi(_("EML dosyası boş görünüyor."))
     try:
         mesaj = BytesParser(policy=email_policy.default).parsebytes(bytes(ham_veri))
     except Exception as e:
-        raise MailHatasi("EML dosyası okunamadı veya geçerli bir e-posta dosyası değil.") from e
+        raise MailHatasi(_("EML dosyası okunamadı veya geçerli bir e-posta dosyası değil.")) from e
 
     if any(isinstance(kusur, MissingHeaderBodySeparatorDefect) for kusur in mesaj.defects):
-        raise MailHatasi("EML dosyası okunamadı veya geçerli bir e-posta dosyası değil.")
+        raise MailHatasi(_("EML dosyası okunamadı veya geçerli bir e-posta dosyası değil."))
     basliklar = {str(ad or "").strip().lower() for ad in mesaj.keys()}
     if not basliklar.intersection(EML_MESAJ_BASLIKLARI):
-        raise MailHatasi("EML dosyası okunamadı veya geçerli bir e-posta dosyası değil.")
+        raise MailHatasi(_("EML dosyası okunamadı veya geçerli bir e-posta dosyası değil."))
     return mesaj
 
 
@@ -246,12 +246,19 @@ def ek_kayitlari_boyutunu_denetle(ek_kayitlari):
         if isinstance(kayit, str):
             kayit = {"tur": "dosya", "yol": kayit}
         if not isinstance(kayit, dict):
-            continue
+            raise MailHatasi(
+                _("Ek kaydı geçersiz. Lütfen eki kaldırıp yeniden ekleyin.")
+            )
 
         tur = kayit.get("tur")
         if tur == "hazir":
             ad = guvenli_coz(kayit.get("ad") or "ek_dosya")
-            boyut = len(kayit.get("veri") or b"")
+            veri = kayit.get("veri") or b""
+            if not isinstance(veri, (bytes, bytearray)):
+                raise MailHatasi(
+                    _('Ek verisi geçersiz: {0}. Lütfen eki kaldırıp yeniden ekleyin.').format(ad)
+                )
+            boyut = len(veri)
         else:
             yol = str(kayit.get("yol", "") or "").strip()
             if not yol or not os.path.isfile(yol):
@@ -260,15 +267,15 @@ def ek_kayitlari_boyutunu_denetle(ek_kayitlari):
             try:
                 boyut = os.path.getsize(yol)
             except OSError as e:
-                raise MailHatasi(f"Ek dosya boyutu okunamadı: {ad}") from e
+                raise MailHatasi(_('Ek dosya boyutu okunamadı: {0}').format(ad)) from e
 
         if boyut > AZAMI_TEK_EK_BOYUTU:
             raise MailHatasi(
-                f"Ek dosya çok büyük: {ad}. Tek ek en çok {dosya_boyutu_metni(AZAMI_TEK_EK_BOYUTU)} olabilir."
+                _('Ek dosya çok büyük: {0}. Tek ek en çok {1} olabilir.').format(ad, dosya_boyutu_metni(AZAMI_TEK_EK_BOYUTU))
             )
         toplam += boyut
 
     if toplam > AZAMI_TOPLAM_EK_BOYUTU:
         raise MailHatasi(
-            f"Ek dosyaların toplam boyutu çok büyük. Toplam ek boyutu en çok {dosya_boyutu_metni(AZAMI_TOPLAM_EK_BOYUTU)} olabilir."
+            _('Ek dosyaların toplam boyutu çok büyük. Toplam ek boyutu en çok {0} olabilir.').format(dosya_boyutu_metni(AZAMI_TOPLAM_EK_BOYUTU))
         )

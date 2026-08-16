@@ -1,5 +1,14 @@
 # -*- coding: utf-8 -*-
 
+
+# NVDA eklenti çevirilerini bu modül için etkinleştir.
+try:
+    import addonHandler
+    addonHandler.initTranslation()
+except (ImportError, AttributeError):
+    # NVDA dışındaki otomatik testlerde Türkçe kaynak metni aynen kullan.
+    _ = lambda metin: metin
+
 import base64
 import re
 
@@ -23,6 +32,19 @@ VARSAYILAN_KLASOR_HARITASI = {
     "Çöp Kutusu": '"[Gmail]/Trash"',
     "Spam": '"[Gmail]/Spam"',
 }
+
+
+def klasor_gorunen_adi(kategori_adi):
+    """İç sistem klasörü anahtarını yalnız görünüm katmanında yerelleştirir."""
+    ad = str(kategori_adi or "").strip()
+    return {
+        "Gelen Kutusu": _("Gelen Kutusu"),
+        "Tüm Postalar": _("Tüm Postalar"),
+        "Gönderilen E-postalar": _("Gönderilen E-postalar"),
+        "Taslaklar": _("Taslaklar"),
+        "Çöp Kutusu": _("Çöp Kutusu"),
+        "Spam": _("Spam"),
+    }.get(ad, ad)
 
 
 def encode_mutf7(metin):
@@ -101,29 +123,29 @@ def arsiv_klasor_adini_dogrula(klasor_adi, mevcut_adlar=None, eski_ad=None):
     """Arşiv klasörü adını IMAP komutuna gitmeden önce güvenli kurallarla doğrular."""
     ad = str(klasor_adi or "").strip()
     if not ad:
-        raise MailHatasi("Arşiv adı boş olamaz.")
+        raise MailHatasi(_("Arşiv adı boş olamaz."))
     if len(ad) > 80:
-        raise MailHatasi("Arşiv adı çok uzun. Lütfen en çok 80 karakterlik bir ad yazın.")
+        raise MailHatasi(_("Arşiv adı çok uzun. Lütfen en çok 80 karakterlik bir ad yazın."))
     if any(ord(karakter) < 32 for karakter in ad):
-        raise MailHatasi("Arşiv adında satır sonu, sekme veya denetim karakteri bulunamaz.")
+        raise MailHatasi(_("Arşiv adında satır sonu, sekme veya denetim karakteri bulunamaz."))
     if ad in (".", "..") or not ad.strip(" ."):
-        raise MailHatasi("Lütfen harf veya rakam içeren geçerli bir arşiv adı yazın.")
+        raise MailHatasi(_("Lütfen harf veya rakam içeren geçerli bir arşiv adı yazın."))
     if "/" in ad or "\\" in ad:
-        raise MailHatasi("Arşiv adında eğik çizgi veya ters eğik çizgi kullanılamaz.")
+        raise MailHatasi(_("Arşiv adında eğik çizgi veya ters eğik çizgi kullanılamaz."))
     if '"' in ad:
-        raise MailHatasi("Arşiv adında çift tırnak kullanılamaz.")
+        raise MailHatasi(_("Arşiv adında çift tırnak kullanılamaz."))
 
     ad_kucuk = ad.lower()
     sistem_adlari = {str(oge).lower() for oge in SISTEM_KLASORLERI}
     sistem_adlari.update({"inbox", "[gmail]", "[google mail]"})
     if ad_kucuk in sistem_adlari or ad_kucuk.startswith("[gmail]") or ad_kucuk.startswith("[google mail]"):
-        raise MailHatasi("Bu ad Gmail sistem klasörü için ayrılmıştır. Lütfen farklı bir arşiv adı yazın.")
+        raise MailHatasi(_("Bu ad Gmail sistem klasörü için ayrılmıştır. Lütfen farklı bir arşiv adı yazın."))
 
     eski_kucuk = str(eski_ad or "").strip().lower()
     mevcut_kucuk = {str(oge or "").strip().lower() for oge in (mevcut_adlar or [])}
     mevcut_kucuk.discard(eski_kucuk)
     if ad_kucuk in mevcut_kucuk:
-        raise MailHatasi("Bu adla bir arşiv klasörü zaten var.")
+        raise MailHatasi(_("Bu adla bir arşiv klasörü zaten var."))
     return ad
 
 

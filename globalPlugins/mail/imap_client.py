@@ -1,9 +1,19 @@
 # -*- coding: utf-8 -*-
 # Engelsiz Mail - IMAP yardımcıları
 
+
+# NVDA eklenti çevirilerini bu modül için etkinleştir.
+try:
+    import addonHandler
+    addonHandler.initTranslation()
+except (ImportError, AttributeError):
+    # NVDA dışındaki otomatik testlerde Türkçe kaynak metni aynen kullan.
+    _ = lambda metin: metin
+
 import re
 import socket
 import ssl
+import threading
 import time
 
 from .errors import MailHatasi
@@ -25,67 +35,88 @@ class ImapBaglantisi:
         self.ayarlar = ayarlar
         self.timeout = timeout
         self.imap = None
+        self._durum_kilidi = threading.Lock()
+
+    def _imap_nesnesini_ayarla(self, imap):
+        with self._durum_kilidi:
+            self.imap = imap
+
+    def _imap_nesnesini_cikar(self):
+        with self._durum_kilidi:
+            imap = self.imap
+            self.imap = None
+        return imap
 
     def __enter__(self):
         eposta = self.ayarlar.get("eposta", "")
         sifre = self.ayarlar.get("sifre", "")
         if not eposta or not sifre:
-            raise MailHatasi("Hesap bilgileri eksik.")
+            raise MailHatasi(_("Hesap bilgileri eksik."))
         try:
             ssl_baglami = ssl.create_default_context()
-            self.imap = imaplib.IMAP4_SSL(
+            imap = imaplib.IMAP4_SSL(
                 GMAIL_IMAP_SUNUCU,
                 GMAIL_IMAP_PORT,
                 ssl_context=ssl_baglami,
                 timeout=self.timeout,
             )
-            tip, _veri = self.imap.login(eposta, sifre)
+            self._imap_nesnesini_ayarla(imap)
+            tip, _veri = imap.login(eposta, sifre)
             if tip != "OK":
-                raise MailHatasi("Gmail hesabına giriş yapılamadı. E-posta adresi veya uygulama şifresi hatalı olabilir.")
-            return self.imap
+                raise MailHatasi(_("Gmail hesabına giriş yapılamadı. E-posta adresi veya uygulama şifresi hatalı olabilir."))
+            return imap
         except imaplib.IMAP4.error as e:
             self._basarisiz_baglantiyi_kapat()
-            raise MailHatasi("Gmail hesabına giriş yapılamadı. E-posta adresi veya uygulama şifresi hatalı olabilir.") from e
+            raise MailHatasi(_("Gmail hesabına giriş yapılamadı. E-posta adresi veya uygulama şifresi hatalı olabilir.")) from e
         except socket.timeout as e:
             self._basarisiz_baglantiyi_kapat()
-            raise MailHatasi("IMAP sunucusu zamanında yanıt vermedi. İnternet bağlantınızı veya kurum ağı kısıtlamalarını kontrol edin.") from e
+            raise MailHatasi(_("IMAP sunucusu zamanında yanıt vermedi. İnternet bağlantınızı veya kurum ağı kısıtlamalarını denetleyin.")) from e
         except ssl.SSLError as e:
             self._basarisiz_baglantiyi_kapat()
-            raise MailHatasi("IMAP sunucusuyla güvenli bağlantı kurulamadı. Kurum ağı, güvenlik yazılımı veya sertifika denetimi bağlantıyı kesiyor olabilir.") from e
+            raise MailHatasi(_("IMAP sunucusuyla güvenli bağlantı kurulamadı. Kurum ağı, güvenlik yazılımı veya sertifika denetimi bağlantıyı kesiyor olabilir.")) from e
         except OSError as e:
             self._basarisiz_baglantiyi_kapat()
-            raise MailHatasi("IMAP sunucusuna bağlantı kurulamadı. İnternet bağlantınızı, güvenlik duvarınızı veya kurum ağı ayarlarınızı kontrol edin.") from e
+            raise MailHatasi(_("IMAP sunucusuna bağlantı kurulamadı. İnternet bağlantınızı, güvenlik duvarınızı veya kurum ağı ayarlarınızı denetleyin.")) from e
         except Exception:
             self._basarisiz_baglantiyi_kapat()
             raise
 
     def _basarisiz_baglantiyi_kapat(self):
-        if not self.imap:
+        imap = self._imap_nesnesini_cikar()
+        if not imap:
             return
         try:
-            self.imap.logout()
+            imap.logout()
         except Exception as e:
             hata_kaydet("Başarısız IMAP girişi sonrası oturum kapatılamadı.", e)
             try:
-                self.imap.shutdown()
+                imap.shutdown()
             except Exception:
                 pass
-        finally:
-            self.imap = None
+
+    def shutdown(self):
+        """Etkin ağ oturumunu beklemeden keser ve sonraki çıkışı etkisiz kılar."""
+        imap = self._imap_nesnesini_cikar()
+        if not imap:
+            return False
+        try:
+            imap.shutdown()
+        except Exception as e:
+            hata_kaydet("Etkin IMAP bağlantısı denetimli kapanışta kesilemedi.", e)
+        return True
 
     def __exit__(self, exc_type, exc, tb):
-        if not self.imap:
+        imap = self._imap_nesnesini_cikar()
+        if not imap:
             return
         try:
-            self.imap.logout()
+            imap.logout()
         except Exception as e:
             hata_kaydet("IMAP oturumu kapatılırken hata oluştu.", e)
             try:
-                self.imap.shutdown()
+                imap.shutdown()
             except Exception:
                 pass
-        finally:
-            self.imap = None
 
 
 def imap_ok_mu(tip, hata_mesaji):
@@ -124,7 +155,7 @@ def imap_yeteneklerini_ayristir(capability_sonucu):
 def imap_yeteneklerini_al(imap):
     """Sunucunun IMAP yeteneklerini güvenli biçimde döndürür."""
     tip, veri = imap.capability()
-    imap_ok_mu(tip, "IMAP sunucu yetenekleri alınamadı.")
+    imap_ok_mu(tip, _("IMAP sunucu yetenekleri alınamadı."))
     return imap_yeteneklerini_ayristir(veri)
 
 
@@ -133,8 +164,8 @@ def imap_gmail_etiket_destegini_dogrula(imap):
     yetenekler = imap_yeteneklerini_al(imap)
     if "X-GM-EXT-1" not in yetenekler:
         raise MailHatasi(
-            "Gmail etiket desteği algılanamadı. Güvenli taşıma, arşivleme veya Çöp Kutusu'na taşıma işlemi yapılamadı. "
-            "Lütfen bağlantıyı denetleyin ve hesabın Gmail IMAP desteğini kontrol edin."
+            _("Gmail etiket desteği algılanamadı. Güvenli taşıma, arşivleme veya Çöp Kutusuna taşıma işlemi yapılamadı. "
+            "Lütfen bağlantıyı denetleyin ve hesabın Gmail IMAP desteğini denetleyin.")
         )
     return True
 
@@ -148,7 +179,7 @@ def uid_kumesi_hazirla(ids, bos_hata_mesaji="İşlem yapılacak e-posta bulunama
         if not uid:
             continue
         if not uid.isdigit():
-            raise MailHatasi("Geçersiz e-posta kimliği algılandı. İşlem güvenlik nedeniyle durduruldu.")
+            raise MailHatasi(_("Geçersiz e-posta kimliği algılandı. İşlem güvenlik nedeniyle durduruldu."))
         if uid not in gorulen:
             uidler.append(uid)
             gorulen.add(uid)
@@ -162,11 +193,11 @@ def imap_gmail_etiket_store(imap, uidler, islem, etiket, hata_mesaji):
     uidler = str(uidler or "").strip()
     etiket = str(etiket or "").strip()
     if not uidler:
-        raise MailHatasi("İşlem yapılacak e-posta bulunamadı.")
+        raise MailHatasi(_("İşlem yapılacak e-posta bulunamadı."))
     if not etiket:
         return False
     if islem not in ("+", "-"):
-        raise MailHatasi("Geçersiz Gmail etiket işlemi.")
+        raise MailHatasi(_("Geçersiz Gmail etiket işlemi."))
     tip, _veri = imap.uid("STORE", uidler, f"{islem}X-GM-LABELS", f"({etiket})")
     imap_ok_mu(tip, hata_mesaji)
     return True
@@ -182,9 +213,9 @@ def imap_uidleri_kaynak_klasorden_cikar(imap, uidler, hata_mesaji="E-postalar ka
     """
     uidler = str(uidler or "").strip()
     if not uidler:
-        raise MailHatasi("Kaynak klasörden kaldırılacak e-posta bulunamadı.")
+        raise MailHatasi(_("Kaynak klasörden kaldırılacak e-posta bulunamadı."))
     tip, _veri = imap.uid("STORE", uidler, "+FLAGS.SILENT", "(\\Deleted)")
-    imap_ok_mu(tip, "E-postalar kaynak klasörden kaldırılmak üzere işaretlenemedi.")
+    imap_ok_mu(tip, _("E-postalar kaynak klasörden kaldırılmak üzere işaretlenemedi."))
     tip, _veri = imap.uid("EXPUNGE", uidler)
     if tip != "OK":
         try:
@@ -199,9 +230,9 @@ def imap_uidleri_kalici_sil(imap, uidler, hata_mesaji="E-posta kalıcı olarak s
     """Seçili UID'leri güvenli biçimde kalıcı siler; toplu EXPUNGE yedeğine düşmez."""
     uidler = str(uidler or "").strip()
     if not uidler:
-        raise MailHatasi("Silinecek e-posta bulunamadı.")
+        raise MailHatasi(_("Silinecek e-posta bulunamadı."))
     tip, _veri = imap.uid("STORE", uidler, "+FLAGS.SILENT", "(\\Deleted)")
-    imap_ok_mu(tip, "E-posta kalıcı silme için işaretlenemedi.")
+    imap_ok_mu(tip, _("E-posta kalıcı silme için işaretlenemedi."))
     tip, _veri = imap.uid("EXPUNGE", uidler)
     if tip != "OK":
         try:
@@ -229,13 +260,13 @@ def imap_x_gm_msgid_haritasi_al(imap, uidler):
     """Gmail X-GM-MSGID değerlerini UID bazında döndürür."""
     uid_listesi = [str(uid).strip() for uid in uidler or [] if str(uid).strip()]
     if not uid_listesi:
-        raise MailHatasi("Kalıcı silinecek e-posta bulunamadı.")
+        raise MailHatasi(_("Kalıcı silinecek e-posta bulunamadı."))
 
     sonuc = {}
     for uid_parcasi in uid_listesini_parcala(uid_listesi, 50):
-        uid_kumesi = uid_kumesi_hazirla(uid_parcasi, "Kalıcı silinecek e-posta bulunamadı.")
+        uid_kumesi = uid_kumesi_hazirla(uid_parcasi, _("Kalıcı silinecek e-posta bulunamadı."))
         tip, veri = imap.uid("FETCH", uid_kumesi, "(X-GM-MSGID)")
-        imap_ok_mu(tip, "E-postaların Gmail ileti kimlikleri alınamadı.")
+        imap_ok_mu(tip, _("E-postaların Gmail ileti kimlikleri alınamadı."))
         for satir in imap_fetch_metin_satirlari(veri):
             uid_eslesme = re.search(r"\bUID\s+(\d+)\b", satir, flags=re.IGNORECASE)
             mesaj_eslesme = re.search(r"\bX-GM-MSGID\s+(\d+)\b", satir, flags=re.IGNORECASE)
@@ -244,7 +275,7 @@ def imap_x_gm_msgid_haritasi_al(imap, uidler):
 
     eksikler = [uid for uid in uid_listesi if uid not in sonuc]
     if eksikler:
-        raise MailHatasi("E-postaların Gmail ileti kimliği doğrulanamadı. Kalıcı silme güvenlik nedeniyle durduruldu.")
+        raise MailHatasi(_("E-postaların Gmail ileti kimliği doğrulanamadı. Kalıcı silme güvenlik nedeniyle durduruldu."))
     return sonuc
 
 
@@ -268,9 +299,9 @@ def imap_uid_search_sonucu_uidleri_al(search_sonucu):
 
 
 def imap_gmail_msgidleri_copte_uidlere_cevir(imap, msgidleri, cop_klasoru):
-    """X-GM-MSGID değerlerini Çöp Kutusu'ndaki UID değerlerine çevirir."""
+    """X-GM-MSGID değerlerini Çöp Kutusundaki UID değerlerine çevirir."""
     tip, _veri = imap.select(cop_klasoru, readonly=False)
-    imap_ok_mu(tip, "Çöp Kutusu kalıcı silme için açılamadı.")
+    imap_ok_mu(tip, _("Çöp Kutusu kalıcı silme için açılamadı."))
 
     uidler = []
     bulunan_msgidler = set()
@@ -279,7 +310,7 @@ def imap_gmail_msgidleri_copte_uidlere_cevir(imap, msgidleri, cop_klasoru):
         if not msgid.isdigit():
             continue
         tip, veri = imap.uid("SEARCH", "X-GM-MSGID", msgid)
-        imap_ok_mu(tip, "E-posta Çöp Kutusu'nda kalıcı silme için bulunamadı.")
+        imap_ok_mu(tip, _("E-posta Çöp Kutusunda kalıcı silme için bulunamadı."))
         bulunan_uidler = imap_uid_search_sonucu_uidleri_al(veri)
         if bulunan_uidler:
             bulunan_msgidler.add(msgid)
@@ -287,7 +318,7 @@ def imap_gmail_msgidleri_copte_uidlere_cevir(imap, msgidleri, cop_klasoru):
 
     beklenen_msgidler = {str(msgid).strip() for msgid in msgidleri or [] if str(msgid).strip().isdigit()}
     if not uidler or bulunan_msgidler != beklenen_msgidler:
-        raise MailHatasi("E-posta Çöp Kutusu'nda doğrulanamadı. Kalıcı silme güvenlik nedeniyle tamamlanmadı.")
+        raise MailHatasi(_("E-posta Çöp Kutusunda doğrulanamadı. Kalıcı silme güvenlik nedeniyle tamamlanmadı."))
     return uidler
 
 
@@ -300,7 +331,7 @@ def imap_gmail_msgidleri_kalici_sil(imap, msgidleri, cop_klasoru, hata_mesaji="E
         time.sleep(0.5)
         cop_uidleri = imap_gmail_msgidleri_copte_uidlere_cevir(imap, msgidleri, cop_klasoru)
 
-    uid_kumesi = uid_kumesi_hazirla(cop_uidleri, "Kalıcı silinecek e-posta Çöp Kutusu'nda bulunamadı.")
+    uid_kumesi = uid_kumesi_hazirla(cop_uidleri, "Kalıcı silinecek e-posta Çöp Kutusunda bulunamadı.")
     return imap_uidleri_kalici_sil(imap, uid_kumesi, hata_mesaji)
 
 
@@ -441,16 +472,16 @@ def imap_eposta_boyutunu_denetle(imap, uid, azami_boyut, islem_adi="E-posta"):
     """Tam gövde indirilmeden önce RFC822.SIZE değerini güvenli sınırla karşılaştırır."""
     uid = str(uid or "").strip()
     if not uid.isdigit():
-        raise MailHatasi("Geçersiz e-posta kimliği algılandı.")
+        raise MailHatasi(_("Geçersiz e-posta kimliği algılandı."))
     try:
         azami_boyut = int(azami_boyut)
     except (TypeError, ValueError) as e:
-        raise MailHatasi("E-posta boyut sınırı geçersiz.") from e
+        raise MailHatasi(_("E-posta boyut sınırı geçersiz.")) from e
     if azami_boyut <= 0:
-        raise MailHatasi("E-posta boyut sınırı geçersiz.")
+        raise MailHatasi(_("E-posta boyut sınırı geçersiz."))
 
     tip, veri = imap.uid("FETCH", uid, "(RFC822.SIZE)")
-    imap_ok_mu(tip, f"{islem_adi} boyutu alınamadı.")
+    imap_ok_mu(tip, _('{0} boyutu alınamadı.').format(islem_adi))
     for satir in imap_fetch_metin_satirlari(veri):
         eslesme = re.search(r"\bRFC822\.SIZE\s+(\d+)\b", satir, flags=re.IGNORECASE)
         if not eslesme:
@@ -459,9 +490,7 @@ def imap_eposta_boyutunu_denetle(imap, uid, azami_boyut, islem_adi="E-posta"):
         if boyut > azami_boyut:
             sinir_mb = azami_boyut / (1024 * 1024)
             raise MailHatasi(
-                f"{islem_adi} çok büyük. Bu işlem için en çok {sinir_mb:.1f} MB "
-                "boyutunda e-posta işlenebilir. E-postayı Gmail web arayüzünden "
-                "veya başka bir posta istemcisinden açmayı deneyin."
+                _('{0} çok büyük. Bu işlem için en çok {1:.1f} MB boyutunda e-posta işlenebilir. E-postayı Gmail web arayüzünden veya başka bir posta istemcisinden açmayı deneyin.').format(islem_adi, sinir_mb)
             )
         return boyut
-    raise MailHatasi(f"{islem_adi} boyutu doğrulanamadı. İşlem güvenlik nedeniyle durduruldu.")
+    raise MailHatasi(_('{0} boyutu doğrulanamadı. İşlem güvenlik nedeniyle durduruldu.').format(islem_adi))

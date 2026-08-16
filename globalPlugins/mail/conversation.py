@@ -1,6 +1,15 @@
 # -*- coding: utf-8 -*-
 """Gmail konuşmalarını ana listede tek satıra dönüştüren yardımcılar."""
 
+# NVDA eklenti çevirilerini bu modül için etkinleştir.
+try:
+    import addonHandler
+    addonHandler.initTranslation()
+except (ImportError, AttributeError):
+    # NVDA dışındaki otomatik testlerde Türkçe kaynak metni aynen kullan.
+    _ = lambda metin: metin
+
+
 
 def epostalari_konusmalara_grupla(mailler, sinir=None):
     """Aynı Gmail thread kimliğindeki iletileri, en yeni ileti temsilci olacak biçimde gruplar."""
@@ -27,14 +36,19 @@ def epostalari_konusmalara_grupla(mailler, sinir=None):
         grup["ek_var"] = bool(grup.get("ek_var")) or bool(mesaj.get("ek_var"))
 
     for grup in gruplar:
-        adet = len(grup.get("ids") or [])
+        klasor_adedi = len(grup.get("ids") or [])
+        try:
+            toplam_adet = int(grup.get("toplam_ileti_sayisi") or 0)
+        except (TypeError, ValueError):
+            toplam_adet = 0
+        adet = max(klasor_adedi, toplam_adet)
         grup["ileti_sayisi"] = adet
         if adet > 1:
             temel = str(grup.get("liste_gosterim") or grup.get("kimden") or "").strip()
-            temel = temel.replace("[Okunmadı] ", "", 1)
+            temel = temel.replace(_("[Okunmadı] "), "", 1)
             okunmamis = int(grup.get("okunmamis_sayisi") or 0)
-            durum = f"{okunmamis} okunmamış, " if okunmamis else ""
-            grup["liste_gosterim"] = f"{durum}{temel}, {adet} ileti"
+            durum = _('{0} okunmamış, ').format(okunmamis) if okunmamis else ""
+            grup["liste_gosterim"] = _('{0}{1}, {2} e-posta').format(durum, temel, adet)
             grup["kimden"] = grup["liste_gosterim"]
         grup["id"] = str((grup.get("ids") or [grup.get("id", "")])[0])
     if sinir is not None:

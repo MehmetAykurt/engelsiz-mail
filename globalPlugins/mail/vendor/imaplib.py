@@ -22,7 +22,7 @@ Public functions:       Internaldate2tuple
 
 __version__ = "2.58"
 
-import binascii, errno, random, re, socket, subprocess, sys, time, calendar
+import binascii, errno, random, re, select, socket, subprocess, sys, time, calendar
 from datetime import datetime, timezone, timedelta
 from io import DEFAULT_BUFFER_SIZE
 
@@ -77,6 +77,7 @@ Commands = {
         'GETANNOTATION':('AUTH', 'SELECTED'),
         'GETQUOTA':     ('AUTH', 'SELECTED'),
         'GETQUOTAROOT': ('AUTH', 'SELECTED'),
+        'IDLE':         ('AUTH', 'SELECTED'),
         'MYRIGHTS':     ('AUTH', 'SELECTED'),
         'LIST':         ('AUTH', 'SELECTED'),
         'LOGIN':        ('NONAUTH',),
@@ -593,6 +594,11 @@ class IMAP4:
         typ, quota = self._untagged_response(typ, dat, 'QUOTA')
         typ, quotaroot = self._untagged_response(typ, dat, 'QUOTAROOT')
         return typ, [quotaroot, quota]
+
+
+    def idle(self, duration=29 * 60):
+        """IMAP IDLE için bir bağlam yöneticisi döndürür."""
+        return Idler(self, duration)
 
 
     def list(self, directory='""', pattern='*'):
@@ -1296,6 +1302,58 @@ class IMAP4:
                 if i >= self._cmd_log_len:
                     i = 0
                 n -= 1
+
+
+class Idler:
+
+    """Eski Python sürümleri için sınırlı, güvenli IMAP IDLE bağlamı."""
+
+    def __init__(self, imap, duration=29 * 60):
+        if 'IDLE' not in getattr(imap, 'capabilities', ()):
+            raise imap.error("Server does not support IMAP4 IDLE")
+        self.imap = imap
+        self.duration = min(max(1, int(duration or 29 * 60)), 29 * 60)
+        self.tag = None
+        self.active = False
+
+    def __enter__(self):
+        try:
+            self.tag = self.imap._command('IDLE')
+            # Sunucu '+' devam yanıtını vermeden önce başka yanıtlar gönderebilir.
+            while self.imap._get_response() is not None:
+                if self.imap.tagged_commands.get(self.tag):
+                    typ, data = self.imap.tagged_commands.pop(self.tag)
+                    raise self.imap.error('idle denied: %r' % (data or typ,))
+        except OSError as exc:
+            raise self.imap.abort('IDLE socket error: %s' % exc)
+        self.active = True
+        return self
+
+    def wait(self):
+        """Bir sunucu olayı veya 29 dakikalık yenileme zamanı gelene kadar bekler."""
+        if not self.active:
+            return None
+        try:
+            ready, _write, _error = select.select([self.imap.sock], [], [], self.duration)
+            if not ready:
+                return 'RENEW'
+            response = self.imap._get_response()
+            if isinstance(response, bytes) and b' EXISTS' in response.upper():
+                return 'EXISTS'
+            return 'OTHER'
+        except (OSError, EOFError):
+            return None
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        if not self.active:
+            return False
+        self.active = False
+        try:
+            self.imap.send(b'DONE' + CRLF)
+            self.imap._command_complete('IDLE', self.tag)
+        except (OSError, EOFError, self.imap.abort):
+            pass
+        return False
 
 
 if HAVE_SSL:

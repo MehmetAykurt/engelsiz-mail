@@ -1,7 +1,17 @@
 # -*- coding: utf-8 -*-
 """Arayüzden bağımsız IMAP e-posta listesi hazırlama hizmeti."""
 
+# NVDA eklenti çevirilerini bu modül için etkinleştir.
+try:
+    import addonHandler
+    addonHandler.initTranslation()
+except (ImportError, AttributeError):
+    # NVDA dışındaki otomatik testlerde Türkçe kaynak metni aynen kullan.
+    _ = lambda metin: metin
+
+
 import email
+import re
 from email import policy as email_policy
 
 from .errors import MailHatasi
@@ -50,30 +60,33 @@ def yerel_eposta_listesi_hazirla(ayarlar, kategori_adi, kaynak_klasor, mesaj_say
     gonderilen_turu = kategori_adi in ("Gönderilen E-postalar", "Taslaklar")
     sonuc = []
     for satir in satirlar:
-        kimden = gonderen_gosterimini_al(satir.get("sender", ""), "Bilinmiyor")
+        kimden = gonderen_gosterimini_al(satir.get("sender", ""), _("Bilinmiyor"))
         kime = adres_basligini_gosterime_hazirla(
             satir.get("recipients_to", ""),
-            "Alıcı yok",
+            _("Alıcı yok"),
             ayarlar.get("eposta", ""),
             ayarlar.get("gorunen_ad", ""),
         )
         liste_gosterim = kime if gonderilen_turu else kimden
         if not bool(satir.get("is_seen")):
-            kimden = "[Okunmadı] " + kimden
-            liste_gosterim = "[Okunmadı] " + liste_gosterim
+            kimden = _("[Okunmadı] ") + kimden
+            liste_gosterim = _("[Okunmadı] ") + liste_gosterim
         sonuc.append(
             {
                 "id": str(satir.get("uid")),
                 "kimden": kimden,
                 "kime": kime,
                 "liste_gosterim": liste_gosterim,
-                "konu": guvenli_coz(satir.get("subject", "") or "Konusuz") or "Konusuz",
+                "konu": guvenli_coz(satir.get("subject", "") or _("Konusuz")) or _("Konusuz"),
                 "onizleme": str(satir.get("preview", "") or ""),
                 "ek_var": bool(satir.get("has_attachments")),
                 "thread_id": str(satir.get("gmail_thread_id") or ""),
                 "gmail_message_id": str(satir.get("gmail_message_id") or ""),
                 "is_seen": bool(satir.get("is_seen")),
                 "internal_date": int(satir.get("internal_date") or 0),
+                "toplam_ileti_sayisi": int(
+                    satir.get("toplam_ileti_sayisi") or 1
+                ),
             }
         )
     if gruplama:
@@ -112,18 +125,23 @@ def eposta_listesi_hazirla(
         tip, _veri = imap.select(aktif_klasor, readonly=False)
         if tip != "OK":
             hata_kaydet(f"Klasör açılamadı: kategori={hedef_kategori}, imap={aktif_klasor}")
-            raise MailHatasi("Seçili klasör açılamadı.")
+            raise MailHatasi(_("Seçili klasör açılamadı."))
         tip, veri = imap.uid("SEARCH", "ALL")
         if tip != "OK":
-            raise MailHatasi("E-posta listesi alınamadı.")
+            raise MailHatasi(_("E-posta listesi alınamadı."))
         uidler = uidleri_ayristir(veri)
+        senkronizasyon_basarili = False
         try:
-            klasor_basliklarini_senkronize_et(
+            senkronizasyon_sonucu = klasor_basliklarini_senkronize_et(
                 imap,
                 ayarlar.get("eposta", ""),
                 hedef_kategori,
                 aktif_klasor,
                 sunucu_uidleri=uidler,
+            )
+            senkronizasyon_basarili = not bool(
+                (senkronizasyon_sonucu or {}).get("atlandi")
+                or (senkronizasyon_sonucu or {}).get("iptal_edildi")
             )
         except Exception as e:
             # Yerel önbellek sorunu mevcut çevrim içi posta listesini engellememeli.
@@ -138,7 +156,7 @@ def eposta_listesi_hazirla(
             except Exception as e:
                 hata_kaydet("Okunmamış e-posta sayısı alınamadı.", e)
 
-        if konusmalari_grupla_ayari_yukle():
+        if senkronizasyon_basarili and konusmalari_grupla_ayari_yukle():
             yerel_mailler = yerel_eposta_listesi_hazirla(
                 ayarlar, hedef_kategori, aktif_klasor, mesaj_sayisi
             )
@@ -156,7 +174,7 @@ def eposta_listesi_hazirla(
         baslik_haritasi = imap_toplu_uid_fetch(
             imap,
             secili_uidler,
-            "(FLAGS BODYSTRUCTURE BODY.PEEK[HEADER.FIELDS (FROM TO SUBJECT DATE)])",
+            "(X-GM-THRID FLAGS BODYSTRUCTURE BODY.PEEK[HEADER.FIELDS (FROM TO SUBJECT DATE)])",
         )
         onizleme_haritasi = (
             klasor_onizleme_haritasi_al(
@@ -175,7 +193,7 @@ def eposta_listesi_hazirla(
                     tip, baslik_verisi = imap.uid(
                         "FETCH",
                         uid_str,
-                        "(FLAGS BODYSTRUCTURE BODY.PEEK[HEADER.FIELDS (FROM TO SUBJECT DATE)])",
+                        "(X-GM-THRID FLAGS BODYSTRUCTURE BODY.PEEK[HEADER.FIELDS (FROM TO SUBJECT DATE)])",
                     )
                     if tip != "OK":
                         continue
@@ -185,20 +203,38 @@ def eposta_listesi_hazirla(
 
             ham_baslik = ham_mesaj_verisi_al(baslik_verisi)
             mesaj = email.message_from_bytes(ham_baslik, policy=email_policy.default)
-            kimden = guvenli_coz(mesaj.get("From", "Bilinmiyor"))
-            kimden_goster = gonderen_gosterimini_al(kimden, "Bilinmiyor")
+            kimden = guvenli_coz(mesaj.get("From", _("Bilinmiyor")))
+            kimden_goster = gonderen_gosterimini_al(kimden, _("Bilinmiyor"))
             kime_goster = adres_basligini_gosterime_hazirla(
                 mesaj.get("To", ""),
-                "Alıcı yok",
+                _("Alıcı yok"),
                 ayarlar.get("eposta", ""),
                 ayarlar.get("gorunen_ad", ""),
             )
             liste_gosterim = kime_goster if hedef_kategori in ("Gönderilen E-postalar", "Taslaklar") else kimden_goster
             if not seen_bayragi_var_mi(baslik_verisi):
-                kimden_goster = "[Okunmadı] " + kimden_goster
-                liste_gosterim = "[Okunmadı] " + liste_gosterim
+                kimden_goster = _("[Okunmadı] ") + kimden_goster
+                liste_gosterim = _("[Okunmadı] ") + liste_gosterim
 
             ek_var = fetch_sonucunda_ek_var_mi(baslik_verisi)
+            fetch_metni = " ".join(
+                (
+                    (parca[0] if isinstance(parca, tuple) and parca else parca)
+                    .decode("ascii", errors="ignore")
+                    if isinstance(
+                        parca[0] if isinstance(parca, tuple) and parca else parca,
+                        bytes,
+                    )
+                    else str(
+                        parca[0] if isinstance(parca, tuple) and parca else parca
+                    )
+                )
+                for parca in (baslik_verisi or [])
+            )
+            thread_eslesmesi = re.search(
+                r"\bX-GM-THRID\s+(\d+)\b", fetch_metni, re.IGNORECASE
+            )
+            thread_id = thread_eslesmesi.group(1) if thread_eslesmesi else ""
 
             yeni_mailler.append(
                 {
@@ -206,12 +242,16 @@ def eposta_listesi_hazirla(
                     "kimden": kimden_goster,
                     "kime": kime_goster,
                     "liste_gosterim": liste_gosterim,
-                    "konu": guvenli_coz(mesaj.get("Subject", "Konusuz")) or "Konusuz",
+                    "konu": guvenli_coz(mesaj.get("Subject", _("Konusuz"))) or _("Konusuz"),
                     "onizleme": onizleme_haritasi.get(uid_str, "") if onizleme_etkin else "",
                     "ek_var": ek_var,
-                    "thread_id": "",
+                    "thread_id": thread_id,
                     "is_seen": seen_bayragi_var_mi(baslik_verisi),
                 }
+            )
+        if konusmalari_grupla_ayari_yukle() and hedef_kategori != "Taslaklar":
+            yeni_mailler = epostalari_konusmalara_grupla(
+                yeni_mailler, mesaj_sayisi
             )
     return {
         "mailler": yeni_mailler,

@@ -1,6 +1,15 @@
 # -*- coding: utf-8 -*-
 """Ayarları ZIP olarak içe ve dışa aktarma penceresi."""
 
+# NVDA eklenti çevirilerini bu modül için etkinleştir.
+try:
+    import addonHandler
+    addonHandler.initTranslation()
+except (ImportError, AttributeError):
+    # NVDA dışındaki otomatik testlerde Türkçe kaynak metni aynen kullan.
+    _ = lambda metin: metin
+
+
 import os
 from datetime import datetime
 
@@ -26,28 +35,28 @@ def _belgeler_klasoru():
 
 class AyarlariAktarmaPenceresi(wx.Dialog):
     def __init__(self, parent):
-        super().__init__(parent, title="Engelsiz Mail - İçe / Dışa Aktar")
+        super().__init__(parent, title=_("Engelsiz Mail - İçe/dışa aktar"))
         duzen = wx.BoxSizer(wx.VERTICAL)
         bilgi = wx.StaticText(
             self,
             label=(
-                "Engelsiz Mail ayarlarını ve hesap bilgilerini ZIP dosyası olarak "
-                "yedekleyebilir veya daha önce oluşturulmuş bir yedeği geri yükleyebilirsiniz."
+                _("Engelsiz Mail ayarlarını ve hesap bilgilerini ZIP dosyası olarak "
+                "yedekleyebilir veya daha önce oluşturulmuş bir yedeği geri yükleyebilirsiniz.")
             ),
         )
         bilgi.Wrap(560)
         duzen.Add(bilgi, 0, wx.ALL | wx.EXPAND, 10)
 
         btn_duzen = wx.BoxSizer(wx.HORIZONTAL)
-        ice_aktar_btn = wx.Button(self, label="&İçe Aktar")
+        ice_aktar_btn = wx.Button(self, label=_("&İçe aktar"))
         ice_aktar_btn.Bind(wx.EVT_BUTTON, self.ice_aktar_basildi)
         btn_duzen.Add(ice_aktar_btn, 0, wx.ALL, 5)
 
-        disa_aktar_btn = wx.Button(self, label="&Dışa Aktar")
+        disa_aktar_btn = wx.Button(self, label=_("&Dışa aktar"))
         disa_aktar_btn.Bind(wx.EVT_BUTTON, self.disa_aktar_basildi)
         btn_duzen.Add(disa_aktar_btn, 0, wx.ALL, 5)
 
-        iptal_btn = wx.Button(self, wx.ID_CANCEL, label="İ&ptal")
+        iptal_btn = wx.Button(self, wx.ID_CANCEL, label=_("İ&ptal"))
         btn_duzen.Add(iptal_btn, 0, wx.ALL, 5)
 
         duzen.Add(btn_duzen, 0, wx.ALIGN_CENTER | wx.LEFT | wx.RIGHT | wx.BOTTOM, 10)
@@ -58,25 +67,25 @@ class AyarlariAktarmaPenceresi(wx.Dialog):
 
     def disa_aktar_basildi(self, event=None):
         uyari = (
-            "Bu yedek e-posta adresinizi ve Google uygulama şifrenizi içerir. "
+            _("Bu yedek e-posta adresinizi ve Google uygulama şifrenizi içerir. "
             "ZIP dosyası şifrelenmez. Yedeği güvenli bir yerde saklayın.\n\n"
-            "Devam etmek istiyor musunuz?"
+            "Devam etmek istiyor musunuz?")
         )
         sonuc = gui.messageBox(
             uyari,
-            "Ayarları Dışa Aktar",
+            _("Ayarları dışa aktar"),
             wx.YES_NO | wx.NO_DEFAULT | wx.ICON_WARNING,
             self,
         )
         if sonuc != wx.YES:
             return
-        dosya_adi = f"Engelsiz-Mail-Ayarlari-{datetime.now().strftime('%Y-%m-%d')}.zip"
+        dosya_adi = _('Engelsiz-Mail-Ayarlari-{0}.zip').format(datetime.now().strftime('%Y-%m-%d'))
         dlg = wx.FileDialog(
             self,
-            "Engelsiz Mail ayar yedeğini kaydedin",
+            _("Engelsiz Mail ayar yedeğini kaydedin"),
             defaultDir=_belgeler_klasoru(),
             defaultFile=dosya_adi,
-            wildcard="ZIP dosyaları (*.zip)|*.zip",
+            wildcard=_("ZIP dosyaları (*.zip)|*.zip"),
             style=wx.FD_SAVE | wx.FD_OVERWRITE_PROMPT,
         )
         try:
@@ -88,8 +97,8 @@ class AyarlariAktarmaPenceresi(wx.Dialog):
         try:
             kaydedilen_yol = ayarlari_disa_aktar(hedef_yol)
             gui.messageBox(
-                f"Ayar yedeği oluşturuldu.\n\n{kaydedilen_yol}",
-                "Ayarlar Dışa Aktarıldı",
+                _('Ayar yedeği oluşturuldu.\n\n{0}').format(kaydedilen_yol),
+                _("Ayarlar dışa aktarıldı"),
                 wx.OK | wx.ICON_INFORMATION,
                 self,
             )
@@ -99,14 +108,14 @@ class AyarlariAktarmaPenceresi(wx.Dialog):
             ui.message(str(e))
         except Exception as e:
             hata_kaydet("Ayarlar dışa aktarılamadı.", e)
-            ui.message("Ayarlar dışa aktarılamadı.")
+            ui.message(_("Ayarlar dışa aktarılamadı."))
 
     def ice_aktar_basildi(self, event=None):
         dlg = wx.FileDialog(
             self,
-            "Engelsiz Mail ayar yedeğini seçin",
+            _("Engelsiz Mail ayar yedeğini seçin"),
             defaultDir=_belgeler_klasoru(),
-            wildcard="ZIP dosyaları (*.zip)|*.zip",
+            wildcard=_("ZIP dosyaları (*.zip)|*.zip"),
             style=wx.FD_OPEN | wx.FD_FILE_MUST_EXIST,
         )
         try:
@@ -117,8 +126,8 @@ class AyarlariAktarmaPenceresi(wx.Dialog):
             dlg.Destroy()
 
         onay = gui.messageBox(
-            "Mevcut Engelsiz Mail ayarları ve hesap bilgileri seçilen yedekle değiştirilecektir. Devam etmek istiyor musunuz?",
-            "Ayarları İçe Aktar",
+            _("Mevcut Engelsiz Mail ayarları ve hesap bilgileri seçilen yedekle değiştirilecektir. Devam etmek istiyor musunuz?"),
+            _("Ayarları içe aktar"),
             wx.YES_NO | wx.NO_DEFAULT | wx.ICON_WARNING,
             self,
         )
@@ -127,8 +136,8 @@ class AyarlariAktarmaPenceresi(wx.Dialog):
         try:
             ayarlari_ice_aktar(kaynak_yol)
             gui.messageBox(
-                "Ayarlar içe aktarıldı. Değişikliklerin tamamının uygulanması için NVDA'yı yeniden başlatın.",
-                "Ayarlar İçe Aktarıldı",
+                _("Ayarlar içe aktarıldı. Değişikliklerin tamamının uygulanması için NVDA'yı yeniden başlatın."),
+                _("Ayarlar içe aktarıldı"),
                 wx.OK | wx.ICON_INFORMATION,
                 self,
             )
@@ -138,4 +147,4 @@ class AyarlariAktarmaPenceresi(wx.Dialog):
             ui.message(str(e))
         except Exception as e:
             hata_kaydet("Ayarlar içe aktarılamadı.", e)
-            ui.message("Ayarlar içe aktarılamadı.")
+            ui.message(_("Ayarlar içe aktarılamadı."))

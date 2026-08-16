@@ -1,6 +1,15 @@
 # -*- coding: utf-8 -*-
 """E-posta ve taslak silme işlemleri için yardımcılar."""
 
+# NVDA eklenti çevirilerini bu modül için etkinleştir.
+try:
+    import addonHandler
+    addonHandler.initTranslation()
+except (ImportError, AttributeError):
+    # NVDA dışındaki otomatik testlerde Türkçe kaynak metni aynen kullan.
+    _ = lambda metin: metin
+
+
 import gui
 import ui
 import wx
@@ -23,6 +32,7 @@ from ..pending_deletions import (
 from ..ui_helpers import (
     arka_plan_gorev_jetonu_olustur,
     arka_planda_calistir,
+    guvenli_call_after,
 )
 from .archive_dialogs import KaliciSilmeOnayiPenceresi
 from .folder_view import LISTE_MODU_EPOSTA
@@ -48,17 +58,17 @@ def _silme_gorevi_baslat(pencere, hedef, ids, klasor, *ek_argumanlar):
     return _degistirme_gorevi_baslat(pencere, hedef, ids, klasor, *ek_argumanlar)
 
 
-def silme_hatasi_penceresi_goster(pencere, mesaj, baslik="Silme Hatası"):
+def silme_hatasi_penceresi_goster(pencere, mesaj, baslik=_("Silme hatası")):
     try:
         gui.messageBox(
-            str(mesaj or "E-posta silinemedi."),
+            str(mesaj or _("E-posta silinemedi.")),
             baslik,
             wx.OK | wx.ICON_ERROR,
             pencere,
         )
     except Exception as e:
         hata_kaydet("Silme hatası penceresi gösterilemedi.", e)
-        ui.message(str(mesaj or "E-posta silinemedi."))
+        ui.message(str(mesaj or _("E-posta silinemedi.")))
 
 
 def _eposta_silme_istegini_kaydet(pencere, ids, klasor, kalici=False, ayarlar=None):
@@ -102,26 +112,78 @@ def _eposta_silme_istegini_baslat(pencere, ids, klasor, kalici=False):
         hata_kaydet("Silme isteği yerel kuyruğa kaydedilemedi.", e)
         silme_hatasi_penceresi_goster(
             pencere,
-            "Silme işlemi yerel olarak kaydedilemedi.",
-            "E-posta Silinemedi",
+            _("Silme işlemi yerel olarak kaydedilemedi."),
+            _("E-posta Silinemedi"),
         )
         return False
     listeden_mesajlari_kaldir(pencere, ids)
-    arka_planda_calistir(bekleyen_silmeleri_isle, ayarlar, eposta)
+    arka_planda_calistir(
+        _silme_kuyrugunu_isle_ve_yenile,
+        pencere,
+        ayarlar,
+        eposta,
+        str(getattr(pencere, "secili_kategori", "") or ""),
+    )
     return True
+
+
+def _silme_sonrasi_arayuzu_yenile(pencere, kaynak_kategori):
+    """Kaynak klasörü geri açmadan sayaçları ve görünür listeyi sessizce doğrular."""
+    hedef_kategoriler = list(
+        dict.fromkeys(
+            kategori
+            for kategori in (
+                str(kaynak_kategori or "").strip(),
+                "Çöp Kutusu",
+                "Tüm Postalar",
+            )
+            if kategori
+        )
+    )
+    try:
+        pencere.sistem_klasor_sayilarini_guncelle_tetikle(hedef_kategoriler)
+    except Exception as e:
+        hata_kaydet("Silme sonrası klasör sayıları yenilenemedi.", e)
+    if (
+        getattr(pencere, "liste_modu", LISTE_MODU_EPOSTA) == LISTE_MODU_EPOSTA
+        and str(getattr(pencere, "secili_kategori", "") or "")
+        == str(kaynak_kategori or "")
+    ):
+        pencere.yenilemeyi_gecikmeli_tetikle(
+            None, kaynak_kategori, None, None, True, 1500
+        )
+    try:
+        wx.CallLater(
+            5000,
+            pencere.sistem_klasor_sayilarini_guncelle_tetikle,
+            hedef_kategoriler,
+        )
+    except Exception as e:
+        hata_kaydet("Silme sonrası gecikmeli sayaç doğrulaması başlatılamadı.", e)
+
+
+def _silme_kuyrugunu_isle_ve_yenile(pencere, ayarlar, eposta, kaynak_kategori):
+    sonuc = bekleyen_silmeleri_isle(ayarlar, eposta)
+    guvenli_call_after(
+        pencere,
+        _silme_sonrasi_arayuzu_yenile,
+        pencere,
+        kaynak_kategori,
+    )
+    return sonuc
 
 
 def taslak_silme_onayi_al(pencere, adet=1):
     if not silme_onayi_ayari_yukle():
         return True
     soru = (
-        "Bu taslağı kalıcı olarak silmek istiyor musunuz?"
+        _("Bu taslağı kalıcı olarak silmek istiyor musunuz?")
         if adet == 1
-        else f"Seçili {adet} taslağı kalıcı olarak silmek istiyor musunuz?"
+        else _('Seçili {0} taslağı kalıcı olarak silmek istiyor musunuz?').format(adet)
     )
     return gui.messageBox(
         soru,
-        "Taslak Silme Onayı",
+        _("Taslak silme onayı"),
         wx.YES_NO | wx.ICON_WARNING,
     ) == wx.YES
 
@@ -141,7 +203,7 @@ def konu_ifadesi(konu):
 
 
 class SilmeOnayiPenceresi(wx.Dialog):
-    def __init__(self, parent, soru, baslik="Silme Onayı"):
+    def __init__(self, parent, soru, baslik=_("Silme onayı")):
         super().__init__(parent, title=baslik)
         ana_duzen = wx.BoxSizer(wx.VERTICAL)
         metin = wx.StaticText(self, label=str(soru or ""))
@@ -151,12 +213,12 @@ class SilmeOnayiPenceresi(wx.Dialog):
             pass
         ana_duzen.Add(metin, 0, wx.ALL | wx.EXPAND, 10)
 
-        self.bir_daha_gosterme = wx.CheckBox(self, label="Bu uyarıyı bir daha gösterme")
+        self.bir_daha_gosterme = wx.CheckBox(self, label=_("Bu uyarıyı bir daha gösterme"))
         ana_duzen.Add(self.bir_daha_gosterme, 0, wx.LEFT | wx.RIGHT | wx.BOTTOM, 10)
 
         dugme_duzen = wx.BoxSizer(wx.HORIZONTAL)
-        evet_btn = wx.Button(self, wx.ID_YES, label="&Evet")
-        hayir_btn = wx.Button(self, wx.ID_NO, label="&Hayır")
+        evet_btn = wx.Button(self, wx.ID_YES, label=_("&Evet"))
+        hayir_btn = wx.Button(self, wx.ID_NO, label=_("&Hayır"))
         evet_btn.Bind(wx.EVT_BUTTON, lambda event: self.EndModal(wx.ID_YES))
         hayir_btn.Bind(wx.EVT_BUTTON, lambda event: self.EndModal(wx.ID_NO))
         dugme_duzen.Add(evet_btn, 0, wx.ALL, 5)
@@ -184,37 +246,35 @@ def silme_onayi_al(pencere, adet, kaynak_klasor, konu=None):
         return True
     if pencere.taslak_klasoru_mu(kaynak_klasor):
         return taslak_silme_onayi_al(pencere, adet)
-    konu_etiketi = konu_ifadesi(konu) if adet == 1 and konu else "Seçili"
+    konu_etiketi = konu_ifadesi(konu) if adet == 1 and konu else _("Seçili")
     if pencere.cop_klasoru_mu(kaynak_klasor):
         soru = (
-            f"{konu_etiketi} e-posta Çöp Kutusu'ndan kalıcı olarak silinecektir. Devam etmek istiyor musunuz?"
+            _('{0} e-posta Çöp Kutusundan kalıcı olarak silinecektir. Devam etmek istiyor musunuz?').format(konu_etiketi)
             if adet == 1
-            else f"Seçili {adet} e-posta Çöp Kutusu'ndan kalıcı olarak silinecektir. Devam etmek istiyor musunuz?"
+            else _('Seçili {0} e-posta Çöp Kutusundan kalıcı olarak silinecektir. Devam etmek istiyor musunuz?').format(adet)
         )
-        baslik = "Kalıcı Silme Onayı"
+        baslik = _("Kalıcı silme onayı")
     elif pencere.spam_klasoru_mu(kaynak_klasor):
         soru = (
-            f"{konu_etiketi} spam e-postası Çöp Kutusu'na taşınacaktır. Devam etmek istiyor musunuz?"
+            _('{0} spam e-postası Çöp Kutusuna taşınacaktır. Devam etmek istiyor musunuz?').format(konu_etiketi)
             if adet == 1
-            else f"Seçili {adet} spam e-postası Çöp Kutusu'na taşınacaktır. Devam etmek istiyor musunuz?"
+            else _('Seçili {0} spam e-postası Çöp Kutusuna taşınacaktır. Devam etmek istiyor musunuz?').format(adet)
         )
-        baslik = "Spam Silme Uyarısı"
+        baslik = _("Spam silme uyarısı")
     elif pencere.tum_postalar_klasoru_mu(kaynak_klasor):
         soru = (
-            f"{konu_etiketi} e-posta Tüm Postalar klasöründen Çöp Kutusu'na taşınacaktır. "
-            "Bu işlem, Gmail hesabınızda e-postayı Çöp Kutusu'na taşıyabilir. Devam etmek istiyor musunuz?"
+            _('{0} e-posta Tüm Postalar klasöründen Çöp Kutusuna taşınacaktır. Bu işlem, Gmail hesabınızda e-postayı Çöp Kutusuna taşıyabilir. Devam etmek istiyor musunuz?').format(konu_etiketi)
             if adet == 1
-            else f"Seçili {adet} e-posta Tüm Postalar klasöründen Çöp Kutusu'na taşınacaktır. "
-            "Bu işlem, Gmail hesabınızda e-postaları Çöp Kutusu'na taşıyabilir. Devam etmek istiyor musunuz?"
+            else _('Seçili {0} e-posta Tüm Postalar klasöründen Çöp Kutusuna taşınacaktır. Bu işlem, Gmail hesabınızda e-postaları Çöp Kutusuna taşıyabilir. Devam etmek istiyor musunuz?').format(adet)
         )
-        baslik = "Tüm Postalar Silme Uyarısı"
+        baslik = _("Tüm Postalar silme uyarısı")
     else:
         soru = (
-            f"{konu_etiketi} e-postayı Çöp Kutusu'na taşımak istiyor musunuz?"
+            _('{0} e-postayı Çöp Kutusuna taşımak istiyor musunuz?').format(konu_etiketi)
             if adet == 1
-            else f"Seçili {adet} e-postayı Çöp Kutusu'na taşımak istiyor musunuz?"
+            else _('Seçili {0} e-postayı Çöp Kutusuna taşımak istiyor musunuz?').format(adet)
         )
-        baslik = "Silme Onayı"
+        baslik = _("Silme onayı")
     onay_penceresi = SilmeOnayiPenceresi(pencere, soru, baslik)
     sonuc = wx.ID_NO
     bir_daha_gosterme = False
@@ -244,18 +304,18 @@ def kalici_silme_onayi_al(pencere, adet, kaynak_klasor, konu=None):
     if not kalici_silme_onayi_ayari_yukle():
         return True
 
-    konu_etiketi = konu_ifadesi(konu) if adet == 1 and konu else "Seçili"
+    konu_etiketi = konu_ifadesi(konu) if adet == 1 and konu else _("Seçili")
     if pencere.taslak_klasoru_mu(kaynak_klasor):
         soru = (
-            f"{konu_etiketi} taslak kalıcı olarak silinecektir. Devam etmek istiyor musunuz?"
+            _('{0} taslak kalıcı olarak silinecektir. Devam etmek istiyor musunuz?').format(konu_etiketi)
             if adet == 1
-            else f"Seçili {adet} taslak kalıcı olarak silinecektir. Devam etmek istiyor musunuz?"
+            else _('Seçili {0} taslak kalıcı olarak silinecektir. Devam etmek istiyor musunuz?').format(adet)
         )
     else:
         soru = (
-            f"{konu_etiketi} e-posta kalıcı olarak silinecektir. Devam etmek istiyor musunuz?"
+            _('{0} e-posta kalıcı olarak silinecektir. Devam etmek istiyor musunuz?').format(konu_etiketi)
             if adet == 1
-            else f"Seçili {adet} e-posta kalıcı olarak silinecektir. Devam etmek istiyor musunuz?"
+            else _('Seçili {0} e-posta kalıcı olarak silinecektir. Devam etmek istiyor musunuz?').format(adet)
         )
 
     onay_penceresi = KaliciSilmeOnayiPenceresi(pencere, soru)
@@ -287,14 +347,14 @@ def kalici_silme_onayi_al(pencere, adet, kaynak_klasor, konu=None):
 def tek_mesaj_sil(pencere, mail_id, kaynak_klasor=None, konu=None):
     kaynak_klasor = kaynak_klasor or pencere.aktif_klasor()
     if not mail_id:
-        ui.message("Silinecek e-posta bulunamadı.")
+        ui.message(_("Silinecek e-posta bulunamadı."))
         return False
     if pencere.taslak_klasoru_mu(kaynak_klasor):
         if not taslak_silme_onayi_al(pencere, 1):
             pencere.liste.SetFocus()
             return False
         mesaj_soyle_ve_sonra_calistir(
-            "Taslak siliniyor.",
+            _("Taslak siliniyor."),
             lambda: _silme_gorevi_baslat(
                 pencere,
                 pencere.sunucudan_taslak_sil,
@@ -316,7 +376,7 @@ def konusma_sil(pencere, mail_ids, kaynak_klasor=None, konu=None):
     kaynak_klasor = kaynak_klasor or pencere.aktif_klasor()
     uidler = list(dict.fromkeys(str(uid) for uid in (mail_ids or []) if str(uid)))
     if not uidler:
-        ui.message("Silinecek e-posta bulunamadı.")
+        ui.message(_("Silinecek e-posta bulunamadı."))
         return False
     if len(uidler) == 1:
         return tek_mesaj_sil(pencere, uidler[0], kaynak_klasor, konu)
@@ -339,7 +399,7 @@ def secili_eposta_idlerini_al(pencere):
 def posta_sil(pencere, event=None):
     secili_idler = secili_eposta_idlerini_al(pencere)
     if not secili_idler:
-        ui.message("Lütfen silmek için e-posta seçin.")
+        ui.message(_("Lütfen silmek için e-posta seçin."))
         return
 
     adet = len(secili_idler)
@@ -349,7 +409,7 @@ def posta_sil(pencere, event=None):
             pencere.liste.SetFocus()
             return
         mesaj_soyle_ve_sonra_calistir(
-            "Taslak siliniyor." if adet == 1 else "Taslaklar siliniyor.",
+            _("Taslak siliniyor.") if adet == 1 else _("Taslaklar siliniyor."),
             lambda: _silme_gorevi_baslat(
                 pencere,
                 pencere.sunucudan_taslak_sil,
@@ -372,7 +432,7 @@ def posta_sil(pencere, event=None):
 def posta_kalici_sil(pencere, event=None):
     secili_idler = secili_eposta_idlerini_al(pencere)
     if not secili_idler:
-        ui.message("Lütfen kalıcı olarak silmek için e-posta seçin.")
+        ui.message(_("Lütfen kalıcı olarak silmek için e-posta seçin."))
         return
 
     adet = len(secili_idler)
@@ -394,7 +454,16 @@ def posta_kalici_sil(pencere, event=None):
 
 def listeden_mesajlari_kaldir(pencere, ids):
     id_kumesi = {str(uid) for uid in ids}
-    silinecek_indeksler = [i for i, mesaj in enumerate(pencere.mailler) if str(mesaj["id"]) in id_kumesi]
+    silinecek_indeksler = [
+        i
+        for i, mesaj in enumerate(pencere.mailler)
+        if str(mesaj.get("id", "")) in id_kumesi
+        or bool(
+            id_kumesi.intersection(
+                str(uid) for uid in (mesaj.get("ids") or [])
+            )
+        )
+    ]
     hedef_indeks = min(silinecek_indeksler) if silinecek_indeksler else pencere.liste.GetFocusedItem()
     for indeks in reversed(silinecek_indeksler):
         try:
@@ -404,7 +473,7 @@ def listeden_mesajlari_kaldir(pencere, ids):
         del pencere.mailler[indeks]
     pencere.isaretliler.difference_update(id_kumesi)
     if not pencere.mailler:
-        pencere.liste_bilgi_satiri_goster("Bu klasörde gösterilecek e-posta yok.")
+        pencere.liste_bilgi_satiri_goster(_("Bu klasörde gösterilecek e-posta yok."))
     else:
         try:
             secili_sayi = pencere.liste.GetSelectedItemCount()

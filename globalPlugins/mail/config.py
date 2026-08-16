@@ -1,5 +1,14 @@
 # -*- coding: utf-8 -*-
 
+
+# NVDA eklenti çevirilerini bu modül için etkinleştir.
+try:
+    import addonHandler
+    addonHandler.initTranslation()
+except (ImportError, AttributeError):
+    # NVDA dışındaki otomatik testlerde Türkçe kaynak metni aynen kullan.
+    _ = lambda metin: metin
+
 import os
 
 import wx
@@ -77,6 +86,44 @@ GORUNUM_ARKA_PLAN_RENKLERI = {
     "Açık Sarı": (255, 255, 224),
     "Açık Mavi": (224, 240, 255),
 }
+
+
+def gorunum_yazi_stili_gorunen_adi(ad):
+    """Kalıcı ayar anahtarını değiştirmeden yazı stili adını yerelleştirir."""
+    ad = str(ad or "").strip()
+    return {
+        "Normal": _("Normal"),
+        "Kalın": _("Kalın"),
+        "İtalik": _("İtalik"),
+        "Kalın İtalik": _("Kalın İtalik"),
+    }.get(ad, ad)
+
+
+def gorunum_metin_rengi_gorunen_adi(ad):
+    """Kalıcı ayar anahtarını değiştirmeden metin rengi adını yerelleştirir."""
+    ad = str(ad or "").strip()
+    return {
+        "Siyah": _("Siyah"),
+        "Beyaz": _("Beyaz"),
+        "Koyu Gri": _("Koyu Gri"),
+        "Mavi": _("Mavi"),
+        "Kırmızı": _("Kırmızı"),
+        "Yeşil": _("Yeşil"),
+    }.get(ad, ad)
+
+
+def gorunum_arka_plan_rengi_gorunen_adi(ad):
+    """Kalıcı ayar anahtarını değiştirmeden arka plan rengi adını yerelleştirir."""
+    ad = str(ad or "").strip()
+    return {
+        "Beyaz": _("Beyaz"),
+        "Siyah": _("Siyah"),
+        "Açık Gri": _("Açık Gri"),
+        "Koyu Gri": _("Koyu Gri"),
+        "Açık Sarı": _("Açık Sarı"),
+        "Açık Mavi": _("Açık Mavi"),
+    }.get(ad, ad)
+
 
 
 def ayar_kopyasi_olustur(ayarlar):
@@ -191,12 +238,12 @@ def ayarlari_denetim_icin_yukle(eposta=None, sifre=None):
     duz_metin_sifre = str(ham_ayarlar.get(SIFRE_DUZ_METIN_ALANI, "")).strip().replace(" ", "")
     if sifreli_deger:
         sonuc["sifre"] = uygulama_sifresini_coz(sifreli_deger)
-        sonuc["notlar"].append("Kayıtlı uygulama şifresi Windows DPAPI ile çözüldü.")
+        sonuc["notlar"].append(_("Kayıtlı uygulama şifresi Windows DPAPI ile çözüldü."))
     elif duz_metin_sifre:
         sonuc["sifre"] = duz_metin_sifre
-        sonuc["notlar"].append("Eski düz metin uygulama şifresi alanı bulundu. Hesap yeniden kaydedildiğinde şifreli alana taşınmalıdır.")
+        sonuc["notlar"].append(_("Eski düz metin uygulama şifresi alanı bulundu. Hesap yeniden kaydedildiğinde şifreli alana taşınmalıdır."))
     else:
-        sonuc["notlar"].append("Kayıtlı uygulama şifresi bulunamadı.")
+        sonuc["notlar"].append(_("Kayıtlı uygulama şifresi bulunamadı."))
     return sonuc
 
 
@@ -279,9 +326,9 @@ def imza_kaydet(imza):
     """İmza metnini hesap bilgilerine dokunmadan ayarlara kaydeder."""
     duzenlenmis_imza = imza_metnini_duzenle(imza)
     if not duzenlenmis_imza:
-        raise MailHatasi("İmza metni boş bırakılamaz.")
+        raise MailHatasi(_("İmza metni boş bırakılamaz."))
     if len(duzenlenmis_imza) > IMZA_AZAMI_UZUNLUK:
-        raise MailHatasi(f"İmza en fazla {IMZA_AZAMI_UZUNLUK} karakter olabilir.")
+        raise MailHatasi(_('İmza en fazla {0} karakter olabilir.').format(IMZA_AZAMI_UZUNLUK))
 
     def guncelle(yeni_ayarlar, mevcut_ayarlar):
         yeni_ayarlar[IMZA_ALANI] = duzenlenmis_imza
@@ -421,44 +468,45 @@ def bildirim_ayarlari_yukle():
     if not isinstance(ayarlar, dict):
         ayarlar = {}
 
+    etkin = bool(ayarlar.get(BILDIRIM_ETKIN_ALANI, False))
+    sesle_bildir = bool(ayarlar.get(BILDIRIM_SES_ALANI, True))
+    mesajla_bildir = bool(ayarlar.get(BILDIRIM_MESAJ_ALANI, True))
+    if etkin and not sesle_bildir and not mesajla_bildir:
+        # Eski veya elle değiştirilmiş ayarlar bildirimi tamamen sessiz bırakmasın.
+        mesajla_bildir = True
+
     return {
-        BILDIRIM_ETKIN_ALANI: bool(ayarlar.get(BILDIRIM_ETKIN_ALANI, False)),
+        BILDIRIM_ETKIN_ALANI: etkin,
         BILDIRIM_ARALIK_ALANI: bildirim_araligini_duzenle(
             ayarlar.get(BILDIRIM_ARALIK_ALANI, VARSAYILAN_BILDIRIM_ARALIGI)
         ),
-        BILDIRIM_SES_ALANI: bool(ayarlar.get(BILDIRIM_SES_ALANI, True)),
+        BILDIRIM_SES_ALANI: sesle_bildir,
         BILDIRIM_SES_TURU_ALANI: bildirim_ses_turu_duzenle(
             ayarlar.get(BILDIRIM_SES_TURU_ALANI, BILDIRIM_SES_TURU_SISTEM)
         ),
         BILDIRIM_SES_DOSYASI_ALANI: bildirim_ses_dosyasi_duzenle(
             ayarlar.get(BILDIRIM_SES_DOSYASI_ALANI, "")
         ),
-        BILDIRIM_MESAJ_ALANI: bool(ayarlar.get(BILDIRIM_MESAJ_ALANI, True)),
+        BILDIRIM_MESAJ_ALANI: mesajla_bildir,
         BILDIRIM_GONDEREN_ALANI: bool(ayarlar.get(BILDIRIM_GONDEREN_ALANI, False)),
         BILDIRIM_KONU_ALANI: bool(ayarlar.get(BILDIRIM_KONU_ALANI, False)),
     }
 
 
 def bildirim_ayarlari_kaydet(
-    etkin,
-    aralik,
-    sesle_bildir,
-    ses_turu,
-    ses_dosyasi,
-    mesajla_bildir,
-    gonderen_bildir,
-    konu_bildir,
+    etkin, sesle_bildir, ses_turu, ses_dosyasi,
+    mesajla_bildir, gonderen_bildir, konu_bildir
 ):
-    """Bildirim ayarlarını hesap bilgilerine dokunmadan kaydeder."""
+    """Bildirim ve ses ayarlarını hesap bilgilerine dokunmadan kaydeder."""
     def guncelle(yeni_ayarlar, mevcut_ayarlar):
         yeni_ayarlar[BILDIRIM_ETKIN_ALANI] = bool(etkin)
-        yeni_ayarlar[BILDIRIM_ARALIK_ALANI] = bildirim_araligini_duzenle(aralik)
         yeni_ayarlar[BILDIRIM_SES_ALANI] = bool(sesle_bildir)
         yeni_ayarlar[BILDIRIM_SES_TURU_ALANI] = bildirim_ses_turu_duzenle(ses_turu)
         yeni_ayarlar[BILDIRIM_SES_DOSYASI_ALANI] = bildirim_ses_dosyasi_duzenle(ses_dosyasi)
         yeni_ayarlar[BILDIRIM_MESAJ_ALANI] = bool(mesajla_bildir)
         yeni_ayarlar[BILDIRIM_GONDEREN_ALANI] = bool(gonderen_bildir)
         yeni_ayarlar[BILDIRIM_KONU_ALANI] = bool(konu_bildir)
+        yeni_ayarlar.pop("bildirim_onizleme", None)
 
     return _ayarlari_guncelle(guncelle)
 
@@ -588,27 +636,27 @@ def gorunum_ayarlari_kaydet(yazi_tipi=None, yazi_boyutu=None, yazi_stili=None, m
             try:
                 duzenlenmis_yazi_boyutu = int(str(yazi_boyutu).strip())
             except Exception:
-                raise MailHatasi("Yazı tipi boyutu yalnızca rakamlardan oluşmalıdır.")
+                raise MailHatasi(_("Yazı tipi boyutu yalnızca rakamlardan oluşmalıdır."))
             if duzenlenmis_yazi_boyutu < GORUNUM_YAZI_BOYUTU_EN_AZ or duzenlenmis_yazi_boyutu > GORUNUM_YAZI_BOYUTU_EN_COK:
-                raise MailHatasi(f"Yazı tipi boyutu {GORUNUM_YAZI_BOYUTU_EN_AZ} ile {GORUNUM_YAZI_BOYUTU_EN_COK} arasında olmalıdır.")
+                raise MailHatasi(_('Yazı tipi boyutu {0} ile {1} arasında olmalıdır.').format(GORUNUM_YAZI_BOYUTU_EN_AZ, GORUNUM_YAZI_BOYUTU_EN_COK))
             yeni_ayarlar[GORUNUM_YAZI_BOYUTU_ALANI] = duzenlenmis_yazi_boyutu
 
         if yazi_stili is not None:
             duzenlenmis_yazi_stili = str(yazi_stili or "").strip()
             if duzenlenmis_yazi_stili not in GORUNUM_YAZI_STILI_SECENEKLERI:
-                raise MailHatasi("Geçersiz yazı stili seçildi.")
+                raise MailHatasi(_("Geçersiz yazı stili seçildi."))
             yeni_ayarlar[GORUNUM_YAZI_STILI_ALANI] = duzenlenmis_yazi_stili
 
         if metin_rengi is not None:
             duzenlenmis_metin_rengi = str(metin_rengi or "").strip()
             if duzenlenmis_metin_rengi not in GORUNUM_METIN_RENKLERI:
-                raise MailHatasi("Geçersiz metin rengi seçildi.")
+                raise MailHatasi(_("Geçersiz metin rengi seçildi."))
             yeni_ayarlar[GORUNUM_METIN_RENGI_ALANI] = duzenlenmis_metin_rengi
 
         if arka_plan_rengi is not None:
             duzenlenmis_arka_plan_rengi = str(arka_plan_rengi or "").strip()
             if duzenlenmis_arka_plan_rengi not in GORUNUM_ARKA_PLAN_RENKLERI:
-                raise MailHatasi("Geçersiz arka plan rengi seçildi.")
+                raise MailHatasi(_("Geçersiz arka plan rengi seçildi."))
             yeni_ayarlar[GORUNUM_ARKA_PLAN_RENGI_ALANI] = duzenlenmis_arka_plan_rengi
 
         if sistem_renkleri is not None:

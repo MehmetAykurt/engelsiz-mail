@@ -1,6 +1,15 @@
 # -*- coding: utf-8 -*-
 """Geliştiricinin diğer NVDA eklentilerini tanıtan ve indiren pencere."""
 
+# NVDA eklenti çevirilerini bu modül için etkinleştir.
+try:
+    import addonHandler
+    addonHandler.initTranslation()
+except (ImportError, AttributeError):
+    # NVDA dışındaki otomatik testlerde Türkçe kaynak metni aynen kullan.
+    _ = lambda metin: metin
+
+
 import hashlib
 import json
 import os
@@ -45,11 +54,11 @@ class DigerEklenti:
 DIGER_EKLENTILER = (
     DigerEklenti(
         anahtar="engelsiz_nota",
-        ad="Engelsiz Nota",
+        ad=_("Engelsiz Nota"),
         aciklama=(
-            "Engelsiz Nota e-katalog sisteminde eser aramanızı, eser "
+            _("Engelsiz Nota e-katalog sisteminde eser aramanızı, eser "
             "ayrıntılarını incelemenizi ve favorilerinizi yönetmenizi sağlayan "
-            "erişilebilir müzik kütüphanesi asistanıdır."
+            "erişilebilir müzik kütüphanesi asistanıdır.")
         ),
         json_url=(
             "https://raw.githubusercontent.com/MehmetAykurt/"
@@ -58,11 +67,11 @@ DIGER_EKLENTILER = (
     ),
     DigerEklenti(
         anahtar="getem",
-        ad="GETEM E-Kütüphane",
+        ad=_("GETEM E-Kütüphane"),
         aciklama=(
-            "GETEM e-katalog sisteminde kitap aramanızı, kitap ayrıntılarını "
+            _("GETEM e-katalog sisteminde kitap aramanızı, kitap ayrıntılarını "
             "incelemenizi ve kişisel favori okuma listenizi yönetmenizi "
-            "sağlayan erişilebilir kütüphane eklentisidir."
+            "sağlayan erişilebilir kütüphane eklentisidir.")
         ),
         json_url=(
             "https://raw.githubusercontent.com/MehmetAykurt/"
@@ -71,11 +80,11 @@ DIGER_EKLENTILER = (
     ),
     DigerEklenti(
         anahtar="kurum_rehberi",
-        ad="Kurum Rehberi",
+        ad=_("Kurum Rehberi"),
         aciklama=(
-            "Kurum ve personel iletişim bilgilerini kaydetme, arama, düzenleme, "
+            _("Kurum ve personel iletişim bilgilerini kaydetme, arama, düzenleme, "
             "yedekleme, içe ve dışa aktarma özellikleri sunan erişilebilir ve "
-            "özelleştirilebilir rehber eklentisidir."
+            "özelleştirilebilir rehber eklentisidir.")
         ),
         json_url=(
             "https://raw.githubusercontent.com/MehmetAykurt/"
@@ -84,15 +93,32 @@ DIGER_EKLENTILER = (
     ),
     DigerEklenti(
         anahtar="suno",
-        ad="Suno AI Prompt Oluşturucu",
+        ad=_("Suno AI Prompt Oluşturucu"),
         aciklama=(
-            "Müzik türü, makam, tempo, duygu, enstrüman, vokal ve prodüksiyon "
+            _("Müzik türü, makam, tempo, duygu, enstrüman, vokal ve prodüksiyon "
             "seçenekleriyle Suno AI için erişilebilir biçimde İngilizce müzik "
-            "promptları oluşturmanızı sağlar."
+            "promptları oluşturmanızı sağlar.")
         ),
         json_url=(
             "https://raw.githubusercontent.com/MehmetAykurt/"
             "suno/main/update.json"
+        ),
+    ),
+    DigerEklenti(
+        anahtar="dosya_arsivim",
+        ad=_("Dosya Arşivim"),
+        aciklama=(
+            _("Sınırsız alan, sınırsız dosya...\n"
+            "Dijital çevrim içi dosya depolama arşivi olan İnternet Archive "
+            "sistemiyle entegre çalışan bu eklenti, NVDA kullanıcılarının tüm "
+            "dosyalarını düzenli biçimde saklamasını, dilediğinde indirmesini veya "
+            "paylaşım bağlantısı oluşturmasını sağlar. Sık kullanılan tüm işlemleri "
+            "klavye kısayollarıyla erişilebilir kılarak arşiv yönetimini kolaylaştırır.\n"
+            "(NVDA+Shift+A)")
+        ),
+        json_url=(
+            "https://raw.githubusercontent.com/MehmetAykurt/"
+            "dosya-arsivim/main/update.json"
         ),
     ),
 )
@@ -106,10 +132,10 @@ def _https_adresini_dogrula(url, izinli_sunucular):
     try:
         parcalar = urllib.parse.urlsplit(str(url or ""))
     except (TypeError, ValueError) as hata:
-        raise DigerEklentiHatasi("İndirme adresi geçersiz.") from hata
+        raise DigerEklentiHatasi(_("İndirme adresi geçersiz.")) from hata
     sunucu = (parcalar.hostname or "").lower()
     if parcalar.scheme.lower() != "https" or sunucu not in izinli_sunucular:
-        raise DigerEklentiHatasi("Güvenli bir indirme adresi alınamadı.")
+        raise DigerEklentiHatasi(_("Güvenli bir indirme adresi alınamadı."))
     return str(url)
 
 
@@ -128,7 +154,7 @@ def _indirilenler_klasorunu_al():
     varsayilan = os.path.join(os.path.expanduser("~"), "Downloads")
     if os.path.isdir(varsayilan):
         return varsayilan
-    raise DigerEklentiHatasi("İndirilenler klasörü bulunamadı.")
+    raise DigerEklentiHatasi(_("İndirilenler klasörü bulunamadı."))
 
 
 def _json_katalogunu_al(json_url):
@@ -145,16 +171,16 @@ def _json_katalogunu_al(json_url):
         raise
     except Exception as hata:
         raise DigerEklentiHatasi(
-            "Eklenti bilgileri internetten alınamadı."
+            _("Eklenti bilgileri internetten alınamadı.")
         ) from hata
     if len(veri) > AZAMI_JSON_BOYUTU:
-        raise DigerEklentiHatasi("Eklenti bilgi dosyası beklenenden büyük.")
+        raise DigerEklentiHatasi(_("Eklenti bilgi dosyası beklenenden büyük."))
     try:
         katalog = json.loads(veri.decode("utf-8-sig"))
     except (UnicodeError, json.JSONDecodeError) as hata:
-        raise DigerEklentiHatasi("Eklenti bilgi dosyası okunamadı.") from hata
+        raise DigerEklentiHatasi(_("Eklenti bilgi dosyası okunamadı.")) from hata
     if not isinstance(katalog, dict):
-        raise DigerEklentiHatasi("Eklenti bilgi dosyasının biçimi geçersiz.")
+        raise DigerEklentiHatasi(_("Eklenti bilgi dosyasının biçimi geçersiz."))
     return katalog
 
 
@@ -164,16 +190,16 @@ def _dosya_adini_al(indirme_url):
             urllib.parse.unquote(urllib.parse.urlsplit(indirme_url).path)
         )
     except (TypeError, ValueError) as hata:
-        raise DigerEklentiHatasi("İndirilecek dosyanın adı alınamadı.") from hata
+        raise DigerEklentiHatasi(_("İndirilecek dosyanın adı alınamadı.")) from hata
     if not dosya_adi or not dosya_adi.lower().endswith(".nvda-addon"):
-        raise DigerEklentiHatasi("Bağlantı bir NVDA eklenti dosyasına ait değil.")
+        raise DigerEklentiHatasi(_("Bağlantı bir NVDA eklenti dosyasına ait değil."))
     return dosya_adi
 
 
 def _sha256_degerini_dogrula(deger):
     deger = str(deger or "").strip().lower()
     if len(deger) != 64 or any(karakter not in "0123456789abcdef" for karakter in deger):
-        raise DigerEklentiHatasi("Eklentinin doğrulama bilgisi geçersiz.")
+        raise DigerEklentiHatasi(_("Eklentinin doğrulama bilgisi geçersiz."))
     return deger
 
 
@@ -203,7 +229,7 @@ def _eklentiyi_indir(eklenti):
             except (TypeError, ValueError):
                 bildirilen_boyut = 0
             if bildirilen_boyut > AZAMI_EKLENTI_BOYUTU:
-                raise DigerEklentiHatasi("Eklenti dosyası beklenenden büyük.")
+                raise DigerEklentiHatasi(_("Eklenti dosyası beklenenden büyük."))
 
             ozet = hashlib.sha256()
             toplam = 0
@@ -222,15 +248,15 @@ def _eklentiyi_indir(eklenti):
                     toplam += len(parca)
                     if toplam > AZAMI_EKLENTI_BOYUTU:
                         raise DigerEklentiHatasi(
-                            "Eklenti dosyası beklenenden büyük."
+                            _("Eklenti dosyası beklenenden büyük.")
                         )
                     gecici_dosya.write(parca)
                     ozet.update(parca)
         if toplam <= 0:
-            raise DigerEklentiHatasi("İndirilen eklenti dosyası boş.")
+            raise DigerEklentiHatasi(_("İndirilen eklenti dosyası boş."))
         if ozet.hexdigest().lower() != beklenen_sha256:
             raise DigerEklentiHatasi(
-                "İndirilen dosyanın güvenlik doğrulaması başarısız oldu."
+                _("İndirilen dosyanın güvenlik doğrulaması başarısız oldu.")
             )
         os.replace(gecici_yol, hedef_yol)
         gecici_yol = None
@@ -238,7 +264,7 @@ def _eklentiyi_indir(eklenti):
     except DigerEklentiHatasi:
         raise
     except Exception as hata:
-        raise DigerEklentiHatasi("Eklenti indirilemedi.") from hata
+        raise DigerEklentiHatasi(_("Eklenti indirilemedi.")) from hata
     finally:
         if gecici_yol and os.path.exists(gecici_yol):
             try:
@@ -260,7 +286,7 @@ def _indirilen_dosyayi_goster(dosya_yolu):
         os.startfile(os.path.dirname(dosya_yolu))
     except Exception as hata:
         hata_kaydet("İndirilenler klasörü açılamadı.", hata)
-        ui.message("İndirilenler klasörü açılamadı.")
+        ui.message(_("İndirilenler klasörü açılamadı."))
 
 
 def _indirme_threadi(ebeveyn, eklenti):
@@ -272,13 +298,13 @@ def _indirme_threadi(ebeveyn, eklenti):
         sonuc = {"basarili": False, "mesaj": str(hata)}
     except Exception as hata:
         hata_kaydet(f"{eklenti.ad} indirilirken beklenmeyen hata.", hata)
-        sonuc = {"basarili": False, "mesaj": "Eklenti indirilemedi."}
+        sonuc = {"basarili": False, "mesaj": _("Eklenti indirilemedi.")}
     guvenli_call_after(ebeveyn, _indirme_bitti, sonuc)
 
 
 def _indirme_bitti(sonuc):
     if not sonuc.get("basarili"):
-        ui.message(sonuc.get("mesaj") or "Eklenti indirilemedi.")
+        ui.message(sonuc.get("mesaj") or _("Eklenti indirilemedi."))
         return
     _indirilen_dosyayi_goster(sonuc["dosya_yolu"])
 
@@ -302,7 +328,7 @@ class DigerEklentiPenceresi(wx.Dialog):
         ana_duzen.Add(baslik, 0, wx.ALL, 10)
 
         ana_duzen.Add(
-            wx.StaticText(self, label="Açıklama:"),
+            wx.StaticText(self, label=_("Açıklama:")),
             0,
             wx.LEFT | wx.RIGHT | wx.TOP,
             10,
@@ -312,12 +338,12 @@ class DigerEklentiPenceresi(wx.Dialog):
             value=eklenti.aciklama,
             style=wx.TE_MULTILINE | wx.TE_READONLY | wx.TE_WORDWRAP,
         )
-        self.txt_aciklama.SetName("Açıklama")
+        self.txt_aciklama.SetName(_("Açıklama"))
         ana_duzen.Add(self.txt_aciklama, 1, wx.ALL | wx.EXPAND, 10)
 
         dugme_duzeni = wx.BoxSizer(wx.HORIZONTAL)
-        self.indir_btn = wx.Button(self, label="&İndir")
-        self.kapat_btn = wx.Button(self, wx.ID_CANCEL, label="&Kapat")
+        self.indir_btn = wx.Button(self, label=_("&İndir"))
+        self.kapat_btn = wx.Button(self, wx.ID_CANCEL, label=_("&Kapat"))
         self.indir_btn.Bind(wx.EVT_BUTTON, self.indir_basildi)
         dugme_duzeni.Add(self.indir_btn, 0, wx.ALL, 5)
         dugme_duzeni.Add(self.kapat_btn, 0, wx.ALL, 5)
@@ -332,7 +358,7 @@ class DigerEklentiPenceresi(wx.Dialog):
         ebeveyn = self.GetParent()
         eklenti = self.eklenti
         mesaj_soyle_ve_sonra_calistir(
-            f"{eklenti.ad} indiriliyor.",
+            _('{0} indiriliyor.').format(eklenti.ad),
             lambda: _indirmeyi_arka_planda_baslat(ebeveyn, eklenti),
             ad=f"{eklenti.ad} indirmesini başlat",
         )

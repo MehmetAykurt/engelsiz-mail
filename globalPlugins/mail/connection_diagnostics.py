@@ -1,11 +1,20 @@
 # -*- coding: utf-8 -*-
 """Engelsiz Mail hesap, ağ, IMAP ve SMTP bağlantı tanısı."""
 
+# NVDA eklenti çevirilerini bu modül için etkinleştir.
+try:
+    import addonHandler
+    addonHandler.initTranslation()
+except (ImportError, AttributeError):
+    # NVDA dışındaki otomatik testlerde Türkçe kaynak metni aynen kullan.
+    _ = lambda metin: metin
+
+
 import socket
 
 from .config import ayarlari_denetim_icin_yukle
 from .errors import MailHatasi
-from .folders import SISTEM_KLASORLERI, VARSAYILAN_KLASOR_HARITASI, imap_klasor_haritasi_olustur
+from .folders import SISTEM_KLASORLERI, VARSAYILAN_KLASOR_HARITASI, imap_klasor_haritasi_olustur, klasor_gorunen_adi
 from .imap_client import GMAIL_IMAP_SUNUCU, GMAIL_IMAP_PORT, ImapBaglantisi
 from .logger import hata_kaydet
 from .smtp_client import (
@@ -37,11 +46,11 @@ def baglanti_denetimini_yap(eposta=None, sifre=None):
         hesap = ayarlari_denetim_icin_yukle(eposta, sifre)
         if hesap["kaynak"] == "kayitli":
             if hesap["ayar_dosyasi_var"]:
-                ekle("Başarılı", "Ayar dosyası", "Engelsiz Mail ayar dosyası NVDA yapılandırma klasöründe bulundu.")
+                ekle(_("Başarılı"), _("Ayar dosyası"), _("Engelsiz Mail ayar dosyası NVDA yapılandırma klasöründe bulundu."))
             else:
-                ekle("Başarısız", "Ayar dosyası", "Kayıtlı hesap bilgisi bulunamadı. Hesap menüsünden Bağlan seçeneğiyle hesap bilgilerinizi kaydedin.")
+                ekle(_("Başarısız"), _("Ayar dosyası"), _("Kayıtlı hesap bilgisi bulunamadı. Hesap menüsünden Bağlan seçeneğiyle hesap bilgilerinizi kaydedin."))
         else:
-            ekle("Başarılı", "Geçici hesap bilgisi", "Bağlan penceresine yazılan e-posta adresi ve uygulama şifresi denetleniyor.")
+            ekle(_("Başarılı"), _("Geçici hesap bilgisi"), _("Bağlan penceresine yazılan e-posta adresi ve uygulama şifresi denetleniyor."))
     except Exception as e:
         hata_kaydet("Kayıtlı hesap bilgileri denetim için okunamadı.", e)
         return False, "Bağlantı denetimi tamamlandı. Sonuç: Sorun bulundu.\n\nAyrıntılar:\nBaşarısız: Kayıtlı hesap bilgisi\n" + baglanti_hatasi_kullanici_mesaji(e)
@@ -50,23 +59,23 @@ def baglanti_denetimini_yap(eposta=None, sifre=None):
     sifre = hesap.get("sifre", "")
 
     if eposta_adresi_gecerli_mi(eposta):
-        ekle("Başarılı", "E-posta adresi", "Kayıtlı e-posta adresinin biçimi geçerli görünüyor.")
+        ekle(_("Başarılı"), _("E-posta adresi"), _("Kayıtlı e-posta adresinin biçimi geçerli görünüyor."))
     else:
-        ekle("Başarısız", "E-posta adresi", "E-posta adresi eksik veya geçersiz görünüyor. Örnek biçim: adiniz@gmail.com")
+        ekle(_("Başarısız"), _("E-posta adresi"), _("E-posta adresi eksik veya geçersiz görünüyor. Örnek biçim: adiniz@gmail.com"))
 
     if sifre:
         if len(sifre) < 12:
-            ekle("Uyarı", "Uygulama şifresi", "Uygulama şifresi kısa görünüyor. Gmail uygulama şifreleri genellikle 16 hanelidir.")
+            ekle(_("Uyarı"), _("Uygulama şifresi"), _("Uygulama şifresi kısa görünüyor. Google uygulama şifreleri 16 karakterden oluşur."))
         else:
-            ekle("Başarılı", "Uygulama şifresi", "Uygulama şifresi okunabildi ve denetim için hazırlandı.")
+            ekle(_("Başarılı"), _("Uygulama şifresi"), _("Uygulama şifresi okunabildi ve denetim için hazırlandı."))
     else:
-        ekle("Başarısız", "Uygulama şifresi", "Kayıtlı uygulama şifresi okunamadı veya boş. Hesap bilgilerini yeniden kaydetmeniz gerekebilir.")
+        ekle(_("Başarısız"), _("Uygulama şifresi"), _("Kayıtlı uygulama şifresi okunamadı veya boş. Hesap bilgilerini yeniden kaydetmeniz gerekebilir."))
 
     for not_satiri in hesap.get("notlar", []):
         if "düz metin" in not_satiri.lower():
-            ekle("Uyarı", "Şifre saklama biçimi", not_satiri)
+            ekle(_("Uyarı"), _("Şifre saklama biçimi"), not_satiri)
         else:
-            ekle("Başarılı", "Şifre çözme", not_satiri)
+            ekle(_("Başarılı"), _("Şifre çözme"), not_satiri)
 
     # E-posta veya şifre yoksa ağ denetimine geçmek yanıltıcı sonuç üretebilir.
     if not eposta or not sifre:
@@ -77,23 +86,23 @@ def baglanti_denetimini_yap(eposta=None, sifre=None):
     try:
         with socket.create_connection((GMAIL_IMAP_SUNUCU, GMAIL_IMAP_PORT), timeout=BAGLANTI_DENETIM_ZAMAN_ASIMI):
             pass
-        ekle("Başarılı", "Gmail IMAP 993 TCP erişimi", f"{GMAIL_IMAP_SUNUCU}:{GMAIL_IMAP_PORT} adresine TCP bağlantısı başlatılabildi.")
+        ekle(_("Başarılı"), _("Gmail IMAP 993 TCP erişimi"), _('{0}:{1} adresine TCP bağlantısı başlatılabildi.').format(GMAIL_IMAP_SUNUCU, GMAIL_IMAP_PORT))
     except Exception as e:
-        ekle("Başarısız", "Gmail IMAP 993 TCP erişimi", baglanti_hatasi_kullanici_mesaji(e))
+        ekle(_("Başarısız"), _("Gmail IMAP 993 TCP erişimi"), baglanti_hatasi_kullanici_mesaji(e))
 
     try:
         with socket.create_connection((GMAIL_SMTP_SUNUCU, GMAIL_SMTP_PORT), timeout=BAGLANTI_DENETIM_ZAMAN_ASIMI):
             pass
-        ekle("Başarılı", "Gmail SMTP 465 TCP erişimi", f"{GMAIL_SMTP_SUNUCU}:{GMAIL_SMTP_PORT} adresine TCP bağlantısı başlatılabildi.")
+        ekle(_("Başarılı"), _("Gmail SMTP 465 TCP erişimi"), _('{0}:{1} adresine TCP bağlantısı başlatılabildi.').format(GMAIL_SMTP_SUNUCU, GMAIL_SMTP_PORT))
     except Exception as e:
-        ekle("Uyarı", "Gmail SMTP 465 TCP erişimi", baglanti_hatasi_kullanici_mesaji(e))
+        ekle(_("Uyarı"), _("Gmail SMTP 465 TCP erişimi"), baglanti_hatasi_kullanici_mesaji(e))
 
     try:
         with socket.create_connection((GMAIL_SMTP_SUNUCU, GMAIL_SMTP_STARTTLS_PORT), timeout=BAGLANTI_DENETIM_ZAMAN_ASIMI):
             pass
-        ekle("Başarılı", "Gmail SMTP 587 TCP erişimi", f"{GMAIL_SMTP_SUNUCU}:{GMAIL_SMTP_STARTTLS_PORT} adresine TCP bağlantısı başlatılabildi.")
+        ekle(_("Başarılı"), _("Gmail SMTP 587 TCP erişimi"), _('{0}:{1} adresine TCP bağlantısı başlatılabildi.').format(GMAIL_SMTP_SUNUCU, GMAIL_SMTP_STARTTLS_PORT))
     except Exception as e:
-        ekle("Uyarı", "Gmail SMTP 587 TCP erişimi", baglanti_hatasi_kullanici_mesaji(e))
+        ekle(_("Uyarı"), _("Gmail SMTP 587 TCP erişimi"), baglanti_hatasi_kullanici_mesaji(e))
 
     klasor_haritasi = {}
     try:
@@ -101,30 +110,30 @@ def baglanti_denetimini_yap(eposta=None, sifre=None):
             {"eposta": eposta, "sifre": sifre},
             timeout=BAGLANTI_DENETIM_ZAMAN_ASIMI,
         ) as imap:
-            ekle("Başarılı", "IMAP kullanıcı doğrulaması", "Gmail IMAP sunucusu e-posta adresini ve uygulama şifresini kabul etti.")
+            ekle(_("Başarılı"), _("IMAP kullanıcı doğrulaması"), _("Gmail IMAP sunucusu e-posta adresini ve uygulama şifresini kabul etti."))
 
             tip, veri = imap.list()
             if tip != "OK":
-                raise MailHatasi("Gmail klasör listesi alınamadı.")
+                raise MailHatasi(_("Gmail klasör listesi alınamadı."))
             klasor_haritasi, ozel_klasorler = imap_klasor_haritasi_olustur(veri)
-            ekle("Başarılı", "Gmail klasör listesi", f"Klasör listesi okundu. Tanınan özel arşiv klasörü sayısı: {len(ozel_klasorler)}. Sistem klasörleri aşağıda tek tek seçilerek denetlenecek.")
+            ekle(_("Başarılı"), _("Gmail klasör listesi"), _('Klasör listesi okundu. Tanınan özel arşiv klasörü sayısı: {0}. Sistem klasörleri aşağıda tek tek seçilerek denetlenecek.').format(len(ozel_klasorler)))
 
             # Sistem klasörlerine erişim denetimi.
             for ad in SISTEM_KLASORLERI:
                 klasor = klasor_haritasi.get(ad, VARSAYILAN_KLASOR_HARITASI.get(ad, "INBOX"))
                 tip, _ = imap.select(klasor, readonly=True)
                 if tip != "OK":
-                    ekle("Uyarı", f"{ad} klasörü", "Klasör seçilemedi. Gmail hesabınızda bu klasör farklı adla görünüyor olabilir.")
+                    ekle(_("Uyarı"), _('{0} klasörü').format(klasor_gorunen_adi(ad)), _("Klasör seçilemedi. Gmail hesabınızda bu klasör farklı adla görünüyor olabilir."))
                 else:
-                    ekle("Başarılı", f"{ad} klasörü", "Klasör seçilebildi.")
+                    ekle(_("Başarılı"), _('{0} klasörü').format(klasor_gorunen_adi(ad)), _("Klasör seçilebildi."))
     except Exception as e:
-        ekle("Başarısız", "IMAP denetimi", baglanti_hatasi_kullanici_mesaji(e))
+        ekle(_("Başarısız"), _("IMAP denetimi"), baglanti_hatasi_kullanici_mesaji(e))
 
     try:
         smtp_yontemi = smtp_baglanti_denetle(eposta, sifre)
-        ekle("Başarılı", "SMTP kullanıcı doğrulaması", f"Gmail SMTP sunucusu e-posta adresini ve uygulama şifresini kabul etti. Kullanılan yöntem: {smtp_yontemi}. Denetim sırasında e-posta gönderilmedi.")
+        ekle(_("Başarılı"), _("SMTP kullanıcı doğrulaması"), _('Gmail SMTP sunucusu e-posta adresini ve uygulama şifresini kabul etti. Kullanılan yöntem: {0}. Denetim sırasında e-posta gönderilmedi.').format(smtp_yontemi))
     except Exception as e:
-        ekle("Başarısız", "SMTP denetimi", baglanti_hatasi_kullanici_mesaji(e))
+        ekle(_("Başarısız"), _("SMTP denetimi"), baglanti_hatasi_kullanici_mesaji(e))
 
     if hata_sayisi:
         sonuc = "Sorun bulundu."
@@ -138,7 +147,7 @@ def baglanti_denetimini_yap(eposta=None, sifre=None):
 
     rapor = [f"Bağlantı denetimi tamamlandı. Sonuç: {sonuc}"]
     if hata_sayisi:
-        rapor.append("Sorun varsa önce e-posta adresinizi, uygulama şifrenizi, internet bağlantınızı, güvenlik duvarınızı ve kurum ağı kısıtlamalarını kontrol edin.")
+        rapor.append("Sorun varsa önce e-posta adresinizi, uygulama şifrenizi, internet bağlantınızı, güvenlik duvarınızı ve kurum ağı kısıtlamalarını denetleyin.")
     rapor.extend(["", "Ayrıntılar:"])
     rapor.extend(satirlar)
     return basarili, "\n\n".join(rapor)

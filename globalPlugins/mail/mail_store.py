@@ -15,13 +15,61 @@ def _klasor_sayaclarini_guncelle(db, klasor_id):
     db.execute(
         """UPDATE folders SET
                message_count = (
-                   SELECT COUNT(*) FROM folder_messages
-                   WHERE folder_id = ? AND is_present = 1 AND is_deleted = 0
+                   SELECT COUNT(*) FROM folder_messages fm
+                   JOIN messages m ON m.id = fm.message_id
+                   JOIN folders f ON f.id = fm.folder_id
+                   WHERE fm.folder_id = ? AND fm.is_present = 1 AND fm.is_deleted = 0
+                     AND NOT EXISTS (
+                         SELECT 1 FROM pending_deletions pd
+                         WHERE pd.account_id = m.account_id
+                           AND (
+                               (pd.gmail_message_id IS NOT NULL
+                                AND pd.gmail_message_id = m.gmail_message_id)
+                               OR (
+                                   pd.source_folder = f.imap_name
+                                   AND pd.source_uid = fm.uid
+                                   AND (
+                                       pd.source_uidvalidity IS NULL
+                                       OR pd.source_uidvalidity = fm.uidvalidity
+                                   )
+                               )
+                           )
+                     )
+                     AND NOT EXISTS (
+                         SELECT 1 FROM pending_bulk_operations pbo
+                         WHERE pbo.account_id = m.account_id
+                           AND pbo.source_folder = f.imap_name
+                           AND pbo.snapshot_complete = 0
+                     )
                ),
                unseen_count = (
-                   SELECT COUNT(*) FROM folder_messages
-                   WHERE folder_id = ? AND is_present = 1
-                     AND is_deleted = 0 AND is_seen = 0
+                   SELECT COUNT(*) FROM folder_messages fm
+                   JOIN messages m ON m.id = fm.message_id
+                   JOIN folders f ON f.id = fm.folder_id
+                   WHERE fm.folder_id = ? AND fm.is_present = 1
+                     AND fm.is_deleted = 0 AND fm.is_seen = 0
+                     AND NOT EXISTS (
+                         SELECT 1 FROM pending_deletions pd
+                         WHERE pd.account_id = m.account_id
+                           AND (
+                               (pd.gmail_message_id IS NOT NULL
+                                AND pd.gmail_message_id = m.gmail_message_id)
+                               OR (
+                                   pd.source_folder = f.imap_name
+                                   AND pd.source_uid = fm.uid
+                                   AND (
+                                       pd.source_uidvalidity IS NULL
+                                       OR pd.source_uidvalidity = fm.uidvalidity
+                                   )
+                               )
+                           )
+                     )
+                     AND NOT EXISTS (
+                         SELECT 1 FROM pending_bulk_operations pbo
+                         WHERE pbo.account_id = m.account_id
+                           AND pbo.source_folder = f.imap_name
+                           AND pbo.snapshot_complete = 0
+                     )
                )
            WHERE id = ?""",
         (int(klasor_id), int(klasor_id), int(klasor_id)),
@@ -310,6 +358,12 @@ def klasor_basliklarini_listele(eposta, imap_klasoru, sinir):
                           AND pd.source_uidvalidity = fm.uidvalidity)
                   )
               )
+              AND NOT EXISTS (
+                  SELECT 1 FROM pending_bulk_operations pbo
+                  WHERE pbo.account_id = a.id
+                    AND pbo.source_folder = f.imap_name
+                    AND pbo.snapshot_complete = 0
+              )
             ORDER BY fm.uid DESC
             LIMIT ?
             """,
@@ -332,6 +386,25 @@ def klasor_konusma_basliklarini_listele(eposta, imap_klasoru, konusma_siniri):
                     fm.uid, fm.is_seen, m.sender, m.recipients_to, m.subject,
                     m.preview, m.has_attachments, m.gmail_thread_id,
                     m.gmail_message_id, m.internal_date, m.date_header,
+                    CASE
+                        WHEN COALESCE(m.gmail_thread_id, '') <> '' THEN (
+                            SELECT COUNT(*)
+                            FROM messages AS tum_m
+                            WHERE tum_m.account_id = m.account_id
+                              AND tum_m.gmail_thread_id = m.gmail_thread_id
+                              AND EXISTS (
+                                  SELECT 1
+                                  FROM folder_messages AS tum_fm
+                                  JOIN folders AS tum_f
+                                    ON tum_f.id = tum_fm.folder_id
+                                  WHERE tum_fm.message_id = tum_m.id
+                                    AND tum_fm.uidvalidity = tum_f.uidvalidity
+                                    AND tum_fm.is_present = 1
+                                    AND tum_fm.is_deleted = 0
+                              )
+                        )
+                        ELSE 1
+                    END AS toplam_ileti_sayisi,
                     CASE
                         WHEN COALESCE(m.gmail_thread_id, '') <> ''
                             THEN 'thread:' || m.gmail_thread_id
@@ -356,6 +429,12 @@ def klasor_konusma_basliklarini_listele(eposta, imap_klasoru, konusma_siniri):
                               AND pd.source_uid = fm.uid
                               AND pd.source_uidvalidity = fm.uidvalidity)
                       )
+                  )
+                  AND NOT EXISTS (
+                      SELECT 1 FROM pending_bulk_operations pbo
+                      WHERE pbo.account_id = a.id
+                        AND pbo.source_folder = f.imap_name
+                        AND pbo.snapshot_complete = 0
                   )
             ), son_konusmalar AS (
                 SELECT konusma_anahtari, MAX(siralama) AS son_siralama
@@ -408,6 +487,12 @@ def konusma_mesajlarini_listele(eposta, imap_klasoru, gmail_thread_id):
                       OR (pd.source_folder = f.imap_name AND pd.source_uid = fm.uid
                           AND pd.source_uidvalidity = fm.uidvalidity)
                   )
+              )
+              AND NOT EXISTS (
+                  SELECT 1 FROM pending_bulk_operations pbo
+                  WHERE pbo.account_id = a.id
+                    AND pbo.source_folder = f.imap_name
+                    AND pbo.snapshot_complete = 0
               )
             ORDER BY COALESCE(m.internal_date, 0) DESC, fm.uid DESC
             """,
@@ -516,6 +601,12 @@ def mesaj_govdesini_al(eposta, imap_klasoru, uid):
                           AND pd.source_uidvalidity = fm.uidvalidity)
                   )
               )
+              AND NOT EXISTS (
+                  SELECT 1 FROM pending_bulk_operations pbo
+                  WHERE pbo.account_id = a.id
+                    AND pbo.source_folder = f.imap_name
+                    AND pbo.snapshot_complete = 0
+              )
             """,
             (str(eposta or "").strip(), str(imap_klasoru or "").strip(), int(uid)),
         ).fetchone()
@@ -568,6 +659,12 @@ def govdesi_eksik_uidleri_al(eposta, imap_klasoru, uidler):
                               AND pd.source_uid = fm.uid
                               AND pd.source_uidvalidity = fm.uidvalidity)
                       )
+                  )
+                  AND NOT EXISTS (
+                      SELECT 1 FROM pending_bulk_operations pbo
+                      WHERE pbo.account_id = a.id
+                        AND pbo.source_folder = f.imap_name
+                        AND pbo.snapshot_complete = 0
                   )
                   AND fm.uid IN ({yerler})
                 """,

@@ -2,6 +2,7 @@
 """SQLite FTS5 destekli, güvenli geri dönüşlü e-posta araması."""
 
 import re
+import unicodedata
 
 from .database import veritabani_baglantisi
 from .logger import uyari_kaydet
@@ -58,6 +59,73 @@ def fts5_hazirla():
         return False
 
 
+def arama_metnini_katla(metin):
+    """Türkçe büyük/küçük harf ve aksan farklarını arama için ortaklaştırır."""
+    metin = str(metin or "").translate(str.maketrans({
+        "I": "i", "İ": "i", "ı": "i",
+    }))
+    ayrik = unicodedata.normalize("NFKD", metin.casefold())
+    return "".join(karakter for karakter in ayrik if not unicodedata.combining(karakter))
+
+
+def _sql_metin_aramasi(db, eposta, aranan, arama_turu, sinir):
+    """FTS kullanılamadığında veya eksik eşleştiğinde Türkçe uyumlu SQL araması yapar."""
+    try:
+        db.create_function(
+            "ENGELSIZ_ARAMA_KATLA", 1, arama_metnini_katla, deterministic=True
+        )
+    except TypeError:
+        db.create_function("ENGELSIZ_ARAMA_KATLA", 1, arama_metnini_katla)
+    desen = "%" + arama_metnini_katla(aranan).replace("\\", "\\\\").replace("%", "\\%").replace("_", "\\_") + "%"
+    alan_ifadesi = {
+        "gonderen": "ENGELSIZ_ARAMA_KATLA(m.sender) LIKE ? ESCAPE '\\'",
+        "konu": "ENGELSIZ_ARAMA_KATLA(m.subject) LIKE ? ESCAPE '\\'",
+        "icerik": "ENGELSIZ_ARAMA_KATLA(COALESCE(b.plain_text,'')) LIKE ? ESCAPE '\\'",
+    }[arama_turu]
+    return db.execute(
+        f"""WITH eslesen AS (
+               SELECT m.id, fm.uid, f.imap_name, f.display_name,
+                      m.subject, m.sender, m.recipients_to,
+                      m.internal_date, m.date_header,
+                      substr(COALESCE(b.plain_text,''),1,300) AS excerpt,
+                      ROW_NUMBER() OVER (
+                          PARTITION BY m.id
+                          ORDER BY CASE WHEN f.imap_name='INBOX' THEN 0 ELSE 1 END,
+                                   fm.id
+                      ) AS sira
+               FROM messages m
+               LEFT JOIN message_bodies b ON b.message_id=m.id
+               JOIN folder_messages fm ON fm.message_id=m.id
+                   AND fm.is_present=1 AND fm.is_deleted=0 AND fm.is_draft=0
+               JOIN folders f ON f.id=fm.folder_id
+                   AND fm.uidvalidity=f.uidvalidity
+               JOIN accounts a ON a.id=m.account_id
+               WHERE a.email=? COLLATE NOCASE AND {alan_ifadesi}
+                  AND NOT EXISTS (
+                      SELECT 1 FROM pending_deletions pd
+                     WHERE pd.account_id=a.id AND (
+                         (pd.gmail_message_id IS NOT NULL
+                          AND pd.gmail_message_id=m.gmail_message_id)
+                         OR (pd.source_folder=f.imap_name
+                             AND pd.source_uid=fm.uid
+                             AND pd.source_uidvalidity=fm.uidvalidity)
+                      )
+                  )
+                  AND NOT EXISTS (
+                      SELECT 1 FROM pending_bulk_operations pbo
+                      WHERE pbo.account_id=a.id
+                        AND pbo.source_folder=f.imap_name
+                        AND pbo.snapshot_complete=0
+                  )
+           )
+           SELECT id, uid, imap_name, display_name, subject, sender,
+                  recipients_to, internal_date, date_header, excerpt
+           FROM eslesen WHERE sira=1
+           ORDER BY internal_date DESC, id DESC LIMIT ?""",
+        (str(eposta or "").strip(), desen, sinir),
+    ).fetchall()
+
+
 METIN_ARAMA_TURLERI = ("gonderen", "konu", "icerik")
 OKUNMA_DURUMU_ARAMA_TURLERI = {"okunmamis": 0, "okunmus": 1}
 ARAMA_TURLERI = METIN_ARAMA_TURLERI + tuple(OKUNMA_DURUMU_ARAMA_TURLERI)
@@ -109,16 +177,22 @@ def epostalarda_ara(eposta, aranan, arama_turu="gonderen", sinir=100, fts_kullan
                            AND fm.uidvalidity=f.uidvalidity
                        JOIN accounts a ON a.id=m.account_id
                        WHERE a.email=? COLLATE NOCASE AND fm.is_seen=?
-                         AND NOT EXISTS (
-                             SELECT 1 FROM pending_deletions pd
+                          AND NOT EXISTS (
+                              SELECT 1 FROM pending_deletions pd
                              WHERE pd.account_id=a.id AND (
                                  (pd.gmail_message_id IS NOT NULL
                                   AND pd.gmail_message_id=m.gmail_message_id)
                                  OR (pd.source_folder=f.imap_name
                                      AND pd.source_uid=fm.uid
                                      AND pd.source_uidvalidity=fm.uidvalidity)
-                             )
-                         )
+                              )
+                          )
+                          AND NOT EXISTS (
+                              SELECT 1 FROM pending_bulk_operations pbo
+                              WHERE pbo.account_id=a.id
+                                AND pbo.source_folder=f.imap_name
+                                AND pbo.snapshot_complete=0
+                          )
                    )
                    SELECT id, uid, imap_name, display_name, subject, sender,
                           recipients_to, internal_date, date_header, excerpt
@@ -145,16 +219,22 @@ def epostalarda_ara(eposta, aranan, arama_turu="gonderen", sinir=100, fts_kullan
                            AND fm.uidvalidity=f.uidvalidity
                        JOIN accounts a ON a.id=m.account_id
                        WHERE a.email=? COLLATE NOCASE AND message_search MATCH ?
-                         AND NOT EXISTS (
-                             SELECT 1 FROM pending_deletions pd
+                          AND NOT EXISTS (
+                              SELECT 1 FROM pending_deletions pd
                              WHERE pd.account_id=a.id AND (
                                  (pd.gmail_message_id IS NOT NULL
                                   AND pd.gmail_message_id=m.gmail_message_id)
                                  OR (pd.source_folder=f.imap_name
                                      AND pd.source_uid=fm.uid
                                      AND pd.source_uidvalidity=fm.uidvalidity)
-                             )
-                         )
+                              )
+                          )
+                          AND NOT EXISTS (
+                              SELECT 1 FROM pending_bulk_operations pbo
+                              WHERE pbo.account_id=a.id
+                                AND pbo.source_folder=f.imap_name
+                                AND pbo.snapshot_complete=0
+                          )
                    )
                    SELECT id, uid, imap_name, display_name, subject, sender,
                           recipients_to, internal_date, date_header, excerpt
@@ -162,47 +242,20 @@ def epostalarda_ara(eposta, aranan, arama_turu="gonderen", sinir=100, fts_kullan
                    ORDER BY internal_date DESC, id DESC LIMIT ?""",
                 (str(eposta or "").strip(), fts_ifadesi, sinir),
             ).fetchall()
+            # SQLite unicode61 belirteçleyicisi Türkçedeki I/İ/ı/i dönüşümlerini
+            # ve bütün aksanları her durumda eşleştiremez. FTS sonuçlarını güvenli
+            # SQL katlama sonuçlarıyla tamamlayarak eksik eşleşmeleri önle.
+            if len(satirlar) < sinir:
+                ek_satirlar = _sql_metin_aramasi(db, eposta, aranan, arama_turu, sinir)
+                gorulen = {(int(s[0]), int(s[1])) for s in satirlar}
+                satirlar = list(satirlar)
+                for satir in ek_satirlar:
+                    anahtar = (int(satir[0]), int(satir[1]))
+                    if anahtar not in gorulen:
+                        satirlar.append(satir)
+                        gorulen.add(anahtar)
+                satirlar.sort(key=lambda s: (int(s[7] or 0), int(s[0] or 0)), reverse=True)
+                satirlar = satirlar[:sinir]
         else:
-            desen = "%" + aranan.replace("\\", "\\\\").replace("%", "\\%").replace("_", "\\_") + "%"
-            alan_ifadesi = {
-                "gonderen": "m.sender LIKE ? ESCAPE '\\'",
-                "konu": "m.subject LIKE ? ESCAPE '\\'",
-                "icerik": "COALESCE(b.plain_text,'') LIKE ? ESCAPE '\\'",
-            }[arama_turu]
-            satirlar = db.execute(
-                f"""WITH eslesen AS (
-                       SELECT m.id, fm.uid, f.imap_name, f.display_name,
-                              m.subject, m.sender, m.recipients_to,
-                              m.internal_date, m.date_header,
-                              substr(COALESCE(b.plain_text,''),1,300) AS excerpt,
-                              ROW_NUMBER() OVER (
-                                  PARTITION BY m.id
-                                  ORDER BY CASE WHEN f.imap_name='INBOX' THEN 0 ELSE 1 END,
-                                           fm.id
-                              ) AS sira
-                       FROM messages m
-                       LEFT JOIN message_bodies b ON b.message_id=m.id
-                       JOIN folder_messages fm ON fm.message_id=m.id
-                           AND fm.is_present=1 AND fm.is_deleted=0 AND fm.is_draft=0
-                       JOIN folders f ON f.id=fm.folder_id
-                           AND fm.uidvalidity=f.uidvalidity
-                       JOIN accounts a ON a.id=m.account_id
-                       WHERE a.email=? COLLATE NOCASE AND {alan_ifadesi}
-                         AND NOT EXISTS (
-                             SELECT 1 FROM pending_deletions pd
-                             WHERE pd.account_id=a.id AND (
-                                 (pd.gmail_message_id IS NOT NULL
-                                  AND pd.gmail_message_id=m.gmail_message_id)
-                                 OR (pd.source_folder=f.imap_name
-                                     AND pd.source_uid=fm.uid
-                                     AND pd.source_uidvalidity=fm.uidvalidity)
-                             )
-                         )
-                   )
-                   SELECT id, uid, imap_name, display_name, subject, sender,
-                          recipients_to, internal_date, date_header, excerpt
-                   FROM eslesen WHERE sira=1
-                   ORDER BY internal_date DESC, id DESC LIMIT ?""",
-                (str(eposta or "").strip(), desen, sinir),
-            ).fetchall()
+            satirlar = _sql_metin_aramasi(db, eposta, aranan, arama_turu, sinir)
     return [dict(satir) for satir in satirlar]

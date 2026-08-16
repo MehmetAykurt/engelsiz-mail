@@ -98,8 +98,12 @@ def _yetim_onbellegi_temizle(simdi=None):
             """DELETE FROM accounts
                WHERE updated_at < ?
                  AND NOT EXISTS (SELECT 1 FROM folders f WHERE f.account_id = accounts.id)
-                 AND NOT EXISTS (SELECT 1 FROM messages m WHERE m.account_id = accounts.id)
-                 AND NOT EXISTS (SELECT 1 FROM pending_deletions pd WHERE pd.account_id = accounts.id)""",
+                  AND NOT EXISTS (SELECT 1 FROM messages m WHERE m.account_id = accounts.id)
+                  AND NOT EXISTS (SELECT 1 FROM pending_deletions pd WHERE pd.account_id = accounts.id)
+                  AND NOT EXISTS (
+                      SELECT 1 FROM pending_bulk_operations pbo
+                      WHERE pbo.account_id = accounts.id
+                  )""",
             (mesaj_esigi,),
         ).rowcount
         kayitli_yollar = {
@@ -214,7 +218,14 @@ def yerel_veritabanini_sifirla():
         with EK_ONBELLEK_KILIDI:
             if os.path.isfile(VERITABANI_DOSYASI):
                 with veritabani_baglantisi() as db:
-                    bekleyen = int(db.execute("SELECT COUNT(*) FROM pending_deletions").fetchone()[0] or 0)
+                    bekleyen = int(
+                        db.execute(
+                            """SELECT
+                                   (SELECT COUNT(*) FROM pending_deletions)
+                                 + (SELECT COUNT(*) FROM pending_bulk_operations)"""
+                        ).fetchone()[0]
+                        or 0
+                    )
                 if bekleyen:
                     raise RuntimeError(f"{bekleyen} bekleyen silme işlemi bulunduğu için yerel veritabanı sıfırlanmadı.")
             for yol in (VERITABANI_DOSYASI, VERITABANI_DOSYASI + "-wal", VERITABANI_DOSYASI + "-shm"):

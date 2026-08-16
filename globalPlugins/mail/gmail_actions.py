@@ -1,6 +1,14 @@
 # -*- coding: utf-8 -*-
 # Engelsiz Mail - Gmail eylem yardımcıları
 
+# NVDA eklenti çevirilerini bu modül için etkinleştir.
+try:
+    import addonHandler
+    addonHandler.initTranslation()
+except (ImportError, AttributeError):
+    # NVDA dışındaki otomatik testlerde Türkçe kaynak metni aynen kullan.
+    _ = lambda metin: metin
+
 from .folders import VARSAYILAN_KLASOR_HARITASI, imap_klasor_adi_hazirla
 from .imap_client import imap_gmail_etiket_store, imap_uidleri_kaynak_klasorden_cikar
 
@@ -115,7 +123,15 @@ def gmail_etiket_ekle_ve_kaynak_kaldir(
 
 def okunmadi_etiketini_kaldir(metin):
     metin = metin or ""
-    for etiket in ("[Okunmadı] ", "Okunmadı - "):
+    # Yeni görünüm etiketi kullanıcının dilinde olabilir; eski Türkçe önbellekler
+    # de sürüm yükseltmelerinde sorunsuz temizlenmeye devam etmelidir.
+    etiketler = dict.fromkeys((
+        _("[Okunmadı] "),
+        _("Okunmadı - "),
+        "[Okunmadı] ",
+        "Okunmadı - ",
+    ))
+    for etiket in etiketler:
         if metin.startswith(etiket):
             return metin[len(etiket):]
     return metin

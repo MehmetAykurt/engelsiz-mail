@@ -1,3 +1,12 @@
+
+# NVDA eklenti çevirilerini bu modül için etkinleştir.
+try:
+    import addonHandler
+    addonHandler.initTranslation()
+except (ImportError, AttributeError):
+    # NVDA dışındaki otomatik testlerde Türkçe kaynak metni aynen kullan.
+    _ = lambda metin: metin
+
 import email.utils
 import os
 import socket
@@ -10,6 +19,7 @@ from .errors import MailHatasi
 from .logger import uyari_kaydet
 from .message_parser import adres_basligini_duzenle
 from .text_utils import eposta_basligi_tek_satir_yap, guvenli_coz
+from .validators import alici_basligini_cozumle
 from .vendor import smtplib
 
 
@@ -25,30 +35,35 @@ def baglanti_hatasi_kullanici_mesaji(hata, varsayilan=None):
     if isinstance(hata, MailHatasi):
         return str(hata)
     if isinstance(hata, smtplib.SMTPAuthenticationError):
-        return "SMTP kullanıcı doğrulaması başarısız oldu. E-posta adresi veya uygulama şifresi hatalı olabilir."
+        return _("SMTP kullanıcı doğrulaması başarısız oldu. E-posta adresi veya uygulama şifresi hatalı olabilir.")
     if isinstance(hata, smtplib.SMTPRecipientsRefused):
-        return "SMTP sunucusu alıcı adreslerini kabul etmedi. Alıcı adreslerini kontrol edin."
+        return _("SMTP sunucusu alıcı adreslerini kabul etmedi. Alıcı adreslerini denetleyin.")
     if isinstance(hata, smtplib.SMTPSenderRefused):
-        return "SMTP sunucusu gönderen adresini kabul etmedi. Hesap bilgilerini kontrol edin."
+        return _("SMTP sunucusu gönderen adresini kabul etmedi. Hesap bilgilerini denetleyin.")
     if isinstance(hata, smtplib.SMTPDataError):
-        return "SMTP sunucusu e-posta verisini kabul etmedi. Gönderim tamamlanamadı."
+        return _("SMTP sunucusu e-posta verisini kabul etmedi. Gönderim tamamlanamadı.")
     if isinstance(hata, smtplib.SMTPNotSupportedError):
-        return "SMTP sunucusu gerekli güvenli bağlantı veya kullanıcı doğrulama yöntemini desteklemiyor."
+        if "smtputf8" in str(hata or "").lower():
+            return (
+                _("SMTP sunucusu uluslararası e-posta adreslerini desteklemiyor. "
+                "Alıcı adresini ASCII karakterlerle yazmayı deneyin.")
+            )
+        return _("SMTP sunucusu gerekli güvenli bağlantı veya kullanıcı doğrulama yöntemini desteklemiyor.")
 
     metin = str(hata or "").lower()
     if isinstance(hata, socket.gaierror) or "getaddrinfo" in metin or "name or service" in metin:
-        return "Sunucu adı çözümlenemedi. İnternet bağlantınızı, DNS ayarlarınızı veya kurum ağı kısıtlamalarını kontrol edin."
+        return _("Sunucu adı çözümlenemedi. İnternet bağlantınızı, DNS ayarlarınızı veya kurum ağı kısıtlamalarını denetleyin.")
     if isinstance(hata, socket.timeout) or "timed out" in metin or "zaman" in metin and "aş" in metin:
-        return "Bağlantı zaman aşımına uğradı. İnternet bağlantınız yavaş olabilir veya kurum ağı Gmail sunucularına erişimi engelliyor olabilir."
+        return _("Bağlantı zaman aşımına uğradı. İnternet bağlantınız yavaş olabilir veya kurum ağı Gmail sunucularına erişimi engelliyor olabilir.")
     if "zorla kapatıldı" in metin or "forcibly closed" in metin or "uzaktaki bir ana bilgisayar" in metin:
-        return "Bağlantı sunucu veya aradaki ağ cihazı tarafından oturum aşamasında kapatıldı. Kurum ağı IMAP/SMTP oturumunu kesiyor olabilir."
+        return _("Bağlantı sunucu veya aradaki ağ cihazı tarafından oturum aşamasında kapatıldı. Kurum ağı IMAP/SMTP oturumunu kesiyor olabilir.")
     if isinstance(hata, ssl.SSLError) or "ssl" in metin or "certificate" in metin or "sertifika" in metin:
-        return "Güvenli bağlantı kurulamadı. Sertifika denetimi, güvenlik yazılımı veya kurum ağı bağlantıyı etkiliyor olabilir."
+        return _("Güvenli bağlantı kurulamadı. Sertifika denetimi, güvenlik yazılımı veya kurum ağı bağlantıyı etkiliyor olabilir.")
     if isinstance(hata, ConnectionRefusedError) or "refused" in metin:
-        return "Sunucu bağlantıyı reddetti. Güvenlik duvarı, kurum ağı veya geçici sunucu kısıtlaması olabilir."
+        return _("Sunucu bağlantıyı reddetti. Güvenlik duvarı, kurum ağı veya geçici sunucu kısıtlaması olabilir.")
     if isinstance(hata, OSError):
-        return varsayilan or "Bağlantı kurulamadı. İnternet bağlantınızı, güvenlik duvarınızı ve kurum ağı ayarlarınızı kontrol edin."
-    return varsayilan or "Beklenmeyen bir bağlantı hatası oluştu. Ayrıntılı denetim için Hesap menüsündeki Bağlantıyı Denetle seçeneğini kullanın."
+        return varsayilan or _("Bağlantı kurulamadı. İnternet bağlantınızı, güvenlik duvarınızı ve kurum ağı ayarlarınızı denetleyin.")
+    return varsayilan or _("Beklenmeyen bir bağlantı hatası oluştu. Ayrıntılı denetim için Hesap menüsündeki Bağlantıyı denetle seçeneğini kullanın.")
 
 def _smtp_oturumunu_kapat(smtp):
     """SMTP oturumunu gönderim sonucunu değiştirmeden kapatır."""
@@ -114,8 +129,7 @@ def _smtp_oturumu_ac(eposta, sifre, timeout):
         mesaj_465 = baglanti_hatasi_kullanici_mesaji(ilk_hata, "465 SSL yöntemi başarısız oldu.")
         mesaj_587 = baglanti_hatasi_kullanici_mesaji(ikinci_hata, "587 STARTTLS yöntemi başarısız oldu.")
         raise MailHatasi(
-            f"SMTP bağlantısı kurulamadı. 465 SSL sonucu: {mesaj_465} "
-            f"587 STARTTLS sonucu: {mesaj_587}"
+            _('SMTP bağlantısı kurulamadı. 465 SSL sonucu: {0} 587 STARTTLS sonucu: {1}').format(mesaj_465, mesaj_587)
         ) from ikinci_hata
 
 
@@ -132,15 +146,15 @@ def smtp_ssl_ile_gonder(eposta, sifre, alicilar, mesaj):
             )
         except smtplib.SMTPServerDisconnected as e:
             raise MailHatasi(
-                "Gönderim sonucu doğrulanamadı. E-posta gönderilmiş olabilir. "
-                "Yeniden göndermeden önce Gönderilen E-postalar klasörünü kontrol edin."
+                _("Gönderim sonucu doğrulanamadı. E-posta gönderilmiş olabilir. "
+                "Yeniden göndermeden önce Gönderilen E-postalar klasörünü denetleyin.")
             ) from e
         except smtplib.SMTPException as e:
             raise MailHatasi(baglanti_hatasi_kullanici_mesaji(e, "E-posta gönderilemedi.")) from e
         except (socket.timeout, ssl.SSLError, OSError) as e:
             raise MailHatasi(
-                "Gönderim sonucu doğrulanamadı. E-posta gönderilmiş olabilir. "
-                "Yeniden göndermeden önce Gönderilen E-postalar klasörünü kontrol edin."
+                _("Gönderim sonucu doğrulanamadı. E-posta gönderilmiş olabilir. "
+                "Yeniden göndermeden önce Gönderilen E-postalar klasörünü denetleyin.")
             ) from e
     finally:
         _smtp_oturumunu_kapat(smtp)
@@ -165,6 +179,18 @@ def gonderen_basligini_duzenle(gonderen, gorunen_ad=None):
     return gonderen
 
 
+def _alici_basligini_dogrula(baslik, alan_adi):
+    """Bir alıcı alanındaki bütün girdilerin geçerli olduğunu doğrular."""
+    adresler, gecersizler = alici_basligini_cozumle(baslik)
+    if gecersizler:
+        ozet = ", ".join(gecersizler[:3])
+        if len(gecersizler) > 3:
+            ozet += f" ve {len(gecersizler) - 3} adres daha"
+        raise MailHatasi(_('{0} alanında geçersiz e-posta adresi bulundu: {1}').format(alan_adi, ozet))
+    if not adresler:
+        raise MailHatasi(_('{0} alanında geçerli e-posta adresi bulunamadı.').format(alan_adi))
+    return adresler
+
 def eposta_mesaji_olustur(
     gonderen,
     kime_basligi,
@@ -183,21 +209,18 @@ def eposta_mesaji_olustur(
     mesaj["From"] = gonderen_basligini_duzenle(gonderen, gorunen_ad)
     kime_basligi = str(kime_basligi or "").strip()
     if kime_basligi:
+        _alici_basligini_dogrula(kime_basligi, "Kime")
         duzenli_kime = adres_basligini_duzenle(kime_basligi)
-        if not duzenli_kime:
-            raise MailHatasi("Alıcı alanında geçerli e-posta adresi bulunamadı.")
         mesaj["To"] = duzenli_kime
     bilgi_basligi = str(bilgi_basligi or "").strip()
     if bilgi_basligi:
+        _alici_basligini_dogrula(bilgi_basligi, "Bilgi")
         duzenli_bilgi = adres_basligini_duzenle(bilgi_basligi)
-        if not duzenli_bilgi:
-            raise MailHatasi("Bilgi alanında geçerli e-posta adresi bulunamadı.")
         mesaj["Cc"] = duzenli_bilgi
     gizli_basligi = str(gizli_basligi or "").strip()
     if gizli_basligi:
+        _alici_basligini_dogrula(gizli_basligi, "Gizli")
         duzenli_gizli = adres_basligini_duzenle(gizli_basligi)
-        if not duzenli_gizli:
-            raise MailHatasi("Gizli alanında geçerli e-posta adresi bulunamadı.")
         # Bcc yalnızca taslağın yeniden düzenlenebilmesi için sunucudaki taslakta tutulur.
         # Gerçek gönderimde gizli adresler sadece SMTP teslim listesine verilir.
         if taslak:
@@ -219,19 +242,27 @@ def eposta_mesaji_olustur(
     for kayit in ek_kayitlari or []:
         if isinstance(kayit, str):
             kayit = {"tur": "dosya", "yol": kayit}
+        if not isinstance(kayit, dict):
+            raise MailHatasi(
+                _("Ek kaydı geçersiz. Lütfen eki kaldırıp yeniden ekleyin.")
+            )
         tur = kayit.get("tur")
         if tur == "hazir":
             dosya_adi = guvenli_coz(kayit.get("ad") or "ek_dosya")
             veri = kayit.get("veri") or b""
+            if not isinstance(veri, (bytes, bytearray)):
+                raise MailHatasi(
+                    _('Ek verisi geçersiz: {0}. Lütfen eki kaldırıp yeniden ekleyin.').format(dosya_adi)
+                )
             if not veri:
                 continue
             maintype, subtype = ek_icerik_turu_bul(dosya_adi)
-            mesaj.add_attachment(veri, maintype=maintype, subtype=subtype, filename=dosya_adi)
+            mesaj.add_attachment(bytes(veri), maintype=maintype, subtype=subtype, filename=dosya_adi)
             continue
 
         dosya_yolu = kayit.get("yol", "")
         if not os.path.isfile(dosya_yolu):
-            raise MailHatasi(f"Ek dosya bulunamadı: {os.path.basename(dosya_yolu)}")
+            raise MailHatasi(_('Ek dosya bulunamadı: {0}').format(os.path.basename(dosya_yolu)))
         maintype, subtype = ek_icerik_turu_bul(dosya_yolu)
         with open(dosya_yolu, "rb") as dosya:
             mesaj.add_attachment(

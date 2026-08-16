@@ -2,8 +2,9 @@
 """Engelsiz Mail SQLite şeması ve sürümlü göç tanımları."""
 
 
-SCHEMA_VERSION = 8
-BODY_PARSER_VERSION = 3
+SCHEMA_VERSION = 10
+# Türkçe karakter geri dönüş çözümlemesi değiştiğinde eski gövdeler yeniden alınmalıdır.
+BODY_PARSER_VERSION = 4
 
 
 MIGRATION_1 = (
@@ -199,6 +200,46 @@ MIGRATION_8 = (
 )
 
 
+MIGRATION_9 = (
+    """
+    CREATE TABLE pending_bulk_operations (
+        id INTEGER PRIMARY KEY,
+        account_id INTEGER NOT NULL REFERENCES accounts(id) ON DELETE CASCADE,
+        operation_type TEXT NOT NULL
+            CHECK (operation_type IN ('empty_trash', 'empty_spam', 'sent_to_trash')),
+        source_folder TEXT NOT NULL,
+        source_category TEXT NOT NULL,
+        deletion_type TEXT NOT NULL CHECK (deletion_type IN ('trash', 'permanent')),
+        trash_folder TEXT NOT NULL,
+        source_label TEXT NOT NULL DEFAULT '',
+        remove_source_label INTEGER NOT NULL DEFAULT 0
+            CHECK (remove_source_label IN (0, 1)),
+        snapshot_complete INTEGER NOT NULL DEFAULT 0
+            CHECK (snapshot_complete IN (0, 1)),
+        source_uidvalidity INTEGER,
+        attempt_count INTEGER NOT NULL DEFAULT 0,
+        last_error TEXT,
+        request_token TEXT NOT NULL,
+        created_at INTEGER NOT NULL,
+        updated_at INTEGER NOT NULL,
+        UNIQUE(account_id, operation_type, source_folder)
+    )
+    """,
+    "CREATE INDEX idx_pending_bulk_operations_account ON pending_bulk_operations(account_id, created_at, id)",
+    "ALTER TABLE pending_deletions ADD COLUMN bulk_operation_id INTEGER REFERENCES pending_bulk_operations(id) ON DELETE SET NULL",
+    "CREATE INDEX idx_pending_deletions_bulk_operation ON pending_deletions(bulk_operation_id, created_at, id)",
+)
+
+
+MIGRATION_10 = (
+    "ALTER TABLE pending_deletions ADD COLUMN remote_completed INTEGER NOT NULL DEFAULT 0 CHECK (remote_completed IN (0, 1))",
+    "ALTER TABLE pending_deletions ADD COLUMN remote_completed_at INTEGER",
+    "ALTER TABLE pending_deletions ADD COLUMN remote_verified INTEGER NOT NULL DEFAULT 0 CHECK (remote_verified IN (0, 1))",
+    "ALTER TABLE pending_bulk_operations ADD COLUMN settlement_verified_at INTEGER",
+    "CREATE INDEX idx_pending_deletions_remote_state ON pending_deletions(account_id, remote_completed, created_at, id)",
+)
+
+
 MIGRATIONS = {
     1: MIGRATION_1,
     2: MIGRATION_2,
@@ -208,4 +249,6 @@ MIGRATIONS = {
     6: MIGRATION_6,
     7: MIGRATION_7,
     8: MIGRATION_8,
+    9: MIGRATION_9,
+    10: MIGRATION_10,
 }

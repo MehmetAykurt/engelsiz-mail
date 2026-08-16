@@ -1,6 +1,15 @@
 # -*- coding: utf-8 -*-
 # Engelsiz Mail - E-posta okuma penceresi
 
+
+# NVDA eklenti çevirilerini bu modül için etkinleştir.
+try:
+    import addonHandler
+    addonHandler.initTranslation()
+except (ImportError, AttributeError):
+    # NVDA dışındaki otomatik testlerde Türkçe kaynak metni aynen kullan.
+    _ = lambda metin: metin
+
 import os
 import re
 import webbrowser
@@ -25,7 +34,7 @@ from .compose_window import YeniPostaPenceresi
 
 class MesajOkumaPenceresi(wx.Dialog):
     def __init__(self, parent, mesaj_verisi, ebeveyn_pencere):
-        super().__init__(parent, title="E-posta")
+        super().__init__(parent, title=_("E-posta"))
         self.mesaj_verisi = mesaj_verisi
         self.ebeveyn = ebeveyn_pencere
         self._kapatildi = False
@@ -34,9 +43,10 @@ class MesajOkumaPenceresi(wx.Dialog):
 
         duzen = wx.BoxSizer(wx.VERTICAL)
         ek_sayisi = len(mesaj_verisi.get("ekler", []))
-        ek_notu = f"\nBu e-postada {ek_sayisi} ek dosya var.\n" if ek_sayisi else ""
+        ek_var = ek_sayisi or bool(mesaj_verisi.get("has_attachments"))
+        ek_notu = _('\nBu e-postada {0} ek dosya var.\n').format(ek_sayisi) if ek_sayisi else ""
         if mesaj_verisi.get("ekler_eksik"):
-            ek_notu += "Bazı ekler çevrimdışı önbellekte bulunmuyor.\n"
+            ek_notu += _("Bazı ekler çevrim dışı önbellekte bulunmuyor.\n")
         kime_satiri = f"Kime: {mesaj_verisi.get('kime', '')}\n" if mesaj_verisi.get("kime") else ""
         bilgi_satiri = f"Bilgi: {mesaj_verisi.get('bilgi', '')}\n" if mesaj_verisi.get("bilgi") else ""
         kimden_gosterimi = ad_ve_adresi_goster(
@@ -64,40 +74,41 @@ class MesajOkumaPenceresi(wx.Dialog):
             [
                 eslesme.start()
                 for eslesme in re.finditer(
-                    r"(?m)^\d+\. ileti\r?\nKimden:", denetim_icerigi
+                    _(r"(?m)^\d+\. ileti\r?\nKimden:"), denetim_icerigi
                 )
             ]
             if mesaj_verisi.get("konusma_mi") else []
         )
         if self.konusma_ileti_konumlari:
             self.icerik_baslangic_indeksi = self.konusma_ileti_konumlari[0]
-        self.txt_icerik.SetName("E-posta içeriği")
+        self.txt_icerik.SetName(_("E-posta içeriği"))
         duzen.Add(self.txt_icerik, 1, wx.ALL | wx.EXPAND, 10)
         gorunum_denetime_uygula(self.txt_icerik)
 
         btn_duzen = wx.BoxSizer(wx.HORIZONTAL)
-        if ek_sayisi:
-            ek_btn = wx.Button(self, label=f"&Ekleri Kaydet ({ek_sayisi})")
+        if ek_var:
+            etiket = _('&Ekleri kaydet ({0})').format(ek_sayisi) if ek_sayisi else _("&Ekleri kaydet")
+            ek_btn = wx.Button(self, label=etiket)
             ek_btn.Bind(wx.EVT_BUTTON, self.ekleri_kaydet)
             btn_duzen.Add(ek_btn, 0, wx.ALL, 5)
 
-        yanitla_btn = wx.Button(self, label="&Yanıtla")
+        yanitla_btn = wx.Button(self, label=_("&Yanıtla"))
         yanitla_btn.Bind(wx.EVT_BUTTON, self.mesaji_yanitla)
         btn_duzen.Add(yanitla_btn, 0, wx.ALL, 5)
 
-        ilet_btn = wx.Button(self, label="İ&let")
+        ilet_btn = wx.Button(self, label=_("İ&let"))
         ilet_btn.Bind(wx.EVT_BUTTON, self.mesaji_ilet)
         btn_duzen.Add(ilet_btn, 0, wx.ALL, 5)
 
-        arsiv_btn = wx.Button(self, label="A&rşivle")
+        arsiv_btn = wx.Button(self, label=_("A&rşivle"))
         arsiv_btn.Bind(wx.EVT_BUTTON, self.mesaji_arsivle_ve_kapat)
         btn_duzen.Add(arsiv_btn, 0, wx.ALL, 5)
 
-        sil_btn = wx.Button(self, label="&Sil")
+        sil_btn = wx.Button(self, label=_("&Sil"))
         sil_btn.Bind(wx.EVT_BUTTON, self.mesaji_sil_ve_kapat)
         btn_duzen.Add(sil_btn, 0, wx.ALL, 5)
 
-        kapat_btn = wx.Button(self, label="&Kapat")
+        kapat_btn = wx.Button(self, label=_("&Kapat"))
         kapat_btn.Bind(wx.EVT_BUTTON, lambda event: self.EndModal(wx.ID_OK))
         btn_duzen.Add(kapat_btn, 0, wx.ALL, 5)
 
@@ -173,7 +184,7 @@ class MesajOkumaPenceresi(wx.Dialog):
     def baglantilar_arasinda_gezin(self, ileri=True):
         """L ve Shift+L ile e-postadaki HTTP bağlantıları arasında dolaşır."""
         if not self.baglanti_konumlari:
-            ui.message("Bu e-postada bağlantı bulunmuyor.")
+            ui.message(_("Bu e-postada bağlantı bulunmuyor."))
             return
         try:
             mevcut_indeks = self._uzerindeki_baglanti_indeksi()
@@ -205,16 +216,16 @@ class MesajOkumaPenceresi(wx.Dialog):
             self.txt_icerik.SetSelection(baslangic, bitis)
             self.txt_icerik.ShowPosition(baslangic)
             ui.message(
-                f"Bağlantı {hedef_indeks + 1} bölü {len(self.baglanti_konumlari)}. {adres}"
+                _('Bağlantı {0} bölü {1}. {2}').format(hedef_indeks + 1, len(self.baglanti_konumlari), adres)
             )
         except Exception as e:
             hata_kaydet("E-postadaki bağlantılar arasında gezinilemedi.", e)
-            ui.message("Bağlantıya gidilemedi.")
+            ui.message(_("Bağlantıya gidilemedi."))
 
     def _uzerindeki_baglanti(self):
         indeks = self._uzerindeki_baglanti_indeksi()
         if indeks is None:
-            ui.message("İmlecin bulunduğu yerde bağlantı yok.")
+            ui.message(_("İmlecin bulunduğu yerde bağlantı yok."))
             return ""
         return self.baglanti_konumlari[indeks][2]
 
@@ -224,21 +235,21 @@ class MesajOkumaPenceresi(wx.Dialog):
             return
         try:
             if not wx.TheClipboard.Open():
-                raise RuntimeError("Pano açılamadı.")
+                raise RuntimeError(_("Pano açılamadı."))
             try:
                 veri = wx.TextDataObject(adres)
                 if not wx.TheClipboard.SetData(veri):
-                    raise RuntimeError("Bağlantı panoya yazılamadı.")
+                    raise RuntimeError(_("Bağlantı panoya yazılamadı."))
                 try:
                     wx.TheClipboard.Flush()
                 except Exception:
                     pass
             finally:
                 wx.TheClipboard.Close()
-            ui.message("Bağlantı panoya kopyalandı.")
+            ui.message(_("Bağlantı panoya kopyalandı."))
         except Exception as e:
             hata_kaydet("Bağlantı panoya kopyalanamadı.", e)
-            ui.message("Bağlantı panoya kopyalanamadı.")
+            ui.message(_("Bağlantı panoya kopyalanamadı."))
 
     def uzerindeki_baglantiyi_ac(self):
         adres = self._uzerindeki_baglanti()
@@ -247,15 +258,15 @@ class MesajOkumaPenceresi(wx.Dialog):
         try:
             parcalar = urlsplit(adres)
             if parcalar.scheme.lower() not in ("http", "https") or not parcalar.netloc:
-                raise ValueError("Geçersiz HTTP bağlantısı.")
+                raise ValueError(_("Geçersiz HTTP bağlantısı."))
             mesaj_soyle_ve_sonra_calistir(
-                "Bağlantı varsayılan tarayıcıda açılıyor.",
+                _("Bağlantı varsayılan tarayıcıda açılıyor."),
                 lambda: self._baglantiyi_varsayilan_tarayıcıda_ac(adres),
                 ad="E-posta bağlantısını açma",
             )
         except Exception as e:
             hata_kaydet("Bağlantı varsayılan tarayıcıda açılamadı.", e)
-            ui.message("Bağlantı açılamadı.")
+            ui.message(_("Bağlantı açılamadı."))
 
     def _baglantiyi_varsayilan_tarayıcıda_ac(self, adres):
         try:
@@ -263,13 +274,13 @@ class MesajOkumaPenceresi(wx.Dialog):
                 os.startfile(adres)
             except Exception:
                 if not webbrowser.open(adres, new=2):
-                    raise RuntimeError("Varsayılan tarayıcı açılamadı.")
+                    raise RuntimeError(_("Varsayılan tarayıcı açılamadı."))
         except Exception as e:
             hata_kaydet("Bağlantı varsayılan tarayıcıda açılamadı.", e)
-            ui.message("Bağlantı açılamadı.")
+            ui.message(_("Bağlantı açılamadı."))
 
     def konusmada_gezin(self, ileri=True):
-        """N ve P ile konuşmadaki sonraki veya önceki ileti başlığına gider."""
+        """N ve P ile konuşmadaki sonraki veya önceki e-posta başlığına gider."""
         try:
             mevcut = self.txt_icerik.GetInsertionPoint()
             if ileri:
@@ -288,7 +299,7 @@ class MesajOkumaPenceresi(wx.Dialog):
             self.txt_icerik.SetInsertionPoint(hedef)
             self.txt_icerik.ShowPosition(hedef)
         except Exception as e:
-            hata_kaydet("Konuşmadaki iletiler arasında gezinilemedi.", e)
+            hata_kaydet("Konuşmadaki e-postalar arasında gezinilemedi.", e)
 
     def ekleri_kaydet(self, event):
         konu = guvenli_dosya_adi(self.mesaj_verisi.get("konu", "Konusuz"), "Konusuz")
@@ -296,7 +307,7 @@ class MesajOkumaPenceresi(wx.Dialog):
         varsayilan_klasor = indirilenler if os.path.isdir(indirilenler) else os.path.expanduser("~")
         dlg = wx.DirDialog(
             self,
-            "Eklerin kaydedileceği klasörü seçin:",
+            _("Eklerin kaydedileceği klasörü seçin:"),
             defaultPath=varsayilan_klasor,
             style=wx.DD_DEFAULT_STYLE | wx.DD_DIR_MUST_EXIST,
         )
@@ -305,6 +316,11 @@ class MesajOkumaPenceresi(wx.Dialog):
                 return
             hedef_klasor = os.path.join(dlg.GetPath(), f"E-posta_Ekleri_{konu}")
             os.makedirs(hedef_klasor, exist_ok=True)
+            ekleri_indirici = self.mesaj_verisi.get("ekleri_indirici")
+            if not self.mesaj_verisi.get("ekler") and callable(ekleri_indirici):
+                ekleri_indirici(self.mesaj_verisi, hedef_klasor)
+                ui.message(_("Ekler indiriliyor."))
+                return
             kaydedilen = 0
             for dosya_adi, veri in self.mesaj_verisi.get("ekler", []):
                 if not veri:
@@ -315,12 +331,12 @@ class MesajOkumaPenceresi(wx.Dialog):
                     dosya.write(veri)
                 kaydedilen += 1
             if kaydedilen:
-                ui.message(f"{kaydedilen} ek dosya kaydedildi. Klasör: {hedef_klasor}")
+                ui.message(_('{0} ek dosya kaydedildi. Klasör: {1}').format(kaydedilen, hedef_klasor))
             else:
-                ui.message("Kaydedilecek ek dosya bulunamadı.")
+                ui.message(_("Kaydedilecek ek dosya bulunamadı."))
         except Exception as e:
             hata_kaydet("Ek dosyalar kaydedilemedi.", e)
-            ui.message("Ekler kaydedilemedi. Lütfen dosya izinlerini kontrol edin.")
+            ui.message(_("Ekler kaydedilemedi. Lütfen dosya izinlerini denetleyin."))
         finally:
             try:
                 dlg.Destroy()
@@ -334,7 +350,7 @@ class MesajOkumaPenceresi(wx.Dialog):
             konu = "Re: " + konu
         # Konuşmada yanıt her zaman en son iletiye verilir.
         asil_icerik = self.mesaj_verisi.get("son_icerik", self.mesaj_verisi.get("icerik", ""))
-        icerik = f"\n\n\n--- Orijinal E-posta ---\n{asil_icerik}"
+        icerik = _('\n\n\n--- Orijinal E-posta ---\n{0}').format(asil_icerik)
         pencere = YeniPostaPenceresi(
             self,
             varsayilan_kime=kime,
@@ -350,7 +366,7 @@ class MesajOkumaPenceresi(wx.Dialog):
         konu = self.mesaj_verisi.get("konu", "")
         if not konu.lower().startswith("fwd:"):
             konu = "Fwd: " + konu
-        icerik = f"\n\n\n--- İletilen E-posta ---\n{self.mesaj_verisi.get('icerik', '')}"
+        icerik = _('\n\n\n--- İletilen E-posta ---\n{0}').format(self.mesaj_verisi.get('icerik', ''))
         pencere = YeniPostaPenceresi(
             self,
             varsayilan_kime="",

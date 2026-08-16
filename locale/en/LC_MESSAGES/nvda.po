@@ -1,0 +1,3962 @@
+# English translations for Engelsiz Mail.
+# Copyright (C) 2026 Mehmet Aykurt
+# This file is distributed under the same license as the Engelsiz Mail project.
+# Engelsiz Mail Project <m.aykurt38@gmail.com>, 2026.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Engelsiz Mail 1.8.2\n"
+"Report-Msgid-Bugs-To: m.aykurt38@gmail.com\n"
+"POT-Creation-Date: 2026-01-01 00:00+0000\n"
+"PO-Revision-Date: 2026-08-07 05:00+0000\n"
+"Last-Translator: Engelsiz Mail Project <m.aykurt38@gmail.com>\n"
+"Language: en\n"
+"Language-Team: English\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.18.0\n"
+
+#: globalPlugins/mail/__init__.py:45 globalPlugins/mail/ui/main_window.py:163
+#: globalPlugins/mail/ui/main_window.py:250 globalPlugins/mail/ui/main_window.py:952
+#: globalPlugins/mail/ui/main_window.py:2462
+msgid "Engelsiz Mail"
+msgstr "Engelsiz Mail"
+
+#: globalPlugins/mail/__init__.py:59
+msgid "&Engelsiz Mail"
+msgstr "&Engelsiz Mail"
+
+#: globalPlugins/mail/__init__.py:121
+msgid "Engelsiz Mail penceresini açar."
+msgstr "Opens the Engelsiz Mail window."
+
+#: globalPlugins/mail/__init__.py:151
+msgid "Engelsiz Mail penceresi zaten açık, ancak öne getirilemedi."
+msgstr "The Engelsiz Mail window is already open, but could not be brought to the foreground."
+
+#: globalPlugins/mail/__init__.py:158 globalPlugins/mail/__init__.py:178
+msgid "Engelsiz Mail açılırken hata oluştu. Ayrıntılar için NVDA günlüğünü inceleyin."
+msgstr "An error occurred while opening Engelsiz Mail. Check the NVDA log for details."
+
+#: globalPlugins/mail/attachments.py:134
+#, python-brace-format
+msgid "{0} ({1}): tek ek güvenlik sınırını aşıyor"
+msgstr "{0} ({1}): exceeds the per-attachment safety limit"
+
+#: globalPlugins/mail/attachments.py:139
+#, python-brace-format
+msgid "{0} ({1}): toplam ek güvenlik sınırını aşıyor"
+msgstr "{0} ({1}): exceeds the total attachment safety limit"
+
+#: globalPlugins/mail/attachments.py:170
+msgid ""
+"Not: Bazı ekler çok büyük olduğu için belleğe yüklenmedi ve bu pencereden kaydedilemez ya da "
+"iletilemez."
+msgstr ""
+"Note: Some attachments were too large to load into memory and cannot be saved or forwarded from "
+"this window."
+
+#: globalPlugins/mail/attachments.py:171
+#, python-brace-format
+msgid "Tek ek sınırı: {0}."
+msgstr "Per-attachment limit: {0}."
+
+#: globalPlugins/mail/attachments.py:172
+#, python-brace-format
+msgid "Toplam ek sınırı: {0}."
+msgstr "Total attachment limit: {0}."
+
+#: globalPlugins/mail/attachments.py:173
+msgid "Atlanan ekler:"
+msgstr "Skipped attachments:"
+
+#: globalPlugins/mail/attachments.py:177
+#, python-brace-format
+msgid "- Ayrıca {0} ek daha atlandı."
+msgstr "- {0} more attachments were also skipped."
+
+#: globalPlugins/mail/attachments.py:202 globalPlugins/mail/ui/message_actions.py:494
+msgid "E-posta içeriği boş döndü."
+msgstr "The email content was empty."
+
+#: globalPlugins/mail/attachments.py:205
+#, python-brace-format
+msgid ""
+"{0} çok büyük. Bu işlem için en çok {1} boyutunda e-posta işlenebilir. E-postayı Gmail web "
+"arayüzünden veya başka bir posta istemcisinden açmayı deneyin."
+msgstr ""
+"{0} is too large. Emails up to {1} can be processed for this operation. Try opening the email in "
+"the Gmail web interface or another email client."
+
+#: globalPlugins/mail/attachments.py:215
+msgid "EML dosya boyutu okunamadı."
+msgstr "The EML file size could not be read."
+
+#: globalPlugins/mail/attachments.py:217 globalPlugins/mail/attachments.py:228
+#: globalPlugins/mail/ui/message_actions.py:141
+msgid "EML dosyası boş görünüyor."
+msgstr "The EML file appears to be empty."
+
+#: globalPlugins/mail/attachments.py:220
+#, python-brace-format
+msgid "EML dosyası çok büyük. En çok {0} boyutunda EML dosyası açılabilir."
+msgstr "The EML file is too large. EML files up to {0} can be opened."
+
+#: globalPlugins/mail/attachments.py:232 globalPlugins/mail/attachments.py:235
+#: globalPlugins/mail/attachments.py:238
+msgid "EML dosyası okunamadı veya geçerli bir e-posta dosyası değil."
+msgstr "The EML file could not be read or is not a valid email file."
+
+#: globalPlugins/mail/attachments.py:250 globalPlugins/mail/smtp_client.py:247
+msgid "Ek kaydı geçersiz. Lütfen eki kaldırıp yeniden ekleyin."
+msgstr "The attachment entry is invalid. Remove the attachment and add it again."
+
+#: globalPlugins/mail/attachments.py:259 globalPlugins/mail/smtp_client.py:255
+#, python-brace-format
+msgid "Ek verisi geçersiz: {0}. Lütfen eki kaldırıp yeniden ekleyin."
+msgstr "Invalid attachment data: {0}. Remove the attachment and add it again."
+
+#: globalPlugins/mail/attachments.py:270
+#, python-brace-format
+msgid "Ek dosya boyutu okunamadı: {0}"
+msgstr "The attachment file size could not be read: {0}"
+
+#: globalPlugins/mail/attachments.py:274
+#, python-brace-format
+msgid "Ek dosya çok büyük: {0}. Tek ek en çok {1} olabilir."
+msgstr "Attachment file is too large: {0}. A single attachment can be at most {1}."
+
+#: globalPlugins/mail/attachments.py:280
+#, python-brace-format
+msgid "Ek dosyaların toplam boyutu çok büyük. Toplam ek boyutu en çok {0} olabilir."
+msgstr "The total size of the attachments is too large. The total attachment size can be at most {0}."
+
+#: globalPlugins/mail/body_sync.py:135
+msgid "E-posta yapısı sunucudan alınamadı."
+msgstr "The email structure could not be retrieved from the server."
+
+#: globalPlugins/mail/body_sync.py:140
+msgid "E-posta MIME yapısı çözümlenemedi; gövde boş olarak kaydedilmedi."
+msgstr "The email MIME structure could not be parsed; the body was not saved as empty."
+
+#: globalPlugins/mail/body_sync.py:153
+msgid "E-posta MIME yapısı ek indirmeden güvenle çözümlenemedi."
+msgstr "The email MIME structure could not be parsed safely without downloading attachments."
+
+#: globalPlugins/mail/body_sync.py:193
+msgid "E-posta metni çözümlenemedi; sonraki deneme için gövde boş olarak kaydedilmedi."
+msgstr "The email text could not be parsed; the body was not saved as empty so it can be retried later."
+
+#: globalPlugins/mail/cache_limits.py:44
+msgid "E-posta önbelleği 5 GB güvenlik sınırına ulaştığı için yeni gövde kaydedilmedi."
+msgstr "The new body was not cached because the email cache reached the 5 GB safety limit."
+
+#: globalPlugins/mail/cache_limits.py:50
+msgid "Diskte 512 MB güvenli boş alan kalmayacağı için yeni e-posta önbelleğe alınmadı."
+msgstr ""
+"The new email was not cached because doing so would leave less than 512 MB of free disk space "
+"reserved for safety."
+
+#: globalPlugins/mail/config.py:95
+msgid "Normal"
+msgstr "Normal"
+
+#: globalPlugins/mail/config.py:96
+msgid "Kalın"
+msgstr "Bold"
+
+#: globalPlugins/mail/config.py:97
+msgid "İtalik"
+msgstr "Italic"
+
+#: globalPlugins/mail/config.py:98
+msgid "Kalın İtalik"
+msgstr "Bold Italic"
+
+#: globalPlugins/mail/config.py:106 globalPlugins/mail/config.py:120
+msgid "Siyah"
+msgstr "Black"
+
+#: globalPlugins/mail/config.py:107 globalPlugins/mail/config.py:119
+msgid "Beyaz"
+msgstr "White"
+
+#: globalPlugins/mail/config.py:108 globalPlugins/mail/config.py:122
+msgid "Koyu Gri"
+msgstr "Dark Gray"
+
+#: globalPlugins/mail/config.py:109
+msgid "Mavi"
+msgstr "Blue"
+
+#: globalPlugins/mail/config.py:110
+msgid "Kırmızı"
+msgstr "Red"
+
+#: globalPlugins/mail/config.py:111
+msgid "Yeşil"
+msgstr "Green"
+
+#: globalPlugins/mail/config.py:121
+msgid "Açık Gri"
+msgstr "Light Gray"
+
+#: globalPlugins/mail/config.py:123
+msgid "Açık Sarı"
+msgstr "Light Yellow"
+
+#: globalPlugins/mail/config.py:124
+msgid "Açık Mavi"
+msgstr "Light Blue"
+
+#: globalPlugins/mail/config.py:241
+msgid "Kayıtlı uygulama şifresi Windows DPAPI ile çözüldü."
+msgstr "The saved app password was decrypted with Windows DPAPI."
+
+#: globalPlugins/mail/config.py:244
+msgid ""
+"Eski düz metin uygulama şifresi alanı bulundu. Hesap yeniden kaydedildiğinde şifreli alana "
+"taşınmalıdır."
+msgstr ""
+"A legacy plain-text app password field was found. It should be moved to the encrypted field when "
+"the account is saved again."
+
+#: globalPlugins/mail/config.py:246
+msgid "Kayıtlı uygulama şifresi bulunamadı."
+msgstr "No saved app password was found."
+
+#: globalPlugins/mail/config.py:329 globalPlugins/mail/ui/signature_dialog.py:67
+msgid "İmza metni boş bırakılamaz."
+msgstr "The signature text cannot be empty."
+
+#: globalPlugins/mail/config.py:331
+#, python-brace-format
+msgid "İmza en fazla {0} karakter olabilir."
+msgstr "The signature can contain at most {0} characters."
+
+#: globalPlugins/mail/config.py:639 globalPlugins/mail/ui/main_window.py:789
+msgid "Yazı tipi boyutu yalnızca rakamlardan oluşmalıdır."
+msgstr "The font size must contain digits only."
+
+#: globalPlugins/mail/config.py:641
+#, python-brace-format
+msgid "Yazı tipi boyutu {0} ile {1} arasında olmalıdır."
+msgstr "The font size must be between {0} and {1}."
+
+#: globalPlugins/mail/config.py:647
+msgid "Geçersiz yazı stili seçildi."
+msgstr "An invalid font style was selected."
+
+#: globalPlugins/mail/config.py:653
+msgid "Geçersiz metin rengi seçildi."
+msgstr "An invalid text color was selected."
+
+#: globalPlugins/mail/config.py:659
+msgid "Geçersiz arka plan rengi seçildi."
+msgstr "An invalid background color was selected."
+
+#: globalPlugins/mail/connection_diagnostics.py:49
+msgid "Engelsiz Mail ayar dosyası NVDA yapılandırma klasöründe bulundu."
+msgstr "The Engelsiz Mail settings file was found in the NVDA configuration folder."
+
+#: globalPlugins/mail/connection_diagnostics.py:49 globalPlugins/mail/connection_diagnostics.py:51
+msgid "Ayar dosyası"
+msgstr "Settings file"
+
+#: globalPlugins/mail/connection_diagnostics.py:49 globalPlugins/mail/connection_diagnostics.py:53
+#: globalPlugins/mail/connection_diagnostics.py:62 globalPlugins/mail/connection_diagnostics.py:70
+#: globalPlugins/mail/connection_diagnostics.py:78 globalPlugins/mail/connection_diagnostics.py:89
+#: globalPlugins/mail/connection_diagnostics.py:96 globalPlugins/mail/connection_diagnostics.py:103
+#: globalPlugins/mail/connection_diagnostics.py:113 globalPlugins/mail/connection_diagnostics.py:119
+#: globalPlugins/mail/connection_diagnostics.py:128 globalPlugins/mail/connection_diagnostics.py:134
+msgid "Başarılı"
+msgstr "Successful"
+
+#: globalPlugins/mail/connection_diagnostics.py:51
+msgid ""
+"Kayıtlı hesap bilgisi bulunamadı. Hesap menüsünden Bağlan seçeneğiyle hesap bilgilerinizi "
+"kaydedin."
+msgstr ""
+"No saved account information was found. Save your account information using Connect on the "
+"Account menu."
+
+#: globalPlugins/mail/connection_diagnostics.py:51 globalPlugins/mail/connection_diagnostics.py:64
+#: globalPlugins/mail/connection_diagnostics.py:72 globalPlugins/mail/connection_diagnostics.py:91
+#: globalPlugins/mail/connection_diagnostics.py:130 globalPlugins/mail/connection_diagnostics.py:136
+msgid "Başarısız"
+msgstr "Failed"
+
+#: globalPlugins/mail/connection_diagnostics.py:53
+msgid "Geçici hesap bilgisi"
+msgstr "Temporary account information"
+
+#: globalPlugins/mail/connection_diagnostics.py:53
+msgid "Bağlan penceresine yazılan e-posta adresi ve uygulama şifresi denetleniyor."
+msgstr "The email address and app password entered in the Connect window are being checked."
+
+#: globalPlugins/mail/connection_diagnostics.py:62
+msgid "Kayıtlı e-posta adresinin biçimi geçerli görünüyor."
+msgstr "The saved email address appears to be valid."
+
+#: globalPlugins/mail/connection_diagnostics.py:62 globalPlugins/mail/connection_diagnostics.py:64
+#: globalPlugins/mail/ui/settings_dialogs.py:107
+msgid "E-posta adresi"
+msgstr "Email address"
+
+#: globalPlugins/mail/connection_diagnostics.py:64
+msgid "E-posta adresi eksik veya geçersiz görünüyor. Örnek biçim: adiniz@gmail.com"
+msgstr "The email address is missing or appears to be invalid. Example: yourname@gmail.com"
+
+#: globalPlugins/mail/connection_diagnostics.py:68
+msgid "Uygulama şifresi kısa görünüyor. Google uygulama şifreleri 16 karakterden oluşur."
+msgstr "The app password appears to be too short. Google app passwords contain 16 characters."
+
+#: globalPlugins/mail/connection_diagnostics.py:68 globalPlugins/mail/connection_diagnostics.py:70
+#: globalPlugins/mail/connection_diagnostics.py:72
+msgid "Uygulama şifresi"
+msgstr "App password"
+
+#: globalPlugins/mail/connection_diagnostics.py:68 globalPlugins/mail/connection_diagnostics.py:76
+#: globalPlugins/mail/connection_diagnostics.py:98 globalPlugins/mail/connection_diagnostics.py:105
+#: globalPlugins/mail/connection_diagnostics.py:126
+msgid "Uyarı"
+msgstr "Warning"
+
+#: globalPlugins/mail/connection_diagnostics.py:70
+msgid "Uygulama şifresi okunabildi ve denetim için hazırlandı."
+msgstr "The app password was read successfully and prepared for checking."
+
+#: globalPlugins/mail/connection_diagnostics.py:72
+msgid "Kayıtlı uygulama şifresi okunamadı veya boş. Hesap bilgilerini yeniden kaydetmeniz gerekebilir."
+msgstr ""
+"The saved app password could not be read, or it is empty. You may need to save your account "
+"information again."
+
+#: globalPlugins/mail/connection_diagnostics.py:76
+msgid "Şifre saklama biçimi"
+msgstr "Password storage format"
+
+#: globalPlugins/mail/connection_diagnostics.py:78
+msgid "Şifre çözme"
+msgstr "Password decryption"
+
+#: globalPlugins/mail/connection_diagnostics.py:89 globalPlugins/mail/connection_diagnostics.py:91
+msgid "Gmail IMAP 993 TCP erişimi"
+msgstr "Gmail IMAP 993 TCP access"
+
+#: globalPlugins/mail/connection_diagnostics.py:89 globalPlugins/mail/connection_diagnostics.py:96
+#: globalPlugins/mail/connection_diagnostics.py:103
+#, python-brace-format
+msgid "{0}:{1} adresine TCP bağlantısı başlatılabildi."
+msgstr "A TCP connection to {0}:{1} could be started."
+
+#: globalPlugins/mail/connection_diagnostics.py:96 globalPlugins/mail/connection_diagnostics.py:98
+msgid "Gmail SMTP 465 TCP erişimi"
+msgstr "Gmail SMTP 465 TCP access"
+
+#: globalPlugins/mail/connection_diagnostics.py:103 globalPlugins/mail/connection_diagnostics.py:105
+msgid "Gmail SMTP 587 TCP erişimi"
+msgstr "Gmail SMTP 587 TCP access"
+
+#: globalPlugins/mail/connection_diagnostics.py:113
+msgid "IMAP kullanıcı doğrulaması"
+msgstr "IMAP authentication"
+
+#: globalPlugins/mail/connection_diagnostics.py:113
+msgid "Gmail IMAP sunucusu e-posta adresini ve uygulama şifresini kabul etti."
+msgstr "The Gmail IMAP server accepted the email address and app password."
+
+#: globalPlugins/mail/connection_diagnostics.py:117
+msgid "Gmail klasör listesi alınamadı."
+msgstr "The Gmail folder list could not be retrieved."
+
+#: globalPlugins/mail/connection_diagnostics.py:119
+msgid "Gmail klasör listesi"
+msgstr "Gmail folder list"
+
+#: globalPlugins/mail/connection_diagnostics.py:119
+#, python-brace-format
+msgid ""
+"Klasör listesi okundu. Tanınan özel arşiv klasörü sayısı: {0}. Sistem klasörleri aşağıda tek tek "
+"seçilerek denetlenecek."
+msgstr ""
+"Folder list retrieved. Recognized custom archive folders: {0}. System folders will be checked "
+"individually below."
+
+#: globalPlugins/mail/connection_diagnostics.py:126
+msgid "Klasör seçilemedi. Gmail hesabınızda bu klasör farklı adla görünüyor olabilir."
+msgstr ""
+"The folder could not be selected. This folder may appear under a different name in your Gmail "
+"account."
+
+#: globalPlugins/mail/connection_diagnostics.py:126 globalPlugins/mail/connection_diagnostics.py:128
+#, python-brace-format
+msgid "{0} klasörü"
+msgstr "{0} folder"
+
+#: globalPlugins/mail/connection_diagnostics.py:128
+msgid "Klasör seçilebildi."
+msgstr "The folder could be selected."
+
+#: globalPlugins/mail/connection_diagnostics.py:130
+msgid "IMAP denetimi"
+msgstr "IMAP check"
+
+#: globalPlugins/mail/connection_diagnostics.py:134
+msgid "SMTP kullanıcı doğrulaması"
+msgstr "SMTP authentication"
+
+#: globalPlugins/mail/connection_diagnostics.py:134
+#, python-brace-format
+msgid ""
+"Gmail SMTP sunucusu e-posta adresini ve uygulama şifresini kabul etti. Kullanılan yöntem: {0}. "
+"Denetim sırasında e-posta gönderilmedi."
+msgstr ""
+"The Gmail SMTP server accepted the email address and app password. Method used: {0}. No email was"
+" sent during the check."
+
+#: globalPlugins/mail/connection_diagnostics.py:136
+msgid "SMTP denetimi"
+msgstr "SMTP check"
+
+#: globalPlugins/mail/contacts.py:152 globalPlugins/mail/ui/contacts_window.py:76
+#: globalPlugins/mail/ui/settings_dialogs.py:189
+msgid "Lütfen geçerli bir e-posta adresi yazın."
+msgstr "Enter a valid email address."
+
+#: globalPlugins/mail/conversation.py:43 globalPlugins/mail/gmail_actions.py:129
+#: globalPlugins/mail/mailbox_loader.py:71 globalPlugins/mail/mailbox_loader.py:72
+#: globalPlugins/mail/mailbox_loader.py:212 globalPlugins/mail/mailbox_loader.py:213
+msgid "[Okunmadı] "
+msgstr "[Unread] "
+
+#: globalPlugins/mail/conversation.py:45
+#, python-brace-format
+msgid "{0} okunmamış, "
+msgstr "{0} unread, "
+
+#: globalPlugins/mail/conversation.py:46
+#, python-brace-format
+msgid "{0}{1}, {2} e-posta"
+msgstr "{0}{1}, {2} emails"
+
+#: globalPlugins/mail/draft_service.py:40 globalPlugins/mail/imap_client.py:54
+#: globalPlugins/mail/ui/compose_window.py:530
+msgid "Hesap bilgileri eksik."
+msgstr "Account information is missing."
+
+#: globalPlugins/mail/draft_service.py:66
+msgid "Taslak, Gmail'in Taslaklar klasörüne kaydedilemedi."
+msgstr "The draft could not be saved to Gmail's Drafts folder."
+
+#: globalPlugins/mail/folder_counts.py:28 globalPlugins/mail/ui/search_dialog.py:77
+msgid "Klasör"
+msgstr "Folder"
+
+#: globalPlugins/mail/folder_counts.py:33
+#, python-brace-format
+msgid "{0} klasörü hazır."
+msgstr "{0} folder is ready."
+
+#: globalPlugins/mail/folder_counts.py:36 globalPlugins/mail/folder_counts.py:66
+#, python-brace-format
+msgid "Toplam {0} e-posta, {1} okunmamış."
+msgstr "{0} emails in total, {1} unread."
+
+#: globalPlugins/mail/folder_counts.py:38
+#, python-brace-format
+msgid "Toplam {0} e-posta. Okunmamış e-posta yok."
+msgstr "{0} emails in total. No unread emails."
+
+#: globalPlugins/mail/folder_counts.py:40 globalPlugins/mail/folder_counts.py:67
+#, python-brace-format
+msgid "Toplam {0} e-posta."
+msgstr "{0} emails in total."
+
+#: globalPlugins/mail/folder_counts.py:42 globalPlugins/mail/folder_counts.py:69
+#, python-brace-format
+msgid "{0} okunmamış e-posta var."
+msgstr "There are {0} unread emails."
+
+#: globalPlugins/mail/folder_counts.py:46
+#, python-brace-format
+msgid "{0} e-posta listelendi."
+msgstr "{0} emails listed."
+
+#: globalPlugins/mail/folder_counts.py:48
+msgid "Gösterilecek e-posta yok."
+msgstr "No emails to display."
+
+#: globalPlugins/mail/folder_counts.py:63
+msgid "E-posta yok."
+msgstr "No emails."
+
+#: globalPlugins/mail/folders.py:41
+msgid "Gelen Kutusu"
+msgstr "Inbox"
+
+#: globalPlugins/mail/folders.py:42
+msgid "Tüm Postalar"
+msgstr "All Mail"
+
+#: globalPlugins/mail/folders.py:43
+msgid "Gönderilen E-postalar"
+msgstr "Sent Mail"
+
+#: globalPlugins/mail/folders.py:44
+msgid "Taslaklar"
+msgstr "Drafts"
+
+#: globalPlugins/mail/folders.py:45
+msgid "Çöp Kutusu"
+msgstr "Trash"
+
+#: globalPlugins/mail/folders.py:46
+msgid "Spam"
+msgstr "Spam"
+
+#: globalPlugins/mail/folders.py:126 globalPlugins/mail/ui/archive_actions.py:268
+msgid "Arşiv adı boş olamaz."
+msgstr "The archive name cannot be empty."
+
+#: globalPlugins/mail/folders.py:128
+msgid "Arşiv adı çok uzun. Lütfen en çok 80 karakterlik bir ad yazın."
+msgstr "The archive name is too long. Enter a name with no more than 80 characters."
+
+#: globalPlugins/mail/folders.py:130
+msgid "Arşiv adında satır sonu, sekme veya denetim karakteri bulunamaz."
+msgstr "The archive name cannot contain line breaks, tabs, or control characters."
+
+#: globalPlugins/mail/folders.py:132
+msgid "Lütfen harf veya rakam içeren geçerli bir arşiv adı yazın."
+msgstr "Enter a valid archive name containing at least one letter or digit."
+
+#: globalPlugins/mail/folders.py:134
+msgid "Arşiv adında eğik çizgi veya ters eğik çizgi kullanılamaz."
+msgstr "The archive name cannot contain a slash or backslash."
+
+#: globalPlugins/mail/folders.py:136
+msgid "Arşiv adında çift tırnak kullanılamaz."
+msgstr "The archive name cannot contain a double quotation mark."
+
+#: globalPlugins/mail/folders.py:142
+msgid "Bu ad Gmail sistem klasörü için ayrılmıştır. Lütfen farklı bir arşiv adı yazın."
+msgstr "This name is reserved for a Gmail system folder. Enter a different archive name."
+
+#: globalPlugins/mail/folders.py:148
+msgid "Bu adla bir arşiv klasörü zaten var."
+msgstr "An archive folder with this name already exists."
+
+#: globalPlugins/mail/gmail_actions.py:130
+msgid "Okunmadı - "
+msgstr "Unread - "
+
+#: globalPlugins/mail/header_sync.py:101
+#, python-brace-format
+msgid "E-posta başlığı boş döndü: UID {0}."
+msgstr "The email header was empty: UID {0}."
+
+#: globalPlugins/mail/header_sync.py:162
+msgid "Klasör UIDVALIDITY bilgisi alınamadığı için güvenli eşitleme başlatılamadı."
+msgstr "Safe synchronization could not start because the folder UIDVALIDITY value could not be retrieved."
+
+#: globalPlugins/mail/header_sync.py:166
+msgid "E-posta UID listesi alınamadı."
+msgstr "The email UID list could not be retrieved."
+
+#: globalPlugins/mail/header_sync.py:189
+msgid "E-posta durum bayrakları sunucudan alınamadı."
+msgstr "The email status flags could not be retrieved from the server."
+
+#: globalPlugins/mail/header_sync.py:192
+msgid "Bazı e-posta durumları sunucudan eksik döndü."
+msgstr "Some email status information was missing from the server response."
+
+#: globalPlugins/mail/header_sync.py:213
+msgid "E-posta başlıkları sunucudan alınamadı."
+msgstr "The email headers could not be retrieved from the server."
+
+#: globalPlugins/mail/header_sync.py:217
+msgid "Bazı e-posta başlıkları sunucudan eksik döndü; eşitleme daha sonra sürdürülecek."
+msgstr "Some email headers were missing from the server response; synchronization will continue later."
+
+#: globalPlugins/mail/imap_client.py:66 globalPlugins/mail/imap_client.py:70
+msgid "Gmail hesabına giriş yapılamadı. E-posta adresi veya uygulama şifresi hatalı olabilir."
+msgstr "Could not sign in to the Gmail account. The email address or app password may be incorrect."
+
+#: globalPlugins/mail/imap_client.py:73
+msgid ""
+"IMAP sunucusu zamanında yanıt vermedi. İnternet bağlantınızı veya kurum ağı kısıtlamalarını "
+"denetleyin."
+msgstr "The IMAP server did not respond in time. Check your internet connection or network restrictions."
+
+#: globalPlugins/mail/imap_client.py:76
+msgid ""
+"IMAP sunucusuyla güvenli bağlantı kurulamadı. Kurum ağı, güvenlik yazılımı veya sertifika "
+"denetimi bağlantıyı kesiyor olabilir."
+msgstr ""
+"A secure connection to the IMAP server could not be established. Your network, security software,"
+" or certificate validation may be interrupting the connection."
+
+#: globalPlugins/mail/imap_client.py:79
+msgid ""
+"IMAP sunucusuna bağlantı kurulamadı. İnternet bağlantınızı, güvenlik duvarınızı veya kurum ağı "
+"ayarlarınızı denetleyin."
+msgstr ""
+"Could not connect to the IMAP server. Check your internet connection, firewall, or network "
+"settings."
+
+#: globalPlugins/mail/imap_client.py:158
+msgid "IMAP sunucu yetenekleri alınamadı."
+msgstr "The IMAP server capabilities could not be retrieved."
+
+#: globalPlugins/mail/imap_client.py:167
+msgid ""
+"Gmail etiket desteği algılanamadı. Güvenli taşıma, arşivleme veya Çöp Kutusuna taşıma işlemi "
+"yapılamadı. Lütfen bağlantıyı denetleyin ve hesabın Gmail IMAP desteğini denetleyin."
+msgstr ""
+"Gmail label support could not be detected. Safe move, archive, or move-to-Trash operations could "
+"not be performed. Check the connection and make sure Gmail IMAP support is available for the "
+"account."
+
+#: globalPlugins/mail/imap_client.py:182
+msgid "Geçersiz e-posta kimliği algılandı. İşlem güvenlik nedeniyle durduruldu."
+msgstr "An invalid email identifier was detected. The operation was stopped for safety."
+
+#: globalPlugins/mail/imap_client.py:196
+msgid "İşlem yapılacak e-posta bulunamadı."
+msgstr "No email was found for this operation."
+
+#: globalPlugins/mail/imap_client.py:200
+msgid "Geçersiz Gmail etiket işlemi."
+msgstr "Invalid Gmail label operation."
+
+#: globalPlugins/mail/imap_client.py:216
+msgid "Kaynak klasörden kaldırılacak e-posta bulunamadı."
+msgstr "No email was found to remove from the source folder."
+
+#: globalPlugins/mail/imap_client.py:218
+msgid "E-postalar kaynak klasörden kaldırılmak üzere işaretlenemedi."
+msgstr "The emails could not be marked for removal from the source folder."
+
+#: globalPlugins/mail/imap_client.py:233 globalPlugins/mail/ui/delete_actions.py:350
+#: globalPlugins/mail/ui/delete_actions.py:379
+msgid "Silinecek e-posta bulunamadı."
+msgstr "No email was found to delete."
+
+#: globalPlugins/mail/imap_client.py:235
+msgid "E-posta kalıcı silme için işaretlenemedi."
+msgstr "The email could not be marked for permanent deletion."
+
+#: globalPlugins/mail/imap_client.py:263 globalPlugins/mail/imap_client.py:267
+msgid "Kalıcı silinecek e-posta bulunamadı."
+msgstr "No email was found for permanent deletion."
+
+#: globalPlugins/mail/imap_client.py:269
+msgid "E-postaların Gmail ileti kimlikleri alınamadı."
+msgstr "The Gmail message IDs for the emails could not be retrieved."
+
+#: globalPlugins/mail/imap_client.py:278
+msgid "E-postaların Gmail ileti kimliği doğrulanamadı. Kalıcı silme güvenlik nedeniyle durduruldu."
+msgstr ""
+"The Gmail message IDs for the emails could not be verified. Permanent deletion was stopped for "
+"safety."
+
+#: globalPlugins/mail/imap_client.py:304
+msgid "Çöp Kutusu kalıcı silme için açılamadı."
+msgstr "Trash could not be opened for permanent deletion."
+
+#: globalPlugins/mail/imap_client.py:313
+msgid "E-posta Çöp Kutusunda kalıcı silme için bulunamadı."
+msgstr "The email could not be found in Trash for permanent deletion."
+
+#: globalPlugins/mail/imap_client.py:321
+msgid "E-posta Çöp Kutusunda doğrulanamadı. Kalıcı silme güvenlik nedeniyle tamamlanmadı."
+msgstr "The email could not be verified in Trash. Permanent deletion was not completed for safety."
+
+#: globalPlugins/mail/imap_client.py:475
+msgid "Geçersiz e-posta kimliği algılandı."
+msgstr "An invalid email identifier was detected."
+
+#: globalPlugins/mail/imap_client.py:479 globalPlugins/mail/imap_client.py:481
+msgid "E-posta boyut sınırı geçersiz."
+msgstr "The email size limit is invalid."
+
+#: globalPlugins/mail/imap_client.py:484
+#, python-brace-format
+msgid "{0} boyutu alınamadı."
+msgstr "The size of {0} could not be retrieved."
+
+#: globalPlugins/mail/imap_client.py:493
+#, python-brace-format
+msgid ""
+"{0} çok büyük. Bu işlem için en çok {1:.1f} MB boyutunda e-posta işlenebilir. E-postayı Gmail web"
+" arayüzünden veya başka bir posta istemcisinden açmayı deneyin."
+msgstr ""
+"{0} is too large. Emails up to {1:.1f} MB can be processed for this operation. Try opening the "
+"email in the Gmail web interface or another email client."
+
+#: globalPlugins/mail/imap_client.py:496
+#, python-brace-format
+msgid "{0} boyutu doğrulanamadı. İşlem güvenlik nedeniyle durduruldu."
+msgstr "The size of {0} could not be verified. The operation was stopped for safety."
+
+#: globalPlugins/mail/mailbox_loader.py:62 globalPlugins/mail/mailbox_loader.py:202
+#: globalPlugins/mail/mailbox_loader.py:203 globalPlugins/mail/message_parser.py:64
+#: globalPlugins/mail/message_parser.py:139 globalPlugins/mail/ui/main_window.py:195
+#: globalPlugins/mail/ui/message_actions.py:229 globalPlugins/mail/ui/message_actions.py:424
+#: globalPlugins/mail/ui/message_actions.py:431 globalPlugins/mail/ui/message_actions.py:501
+#: globalPlugins/mail/ui/message_actions.py:507 globalPlugins/mail/ui/message_actions.py:619
+#: globalPlugins/mail/ui/message_actions.py:635 globalPlugins/mail/ui/message_actions.py:640
+#: globalPlugins/mail/ui/message_actions.py:730 globalPlugins/mail/ui/message_actions.py:736
+#: globalPlugins/mail/ui/search_dialog.py:191
+msgid "Bilinmiyor"
+msgstr "Unknown"
+
+#: globalPlugins/mail/mailbox_loader.py:65 globalPlugins/mail/mailbox_loader.py:206
+msgid "Alıcı yok"
+msgstr "No recipient"
+
+#: globalPlugins/mail/mailbox_loader.py:79 globalPlugins/mail/mailbox_loader.py:223
+#: globalPlugins/mail/ui/message_actions.py:183 globalPlugins/mail/ui/message_actions.py:240
+#: globalPlugins/mail/ui/message_actions.py:438 globalPlugins/mail/ui/message_actions.py:514
+#: globalPlugins/mail/ui/message_actions.py:645 globalPlugins/mail/ui/message_actions.py:747
+msgid "Konusuz"
+msgstr "No subject"
+
+#: globalPlugins/mail/mailbox_loader.py:124 globalPlugins/mail/ui/message_actions.py:275
+#: globalPlugins/mail/ui/message_actions.py:483 globalPlugins/mail/ui/message_actions.py:685
+#: globalPlugins/mail/ui/message_actions.py:778
+msgid "Seçili klasör açılamadı."
+msgstr "The selected folder could not be opened."
+
+#: globalPlugins/mail/mailbox_loader.py:127
+msgid "E-posta listesi alınamadı."
+msgstr "The email list could not be retrieved."
+
+#: globalPlugins/mail/notifications.py:127
+msgid "Yeni e-postanız var."
+msgstr "You have a new email."
+
+#: globalPlugins/mail/notifications.py:129
+#, python-brace-format
+msgid "{0} yeni e-postanız var."
+msgstr "You have {0} new emails."
+
+#: globalPlugins/mail/notifications.py:134
+#, python-brace-format
+msgid "Gönderen: {0}."
+msgstr "From: {0}."
+
+#: globalPlugins/mail/notifications.py:141
+#, python-brace-format
+msgid "Konu: {0}."
+msgstr "Subject: {0}."
+
+#: globalPlugins/mail/pending_deletions.py:587
+msgid "Toplu işlem için kaynak klasör açılamadı."
+msgstr "The source folder could not be opened for the bulk operation."
+
+#: globalPlugins/mail/pending_deletions.py:590
+msgid "Toplu işlem için UIDVALIDITY alınamadı."
+msgstr "UIDVALIDITY could not be retrieved for the bulk operation."
+
+#: globalPlugins/mail/pending_deletions.py:592
+msgid "Toplu işlem için klasör içeriği alınamadı."
+msgstr "The folder contents could not be retrieved for the bulk operation."
+
+#: globalPlugins/mail/pending_deletions.py:745
+msgid "Silme için klasör açılamadı."
+msgstr "The folder could not be opened for deletion."
+
+#: globalPlugins/mail/pending_deletions.py:748
+msgid "E-posta sunucuda aranamadı."
+msgstr "The email could not be searched for on the server."
+
+#: globalPlugins/mail/pending_deletions.py:758
+msgid "Silme kuyruğundaki UID artık güvenle doğrulanamıyor; işlem durduruldu."
+msgstr "The UID in the deletion queue can no longer be verified safely; the operation was stopped."
+
+#: globalPlugins/mail/pending_deletions.py:772
+msgid "Çöp Kutusu açılamadı."
+msgstr "Trash could not be opened."
+
+#: globalPlugins/mail/pending_deletions.py:774
+msgid "Çöp Kutusu denetlenemedi."
+msgstr "Trash could not be checked."
+
+#: globalPlugins/mail/pending_deletions.py:889
+msgid "Silinecek e-posta kaynak klasörde bulunamadı."
+msgstr "The email to be deleted could not be found in the source folder."
+
+#: globalPlugins/mail/pending_deletions.py:903
+msgid "Kalıcı silme için Gmail ileti kimliği bulunamadı."
+msgstr "The Gmail message ID required for permanent deletion could not be found."
+
+#: globalPlugins/mail/pending_deletions.py:916
+msgid "E-posta kalıcı silme için henüz Çöp Kutusunda doğrulanamadı."
+msgstr "The email has not yet been verified in Trash for permanent deletion."
+
+#: globalPlugins/mail/security.py:34
+msgid "Windows DPAPI bu ortamda kullanılamıyor."
+msgstr "Windows DPAPI is not available in this environment."
+
+#: globalPlugins/mail/security.py:117
+msgid "Uygulama şifresi desteklenmeyen bir biçimde saklanmış."
+msgstr "The app password was stored in an unsupported format."
+
+#: globalPlugins/mail/security.py:122
+msgid "Kayıtlı uygulama şifresi okunamadı."
+msgstr "The saved app password could not be read."
+
+#: globalPlugins/mail/settings_backup.py:47
+msgid "Ayar dosyasının içeriği geçerli değil."
+msgstr "The contents of the settings file are invalid."
+
+#: globalPlugins/mail/settings_backup.py:55
+msgid "Kayıtlı uygulama şifresi yedekleme için çözülemedi."
+msgstr "The saved app password could not be decrypted for backup."
+
+#: globalPlugins/mail/settings_backup.py:67
+msgid "Dışa aktarılacak bir Engelsiz Mail ayar dosyası bulunamadı."
+msgstr "No Engelsiz Mail settings file was found to export."
+
+#: globalPlugins/mail/settings_backup.py:70
+msgid "Dışa aktarılacak geçerli ayar bulunamadı."
+msgstr "No valid settings were found to export."
+
+#: globalPlugins/mail/settings_backup.py:84
+msgid "Yedek dosyası için geçerli bir konum seçilmedi."
+msgstr "No valid location was selected for the backup file."
+
+#: globalPlugins/mail/settings_backup.py:90
+msgid "Yedek dosyasının kaydedileceği klasör bulunamadı."
+msgstr "The folder where the backup file will be saved could not be found."
+
+#: globalPlugins/mail/settings_backup.py:94
+msgid "Ayar yedeği güvenli boyut sınırını aşıyor."
+msgstr "The settings backup exceeds the safe size limit."
+
+#: globalPlugins/mail/settings_backup.py:106
+msgid "Ayar yedeği oluşturulamadı."
+msgstr "The settings backup could not be created."
+
+#: globalPlugins/mail/settings_backup.py:118
+msgid "Bir ayar yedeği seçilmedi."
+msgstr "No settings backup was selected."
+
+#: globalPlugins/mail/settings_backup.py:121
+msgid "Seçilen yedek dosyası bulunamadı."
+msgstr "The selected backup file could not be found."
+
+#: globalPlugins/mail/settings_backup.py:124
+msgid "Seçilen yedek dosyası güvenli boyut sınırını aşıyor."
+msgstr "The selected backup file exceeds the safe size limit."
+
+#: globalPlugins/mail/settings_backup.py:128
+msgid "Bu dosya geçerli bir Engelsiz Mail ayar yedeği değil."
+msgstr "This file is not a valid Engelsiz Mail settings backup."
+
+#: globalPlugins/mail/settings_backup.py:131
+msgid "Yedekteki ayar dosyası güvenli boyut sınırını aşıyor."
+msgstr "The settings file in the backup exceeds the safe size limit."
+
+#: globalPlugins/mail/settings_backup.py:136
+msgid "Seçilen ZIP yedeği okunamadı veya bozuk."
+msgstr "The selected ZIP backup could not be read or is corrupted."
+
+#: globalPlugins/mail/settings_backup.py:141
+msgid "Yedekteki ayar dosyası okunamadı veya bozuk."
+msgstr "The settings file in the backup could not be read or is corrupted."
+
+#: globalPlugins/mail/settings_backup.py:147
+msgid "Yedek içeriği geçerli değil."
+msgstr "The backup contents are invalid."
+
+#: globalPlugins/mail/settings_backup.py:149
+msgid "Bu ZIP dosyası Engelsiz Mail ayar yedeği değil."
+msgstr "This ZIP file is not an Engelsiz Mail settings backup."
+
+#: globalPlugins/mail/settings_backup.py:153
+msgid "Yedek sürümü okunamadı."
+msgstr "The backup version could not be read."
+
+#: globalPlugins/mail/settings_backup.py:155
+msgid "Bu ayar yedeğinin sürümü desteklenmiyor."
+msgstr "This settings backup version is not supported."
+
+#: globalPlugins/mail/settings_backup.py:159
+msgid "Yedekte geçerli bir ayar bölümü bulunamadı."
+msgstr "No valid settings section was found in the backup."
+
+#: globalPlugins/mail/settings_backup.py:163
+msgid "Ayar şema sürümü okunamadı."
+msgstr "The settings schema version could not be read."
+
+#: globalPlugins/mail/settings_backup.py:165
+msgid "Yedek, bu Engelsiz Mail sürümünden daha yeni ayarlar içeriyor."
+msgstr "The backup contains settings from a newer version of Engelsiz Mail."
+
+#: globalPlugins/mail/settings_backup.py:172
+msgid "Yedekteki e-posta adresi geçerli değil."
+msgstr "The email address in the backup is invalid."
+
+#: globalPlugins/mail/settings_backup.py:174
+msgid "Yedekteki uygulama şifresi geçerli değil."
+msgstr "The app password in the backup is invalid."
+
+#: globalPlugins/mail/settings_backup.py:179
+msgid "Uygulama şifresi bu bilgisayar için şifrelenemedi."
+msgstr "The app password could not be encrypted for this computer."
+
+#: globalPlugins/mail/settings_backup.py:191
+msgid "İçe aktarılan ayarlar kaydedilemedi."
+msgstr "The imported settings could not be saved."
+
+#: globalPlugins/mail/smtp_client.py:38
+msgid "SMTP kullanıcı doğrulaması başarısız oldu. E-posta adresi veya uygulama şifresi hatalı olabilir."
+msgstr "SMTP authentication failed. The email address or app password may be incorrect."
+
+#: globalPlugins/mail/smtp_client.py:40
+msgid "SMTP sunucusu alıcı adreslerini kabul etmedi. Alıcı adreslerini denetleyin."
+msgstr "The SMTP server rejected the recipient addresses. Check the recipient addresses."
+
+#: globalPlugins/mail/smtp_client.py:42
+msgid "SMTP sunucusu gönderen adresini kabul etmedi. Hesap bilgilerini denetleyin."
+msgstr "The SMTP server rejected the sender address. Check the account information."
+
+#: globalPlugins/mail/smtp_client.py:44
+msgid "SMTP sunucusu e-posta verisini kabul etmedi. Gönderim tamamlanamadı."
+msgstr "The SMTP server rejected the email data. Sending could not be completed."
+
+#: globalPlugins/mail/smtp_client.py:48
+msgid ""
+"SMTP sunucusu uluslararası e-posta adreslerini desteklemiyor. Alıcı adresini ASCII karakterlerle "
+"yazmayı deneyin."
+msgstr ""
+"The SMTP server does not support international email addresses. Try entering the recipient "
+"address using ASCII characters."
+
+#: globalPlugins/mail/smtp_client.py:51
+msgid "SMTP sunucusu gerekli güvenli bağlantı veya kullanıcı doğrulama yöntemini desteklemiyor."
+msgstr "The SMTP server does not support the required secure connection or authentication method."
+
+#: globalPlugins/mail/smtp_client.py:55
+msgid ""
+"Sunucu adı çözümlenemedi. İnternet bağlantınızı, DNS ayarlarınızı veya kurum ağı kısıtlamalarını "
+"denetleyin."
+msgstr ""
+"The server name could not be resolved. Check your internet connection, DNS settings, or network "
+"restrictions."
+
+#: globalPlugins/mail/smtp_client.py:57
+msgid ""
+"Bağlantı zaman aşımına uğradı. İnternet bağlantınız yavaş olabilir veya kurum ağı Gmail "
+"sunucularına erişimi engelliyor olabilir."
+msgstr ""
+"The connection timed out. Your internet connection may be slow, or your network may be blocking "
+"access to Gmail servers."
+
+#: globalPlugins/mail/smtp_client.py:59
+msgid ""
+"Bağlantı sunucu veya aradaki ağ cihazı tarafından oturum aşamasında kapatıldı. Kurum ağı "
+"IMAP/SMTP oturumunu kesiyor olabilir."
+msgstr ""
+"The connection was closed during the session by the server or an intermediate network device. "
+"Your network may be interrupting the IMAP/SMTP session."
+
+#: globalPlugins/mail/smtp_client.py:61
+msgid ""
+"Güvenli bağlantı kurulamadı. Sertifika denetimi, güvenlik yazılımı veya kurum ağı bağlantıyı "
+"etkiliyor olabilir."
+msgstr ""
+"A secure connection could not be established. Certificate validation, security software, or your "
+"network may be affecting the connection."
+
+#: globalPlugins/mail/smtp_client.py:63
+msgid "Sunucu bağlantıyı reddetti. Güvenlik duvarı, kurum ağı veya geçici sunucu kısıtlaması olabilir."
+msgstr ""
+"The server refused the connection. A firewall, network restriction, or temporary server "
+"restriction may be responsible."
+
+#: globalPlugins/mail/smtp_client.py:65
+msgid ""
+"Bağlantı kurulamadı. İnternet bağlantınızı, güvenlik duvarınızı ve kurum ağı ayarlarınızı "
+"denetleyin."
+msgstr ""
+"The connection could not be established. Check your internet connection, firewall, and network "
+"settings."
+
+#: globalPlugins/mail/smtp_client.py:66
+msgid ""
+"Beklenmeyen bir bağlantı hatası oluştu. Ayrıntılı denetim için Hesap menüsündeki Bağlantıyı "
+"denetle seçeneğini kullanın."
+msgstr ""
+"An unexpected connection error occurred. For a detailed check, use Check Connection on the "
+"Account menu."
+
+#: globalPlugins/mail/smtp_client.py:132
+#, python-brace-format
+msgid "SMTP bağlantısı kurulamadı. 465 SSL sonucu: {0} 587 STARTTLS sonucu: {1}"
+msgstr ""
+"The SMTP connection could not be established. Port 465 SSL result: {0} Port 587 STARTTLS result: "
+"{1}"
+
+#: globalPlugins/mail/smtp_client.py:149 globalPlugins/mail/smtp_client.py:156
+msgid ""
+"Gönderim sonucu doğrulanamadı. E-posta gönderilmiş olabilir. Yeniden göndermeden önce Gönderilen "
+"E-postalar klasörünü denetleyin."
+msgstr ""
+"The send result could not be verified. The email may have been sent. Check the Sent Mail folder "
+"before sending it again."
+
+#: globalPlugins/mail/smtp_client.py:189 globalPlugins/mail/ui/compose_window.py:478
+#, python-brace-format
+msgid "{0} alanında geçersiz e-posta adresi bulundu: {1}"
+msgstr "An invalid email address was found in the {0} field: {1}"
+
+#: globalPlugins/mail/smtp_client.py:191
+#, python-brace-format
+msgid "{0} alanında geçerli e-posta adresi bulunamadı."
+msgstr "No valid email address was found in the {0} field."
+
+#: globalPlugins/mail/smtp_client.py:265
+#, python-brace-format
+msgid "Ek dosya bulunamadı: {0}"
+msgstr "Attachment file not found: {0}"
+
+#: globalPlugins/mail/text_utils.py:394
+msgid "Tarih yok"
+msgstr "No date"
+
+#: globalPlugins/mail/text_utils.py:396
+msgid "Ocak"
+msgstr "January"
+
+#: globalPlugins/mail/text_utils.py:397
+msgid "Şubat"
+msgstr "February"
+
+#: globalPlugins/mail/text_utils.py:398
+msgid "Mart"
+msgstr "March"
+
+#: globalPlugins/mail/text_utils.py:399
+msgid "Nisan"
+msgstr "April"
+
+#: globalPlugins/mail/text_utils.py:400
+msgid "Mayıs"
+msgstr "May"
+
+#: globalPlugins/mail/text_utils.py:401
+msgid "Haziran"
+msgstr "June"
+
+#: globalPlugins/mail/text_utils.py:402
+msgid "Temmuz"
+msgstr "July"
+
+#: globalPlugins/mail/text_utils.py:403
+msgid "Ağustos"
+msgstr "August"
+
+#: globalPlugins/mail/text_utils.py:404
+msgid "Eylül"
+msgstr "September"
+
+#: globalPlugins/mail/text_utils.py:405
+msgid "Ekim"
+msgstr "October"
+
+#: globalPlugins/mail/text_utils.py:406
+msgid "Kasım"
+msgstr "November"
+
+#: globalPlugins/mail/text_utils.py:407
+msgid "Aralık"
+msgstr "December"
+
+#: globalPlugins/mail/ui/archive_actions.py:61
+#, python-brace-format
+msgid "{0} konulu e-posta"
+msgstr "Email with subject {0}"
+
+#: globalPlugins/mail/ui/archive_actions.py:69
+#, python-brace-format
+msgid "{0} için {1} arşiv etiketi eklendi. Tüm Postalarda görünmeye devam edebilir."
+msgstr "The {1} archive label was added to {0}. It may continue to appear in All Mail."
+
+#: globalPlugins/mail/ui/archive_actions.py:70
+#, python-brace-format
+msgid "{0} e-postaya {1} arşiv etiketi eklendi. Tüm Postalarda görünmeye devam edebilirler."
+msgstr "The {1} archive label was added to {0} emails. They may continue to appear in All Mail."
+
+#: globalPlugins/mail/ui/archive_actions.py:72
+#, python-brace-format
+msgid "{0} {1} arşivine taşındı."
+msgstr "{0} was moved to the {1} archive."
+
+#: globalPlugins/mail/ui/archive_actions.py:73
+#, python-brace-format
+msgid "{0} e-posta {1} arşivine taşındı."
+msgstr "{0} emails were moved to the {1} archive."
+
+#: globalPlugins/mail/ui/archive_actions.py:103
+msgid "Hedef arşiv klasörü önbellek için açılamadı."
+msgstr "The target archive folder could not be opened for caching."
+
+#: globalPlugins/mail/ui/archive_actions.py:106
+msgid "Hedef arşiv UID listesi alınamadı."
+msgstr "The target archive UID list could not be retrieved."
+
+#: globalPlugins/mail/ui/archive_actions.py:124
+msgid ""
+"Seçili e-postaya özel arşiv etiketi eklenecektir. Tüm Postalar Gmail'in ana görünümü olduğu için "
+"e-posta burada görünmeye devam edebilir. Devam etmek istiyor musunuz?"
+msgstr ""
+"A custom archive label will be added to the selected email. Because All Mail is Gmail's main "
+"view, the email may continue to appear there. Do you want to continue?"
+
+#: globalPlugins/mail/ui/archive_actions.py:126
+#, python-brace-format
+msgid ""
+"Seçili {0} e-postaya özel arşiv etiketi eklenecektir. Tüm Postalar Gmail'in ana görünümü olduğu "
+"için e-postalar burada görünmeye devam edebilir. Devam etmek istiyor musunuz?"
+msgstr ""
+"A custom archive label will be added to the selected {0} emails. Because All Mail is Gmail's main"
+" view, the emails may continue to appear there. Do you want to continue?"
+
+#: globalPlugins/mail/ui/archive_actions.py:128
+msgid "Tüm Postalar için arşivleme uyarısı"
+msgstr "All Mail archive warning"
+
+#: globalPlugins/mail/ui/archive_actions.py:133 globalPlugins/mail/ui/message_actions.py:449
+msgid "Devam eden işlem tamamlandıktan sonra yeniden deneyin."
+msgstr "Try again after the current operation is complete."
+
+#: globalPlugins/mail/ui/archive_actions.py:136
+msgid ""
+"Arşiv klasörlerini yönetmek için önce Hesap menüsünden Bağlan seçeneğiyle Gmail hesabınızı "
+"bağlayın."
+msgstr "To manage archive folders, first connect your Gmail account using Connect on the Account menu."
+
+#: globalPlugins/mail/ui/archive_actions.py:164 globalPlugins/mail/ui/archive_actions.py:168
+#: globalPlugins/mail/ui/archive_actions.py:336
+msgid "Arşivlenecek e-posta bulunamadı."
+msgstr "No email was found to archive."
+
+#: globalPlugins/mail/ui/archive_actions.py:182 globalPlugins/mail/ui/archive_dialogs.py:54
+msgid ""
+"Lütfen hedef arşiv klasörünü seçin. Arşiv yoksa E-posta menüsünden Arşiv Klasörlerini Yönet "
+"seçeneğiyle yeni arşiv oluşturun."
+msgstr ""
+"Select the target archive folder. If no archive exists, create one using Manage Archive Folders "
+"on the Email menu."
+
+#: globalPlugins/mail/ui/archive_actions.py:192
+#, python-brace-format
+msgid "E-postalar {0} klasörüne arşivleniyor."
+msgstr "Archiving emails to the {0} folder."
+
+#: globalPlugins/mail/ui/archive_actions.py:194
+#, python-brace-format
+msgid "E-posta {0} klasörüne arşivleniyor."
+msgstr "Archiving the email to the {0} folder."
+
+#: globalPlugins/mail/ui/archive_actions.py:215
+msgid "Arşiv oluşturuluyor."
+msgstr "Creating archive."
+
+#: globalPlugins/mail/ui/archive_actions.py:234
+msgid "Arşiv klasörü oluşturulamadı."
+msgstr "The archive folder could not be created."
+
+#: globalPlugins/mail/ui/archive_actions.py:235
+#, python-brace-format
+msgid "{0} arşiv klasörü oluşturuldu."
+msgstr "Archive folder {0} was created."
+
+#: globalPlugins/mail/ui/archive_actions.py:242
+msgid "Arşiv klasörü oluşturulurken bir hata oluştu."
+msgstr "An error occurred while creating the archive folder."
+
+#: globalPlugins/mail/ui/archive_actions.py:251
+msgid "Arşiv yeniden adlandırılıyor."
+msgstr "Renaming archive."
+
+#: globalPlugins/mail/ui/archive_actions.py:275
+msgid "Arşiv klasörü yeniden adlandırılamadı."
+msgstr "The archive folder could not be renamed."
+
+#: globalPlugins/mail/ui/archive_actions.py:282
+#, python-brace-format
+msgid "{0} arşivi {1} olarak yeniden adlandırıldı."
+msgstr "Archive {0} was renamed to {1}."
+
+#: globalPlugins/mail/ui/archive_actions.py:289
+msgid "Arşiv klasörü yeniden adlandırılırken bir hata oluştu."
+msgstr "An error occurred while renaming the archive folder."
+
+#: globalPlugins/mail/ui/archive_actions.py:298
+msgid "Arşiv siliniyor."
+msgstr "Deleting archive."
+
+#: globalPlugins/mail/ui/archive_actions.py:316
+msgid "Arşiv klasörü silinemedi."
+msgstr "The archive folder could not be deleted."
+
+#: globalPlugins/mail/ui/archive_actions.py:321
+msgid "Arşiv klasörü silindi."
+msgstr "The archive folder was deleted."
+
+#: globalPlugins/mail/ui/archive_actions.py:328
+msgid "Silme işlemi sırasında bir hata oluştu."
+msgstr "An error occurred during deletion."
+
+#: globalPlugins/mail/ui/archive_actions.py:344 globalPlugins/mail/ui/main_window.py:2071
+msgid "Kaynak klasör açılamadı."
+msgstr "The source folder could not be opened."
+
+#: globalPlugins/mail/ui/archive_actions.py:348
+msgid "Hedef arşiv etiketi hazırlanamadı."
+msgstr "The target archive label could not be prepared."
+
+#: globalPlugins/mail/ui/archive_actions.py:354
+msgid "E-postalar hedef arşiv etiketine eklenemedi."
+msgstr "The emails could not be added to the target archive label."
+
+#: globalPlugins/mail/ui/archive_actions.py:355 globalPlugins/mail/ui/main_window.py:2088
+msgid "E-postalar kaynak etiketinden kaldırılamadı."
+msgstr "The emails could not be removed from the source label."
+
+#: globalPlugins/mail/ui/archive_actions.py:379 globalPlugins/mail/ui/archive_actions.py:383
+#: globalPlugins/mail/ui/archive_actions.py:387 globalPlugins/mail/ui/main_window.py:2104
+#: globalPlugins/mail/ui/main_window.py:2108 globalPlugins/mail/ui/main_window.py:2112
+msgid "Liste yenileniyor..."
+msgstr "Refreshing the list..."
+
+#: globalPlugins/mail/ui/archive_actions.py:386
+msgid "Arşivleme sırasında bir hata oluştu."
+msgstr "An error occurred while archiving."
+
+#: globalPlugins/mail/ui/archive_actions.py:392
+msgid "Arşivlemek için önce bir klasöre girin ve e-posta seçin."
+msgstr "To archive, first open a folder and select an email."
+
+#: globalPlugins/mail/ui/archive_actions.py:400
+msgid "Lütfen arşive göndermek için e-posta seçin."
+msgstr "Select an email to send to the archive."
+
+#: globalPlugins/mail/ui/archive_dialogs.py:24
+msgid "Engelsiz Mail - Arşive gönderme"
+msgstr "Engelsiz Mail - Send to Archive"
+
+#: globalPlugins/mail/ui/archive_dialogs.py:29
+msgid "&Hedef arşivi seçin:"
+msgstr "&Select target archive:"
+
+#: globalPlugins/mail/ui/archive_dialogs.py:32
+msgid "Hedef arşiv klasörleri"
+msgstr "Target archive folders"
+
+#: globalPlugins/mail/ui/archive_dialogs.py:38 globalPlugins/mail/ui/main_window.py:2354
+msgid "&Taşı"
+msgstr "&Move"
+
+#: globalPlugins/mail/ui/archive_dialogs.py:42 globalPlugins/mail/ui/archive_dialogs.py:78
+#: globalPlugins/mail/ui/archive_dialogs.py:116 globalPlugins/mail/ui/compose_window.py:160
+#: globalPlugins/mail/ui/contacts_window.py:51 globalPlugins/mail/ui/contacts_window.py:302
+#: globalPlugins/mail/ui/feedback_dialog.py:110 globalPlugins/mail/ui/settings_dialogs.py:134
+#: globalPlugins/mail/ui/settings_dialogs.py:350 globalPlugins/mail/ui/settings_dialogs.py:434
+#: globalPlugins/mail/ui/settings_transfer_dialog.py:59 globalPlugins/mail/ui/signature_dialog.py:46
+msgid "İ&ptal"
+msgstr "&Cancel"
+
+#: globalPlugins/mail/ui/archive_dialogs.py:63
+msgid "Engelsiz Mail - Yeni arşiv klasörü"
+msgstr "Engelsiz Mail - New Archive Folder"
+
+#: globalPlugins/mail/ui/archive_dialogs.py:68
+msgid "&Yeni arşiv klasörünün adını yazın:"
+msgstr "&Enter the name of the new archive folder:"
+
+#: globalPlugins/mail/ui/archive_dialogs.py:70 globalPlugins/mail/ui/archive_dialogs.py:108
+msgid "Yeni arşiv klasörü adı"
+msgstr "New archive folder name"
+
+#: globalPlugins/mail/ui/archive_dialogs.py:74
+msgid "&Oluştur"
+msgstr "C&reate"
+
+#: globalPlugins/mail/ui/archive_dialogs.py:100
+msgid "Engelsiz Mail - Arşiv klasörünü yeniden adlandır"
+msgstr "Engelsiz Mail - Rename Archive Folder"
+
+#: globalPlugins/mail/ui/archive_dialogs.py:106
+msgid "&Yeni arşiv klasörü adını yazın:"
+msgstr "&Enter the new archive folder name:"
+
+#: globalPlugins/mail/ui/archive_dialogs.py:112 globalPlugins/mail/ui/settings_dialogs.py:346
+#: globalPlugins/mail/ui/settings_dialogs.py:430
+msgid "&Tamam"
+msgstr "&OK"
+
+#: globalPlugins/mail/ui/archive_dialogs.py:143
+msgid "Arşiv adı değişmedi. Lütfen farklı bir ad yazın veya iptal düğmesine basın."
+msgstr "The archive name has not changed. Enter a different name or press Cancel."
+
+#: globalPlugins/mail/ui/archive_dialogs.py:157
+msgid "Engelsiz Mail - Arşiv klasörlerini yönet"
+msgstr "Engelsiz Mail - Manage Archive Folders"
+
+#: globalPlugins/mail/ui/archive_dialogs.py:161
+msgid "&Arşiv klasörleri:"
+msgstr "&Archive folders:"
+
+#: globalPlugins/mail/ui/archive_dialogs.py:164
+msgid "Arşiv klasörleri listesi"
+msgstr "Archive folders list"
+
+#: globalPlugins/mail/ui/archive_dialogs.py:171
+msgid "&Yeni oluştur"
+msgstr "&Create new"
+
+#: globalPlugins/mail/ui/archive_dialogs.py:175
+msgid "Yeniden &adlandır"
+msgstr "Re&name"
+
+#: globalPlugins/mail/ui/archive_dialogs.py:179 globalPlugins/mail/ui/contacts_window.py:98
+#: globalPlugins/mail/ui/main_window.py:534 globalPlugins/mail/ui/main_window.py:581
+#: globalPlugins/mail/ui/main_window.py:2360 globalPlugins/mail/ui/message_view.py:107
+#: globalPlugins/mail/ui/signature_dialog.py:44
+msgid "&Sil"
+msgstr "&Delete"
+
+#: globalPlugins/mail/ui/archive_dialogs.py:183 globalPlugins/mail/ui/contacts_window.py:99
+#: globalPlugins/mail/ui/message_view.py:111 globalPlugins/mail/ui/other_addons.py:346
+#: globalPlugins/mail/ui/search_dialog.py:85 globalPlugins/mail/ui/settings_dialogs.py:293
+msgid "&Kapat"
+msgstr "Cl&ose"
+
+#: globalPlugins/mail/ui/archive_dialogs.py:213
+msgid "Lütfen yeniden adlandırmak istediğiniz arşivi seçin."
+msgstr "Select the archive you want to rename."
+
+#: globalPlugins/mail/ui/archive_dialogs.py:238
+msgid "Lütfen silmek istediğiniz arşivi seçin."
+msgstr "Select the archive you want to delete."
+
+#: globalPlugins/mail/ui/archive_dialogs.py:242
+#, python-brace-format
+msgid "{0} adlı arşiv klasörünü silmek istiyor musunuz?"
+msgstr "Do you want to delete the archive folder named {0}?"
+
+#: globalPlugins/mail/ui/archive_dialogs.py:243
+msgid "Arşiv silme onayı"
+msgstr "Confirm archive deletion"
+
+#: globalPlugins/mail/ui/archive_dialogs.py:254 globalPlugins/mail/ui/delete_actions.py:256
+msgid "Kalıcı silme onayı"
+msgstr "Confirm permanent deletion"
+
+#: globalPlugins/mail/ui/archive_dialogs.py:259
+msgid ""
+"\n"
+"\n"
+"Bu işlem geri alınamaz."
+msgstr ""
+"\n"
+"\n"
+"This action cannot be undone."
+
+#: globalPlugins/mail/ui/archive_dialogs.py:266 globalPlugins/mail/ui/delete_actions.py:216
+msgid "Bu uyarıyı bir daha gösterme"
+msgstr "Do not show this warning again"
+
+#: globalPlugins/mail/ui/archive_dialogs.py:270 globalPlugins/mail/ui/delete_actions.py:220
+msgid "&Evet"
+msgstr "&Yes"
+
+#: globalPlugins/mail/ui/archive_dialogs.py:271 globalPlugins/mail/ui/delete_actions.py:221
+msgid "&Hayır"
+msgstr "&No"
+
+#: globalPlugins/mail/ui/compose_window.py:50
+msgid "Engelsiz Mail - E-posta yaz"
+msgstr "Engelsiz Mail - Compose Email"
+
+#: globalPlugins/mail/ui/compose_window.py:74
+msgid "&Kime (e-posta adresi):"
+msgstr "&To (email address):"
+
+#: globalPlugins/mail/ui/compose_window.py:82
+msgid "Alıcı e-posta adresleri"
+msgstr "Recipient email addresses"
+
+#: globalPlugins/mail/ui/compose_window.py:84
+msgid "Kişilerden &seç"
+msgstr "Select from c&ontacts"
+
+#: globalPlugins/mail/ui/compose_window.py:90
+msgid "&Bilgi (e-posta adresi):"
+msgstr "C&c (email address):"
+
+#: globalPlugins/mail/ui/compose_window.py:92
+msgid "Bilgi alıcılarının e-posta adresleri"
+msgstr "Cc recipient email addresses"
+
+#: globalPlugins/mail/ui/compose_window.py:97
+msgid "&Gizli (e-posta adresi):"
+msgstr "&Bcc (email address):"
+
+#: globalPlugins/mail/ui/compose_window.py:99
+msgid "Gizli alıcıların e-posta adresleri"
+msgstr "Bcc recipient email addresses"
+
+#: globalPlugins/mail/ui/compose_window.py:104
+msgid "K&onu:"
+msgstr "&Subject:"
+
+#: globalPlugins/mail/ui/compose_window.py:106
+msgid "E-posta konusu"
+msgstr "Email subject"
+
+#: globalPlugins/mail/ui/compose_window.py:110
+msgid "&E-posta metni:"
+msgstr "&Email body:"
+
+#: globalPlugins/mail/ui/compose_window.py:112
+msgid "E-posta metni"
+msgstr "Email body"
+
+#: globalPlugins/mail/ui/compose_window.py:116
+msgid "&Ekler:"
+msgstr "&Attachments:"
+
+#: globalPlugins/mail/ui/compose_window.py:118
+msgid "Ekler listesi"
+msgstr "Attachments list"
+
+#: globalPlugins/mail/ui/compose_window.py:137
+msgid "Dosya e&kle"
+msgstr "Add &file"
+
+#: globalPlugins/mail/ui/compose_window.py:141
+msgid "Eki k&aldır"
+msgstr "&Remove attachment"
+
+#: globalPlugins/mail/ui/compose_window.py:145
+msgid "Gönder\tCtrl+Enter"
+msgstr "Send\tCtrl+Enter"
+
+#: globalPlugins/mail/ui/compose_window.py:149
+msgid "Taslaklara &kaydet"
+msgstr "Save to &Drafts"
+
+#: globalPlugins/mail/ui/compose_window.py:154
+msgid "Taslağı &sil"
+msgstr "De&lete draft"
+
+#: globalPlugins/mail/ui/compose_window.py:185 globalPlugins/mail/ui/compose_window.py:364
+#: globalPlugins/mail/ui/compose_window.py:388
+msgid "E-posta gönderiliyor. Lütfen işlemin tamamlanmasını bekleyin."
+msgstr "Sending email. Please wait for the operation to complete."
+
+#: globalPlugins/mail/ui/compose_window.py:193 globalPlugins/mail/ui/compose_window.py:367
+#: globalPlugins/mail/ui/compose_window.py:461
+msgid "Taslak kaydediliyor. Lütfen işlemin tamamlanmasını bekleyin."
+msgstr "Saving draft. Please wait for the operation to complete."
+
+#: globalPlugins/mail/ui/compose_window.py:205
+msgid "Kayıtlı kişi yok. E-posta menüsünden Kişiler seçeneğiyle kişi oluşturabilirsiniz."
+msgstr "No saved contacts. You can create a contact using Contacts on the Email menu."
+
+#: globalPlugins/mail/ui/compose_window.py:224
+msgid "Seçilen kişilerde geçerli e-posta adresi bulunamadı."
+msgstr "No valid email address was found in the selected contacts."
+
+#: globalPlugins/mail/ui/compose_window.py:239
+#, python-brace-format
+msgid "{0} kişi alıcı alanına eklendi."
+msgstr "{0} contacts were added to the recipient field."
+
+#: globalPlugins/mail/ui/compose_window.py:245
+msgid "Eklenecek dosyaları seçin"
+msgstr "Select files to attach"
+
+#: globalPlugins/mail/ui/compose_window.py:262
+#, python-brace-format
+msgid "{0} dosya eklendi."
+msgstr "{0} files added."
+
+#: globalPlugins/mail/ui/compose_window.py:272
+msgid "Lütfen kaldırmak istediğiniz eki listeden seçin."
+msgstr "Select the attachment you want to remove from the list."
+
+#: globalPlugins/mail/ui/compose_window.py:278
+#, python-brace-format
+msgid "Ek kaldırıldı: {0}"
+msgstr "Attachment removed: {0}"
+
+#: globalPlugins/mail/ui/compose_window.py:291
+msgid "Taslak silme işlemi başlatılamadı."
+msgstr "The draft deletion operation could not be started."
+
+#: globalPlugins/mail/ui/compose_window.py:374
+msgid "Bu e-posta gönderilmedi. Değişiklikler taslaklara kaydedilsin mi?"
+msgstr "This email has not been sent. Save the changes to Drafts?"
+
+#: globalPlugins/mail/ui/compose_window.py:375
+msgid "Taslağı kaydet"
+msgstr "Save draft"
+
+#: globalPlugins/mail/ui/compose_window.py:393
+msgid "Kaydedilecek taslak içeriği bulunamadı."
+msgstr "No draft content was found to save."
+
+#: globalPlugins/mail/ui/compose_window.py:408
+msgid "Taslaklara kaydediliyor."
+msgstr "Saving to Drafts."
+
+#: globalPlugins/mail/ui/compose_window.py:432
+msgid "Taslak kaydedilemedi. Lütfen bağlantınızı ve Google uygulama şifrenizi denetleyin."
+msgstr "The draft could not be saved. Check your connection and Google app password."
+
+#: globalPlugins/mail/ui/compose_window.py:444
+msgid "Taslaklara kaydedildi. Eski taslak kaldırılıyor."
+msgstr "Saved to Drafts. Removing the old draft."
+
+#: globalPlugins/mail/ui/compose_window.py:446
+msgid "Taslaklara kaydedildi."
+msgstr "Saved to Drafts."
+
+#: globalPlugins/mail/ui/compose_window.py:482
+#, python-brace-format
+msgid "{0} alanında geçerli bir e-posta adresi bulunamadı."
+msgstr "No valid email address was found in the {0} field."
+
+#: globalPlugins/mail/ui/compose_window.py:495
+msgid "Lütfen geçerli en az bir alıcı adresi girin."
+msgstr "Enter at least one valid recipient address."
+
+#: globalPlugins/mail/ui/compose_window.py:522
+msgid "E-postanız gönderiliyor."
+msgstr "Sending your email."
+
+#: globalPlugins/mail/ui/compose_window.py:556
+msgid "Gönderim başarısız oldu. Lütfen bağlantınızı ve Google uygulama şifrenizi denetleyin."
+msgstr "Sending failed. Check your connection and Google app password."
+
+#: globalPlugins/mail/ui/compose_window.py:585
+msgid "E-posta başarıyla gönderildi."
+msgstr "Email sent successfully."
+
+#: globalPlugins/mail/ui/contacts_window.py:30 globalPlugins/mail/ui/contacts_window.py:186
+msgid "Kişi Oluştur"
+msgstr "Create Contact"
+
+#: globalPlugins/mail/ui/contacts_window.py:34 globalPlugins/mail/ui/feedback_dialog.py:53
+msgid "&Ad:"
+msgstr "&First name:"
+
+#: globalPlugins/mail/ui/contacts_window.py:36
+msgid "Kişi adı"
+msgstr "Contact first name"
+
+#: globalPlugins/mail/ui/contacts_window.py:39 globalPlugins/mail/ui/feedback_dialog.py:58
+msgid "&Soyad:"
+msgstr "&Last name:"
+
+#: globalPlugins/mail/ui/contacts_window.py:41
+msgid "Kişi soyadı"
+msgstr "Contact last name"
+
+#: globalPlugins/mail/ui/contacts_window.py:44
+msgid "&E-posta adresi:"
+msgstr "&Email address:"
+
+#: globalPlugins/mail/ui/contacts_window.py:46
+msgid "Kişi e-posta adresi"
+msgstr "Contact email address"
+
+#: globalPlugins/mail/ui/contacts_window.py:50 globalPlugins/mail/ui/signature_dialog.py:45
+msgid "&Kaydet"
+msgstr "Sa&ve"
+
+#: globalPlugins/mail/ui/contacts_window.py:72
+msgid "Lütfen ad veya soyad alanlarından en az birini yazın."
+msgstr "Enter at least a first name or a last name."
+
+#: globalPlugins/mail/ui/contacts_window.py:84
+msgid "Engelsiz Mail - Kişiler"
+msgstr "Engelsiz Mail - Contacts"
+
+#: globalPlugins/mail/ui/contacts_window.py:87 globalPlugins/mail/ui/contacts_window.py:283
+msgid "&Kişiler:"
+msgstr "&Contacts:"
+
+#: globalPlugins/mail/ui/contacts_window.py:89
+msgid "Kişiler listesi"
+msgstr "Contacts list"
+
+#: globalPlugins/mail/ui/contacts_window.py:96 globalPlugins/mail/ui/contacts_window.py:301
+msgid "&Ekle"
+msgstr "&Add"
+
+#: globalPlugins/mail/ui/contacts_window.py:97
+msgid "&Düzenle"
+msgstr "Ed&it"
+
+#: globalPlugins/mail/ui/contacts_window.py:148
+msgid "Rehberinizde kayıtlı kişi bulunamadı."
+msgstr "No contacts are saved in your address book."
+
+#: globalPlugins/mail/ui/contacts_window.py:149
+#, python-brace-format
+msgid "Rehberde {0} kişi listelendi."
+msgstr "{0} contacts listed in the address book."
+
+#: globalPlugins/mail/ui/contacts_window.py:204
+msgid "Kişi kaydedilemedi. Lütfen dosya izinlerini denetleyin."
+msgstr "The contact could not be saved. Check file permissions."
+
+#: globalPlugins/mail/ui/contacts_window.py:208
+msgid "Kişi kaydedildi."
+msgstr "Contact saved."
+
+#: globalPlugins/mail/ui/contacts_window.py:213
+msgid "Kişi kaydedilemedi."
+msgstr "The contact could not be saved."
+
+#: globalPlugins/mail/ui/contacts_window.py:218
+msgid "Düzenlenecek kişi seçilmedi."
+msgstr "No contact was selected to edit."
+
+#: globalPlugins/mail/ui/contacts_window.py:221
+msgid "Kişi Düzenle"
+msgstr "Edit Contact"
+
+#: globalPlugins/mail/ui/contacts_window.py:239
+msgid "Kişi güncellenemedi. Lütfen dosya izinlerini denetleyin."
+msgstr "The contact could not be updated. Check file permissions."
+
+#: globalPlugins/mail/ui/contacts_window.py:243
+msgid "Kişi güncellendi."
+msgstr "Contact updated."
+
+#: globalPlugins/mail/ui/contacts_window.py:248
+msgid "Kişi güncellenemedi."
+msgstr "The contact could not be updated."
+
+#: globalPlugins/mail/ui/contacts_window.py:253
+msgid "Silinecek kişi seçilmedi."
+msgstr "No contact was selected to delete."
+
+#: globalPlugins/mail/ui/contacts_window.py:256
+msgid "seçili kişi"
+msgstr "selected contact"
+
+#: globalPlugins/mail/ui/contacts_window.py:257
+#, python-brace-format
+msgid "{0} silinsin mi?"
+msgstr "Delete {0}?"
+
+#: globalPlugins/mail/ui/contacts_window.py:257
+msgid "Kişiyi sil"
+msgstr "Delete contact"
+
+#: globalPlugins/mail/ui/contacts_window.py:265
+msgid "Kişi silinemedi. Lütfen dosya izinlerini denetleyin."
+msgstr "The contact could not be deleted. Check file permissions."
+
+#: globalPlugins/mail/ui/contacts_window.py:269
+msgid "Kişi silindi."
+msgstr "Contact deleted."
+
+#: globalPlugins/mail/ui/contacts_window.py:272
+msgid "Kişi silinemedi."
+msgstr "The contact could not be deleted."
+
+#: globalPlugins/mail/ui/contacts_window.py:277
+msgid "Kişilerden alıcı seç"
+msgstr "Select recipients from contacts"
+
+#: globalPlugins/mail/ui/contacts_window.py:290
+msgid "Seçilecek kişiler listesi"
+msgstr "Contacts available for selection"
+
+#: globalPlugins/mail/ui/contacts_window.py:291
+msgid "Durum"
+msgstr "Status"
+
+#: globalPlugins/mail/ui/contacts_window.py:297
+msgid ""
+"Boşluk tuşuyla kişileri işaretleyip kaldırabilirsiniz. Ekle düğmesi işaretli kişileri alıcı "
+"alanına ekler."
+msgstr ""
+"Use Space to select or clear contacts. The Add button adds selected contacts to the recipient "
+"field."
+
+#: globalPlugins/mail/ui/contacts_window.py:319 globalPlugins/mail/ui/contacts_window.py:345
+msgid "İşaretli"
+msgstr "Selected"
+
+#: globalPlugins/mail/ui/contacts_window.py:319 globalPlugins/mail/ui/contacts_window.py:345
+msgid "İşaretli değil"
+msgstr "Not selected"
+
+#: globalPlugins/mail/ui/contacts_window.py:334
+msgid "işaretli"
+msgstr "selected"
+
+#: globalPlugins/mail/ui/contacts_window.py:334
+msgid "işaretli değil"
+msgstr "not selected"
+
+#: globalPlugins/mail/ui/contacts_window.py:336
+#, python-brace-format
+msgid "{0}, {1}."
+msgstr "{0}, {1}."
+
+#: globalPlugins/mail/ui/contacts_window.py:362
+msgid "Kayıtlı kişi yok."
+msgstr "No saved contacts."
+
+#: globalPlugins/mail/ui/contacts_window.py:366
+msgid "Lütfen boşluk tuşuyla en az bir kişi işaretleyin."
+msgstr "Select at least one contact using the Space key."
+
+#: globalPlugins/mail/ui/contacts_window.py:371
+msgid "Geçerli kişi seçilemedi."
+msgstr "No valid contact could be selected."
+
+#: globalPlugins/mail/ui/delete_actions.py:61
+msgid "Silme hatası"
+msgstr "Deletion error"
+
+#: globalPlugins/mail/ui/delete_actions.py:64 globalPlugins/mail/ui/delete_actions.py:71
+msgid "E-posta silinemedi."
+msgstr "The email could not be deleted."
+
+#: globalPlugins/mail/ui/delete_actions.py:115
+msgid "Silme işlemi yerel olarak kaydedilemedi."
+msgstr "The deletion operation could not be recorded locally."
+
+#: globalPlugins/mail/ui/delete_actions.py:116
+msgid "E-posta Silinemedi"
+msgstr "Email Could Not Be Deleted"
+
+#: globalPlugins/mail/ui/delete_actions.py:180
+msgid "Bu taslağı kalıcı olarak silmek istiyor musunuz?"
+msgstr "Do you want to permanently delete this draft?"
+
+#: globalPlugins/mail/ui/delete_actions.py:182
+#, python-brace-format
+msgid "Seçili {0} taslağı kalıcı olarak silmek istiyor musunuz?"
+msgstr "Do you want to permanently delete the selected {0} drafts?"
+
+#: globalPlugins/mail/ui/delete_actions.py:186
+msgid "Taslak silme onayı"
+msgstr "Confirm draft deletion"
+
+#: globalPlugins/mail/ui/delete_actions.py:206 globalPlugins/mail/ui/delete_actions.py:277
+msgid "Silme onayı"
+msgstr "Confirm deletion"
+
+#: globalPlugins/mail/ui/delete_actions.py:249 globalPlugins/mail/ui/delete_actions.py:307
+#: globalPlugins/mail/ui/main_window.py:1985
+msgid "Seçili"
+msgstr "Selected"
+
+#: globalPlugins/mail/ui/delete_actions.py:252
+#, python-brace-format
+msgid "{0} e-posta Çöp Kutusundan kalıcı olarak silinecektir. Devam etmek istiyor musunuz?"
+msgstr "{0} emails will be permanently deleted from Trash. Do you want to continue?"
+
+#: globalPlugins/mail/ui/delete_actions.py:254
+#, python-brace-format
+msgid "Seçili {0} e-posta Çöp Kutusundan kalıcı olarak silinecektir. Devam etmek istiyor musunuz?"
+msgstr "The selected {0} emails will be permanently deleted from Trash. Do you want to continue?"
+
+#: globalPlugins/mail/ui/delete_actions.py:259
+#, python-brace-format
+msgid "{0} spam e-postası Çöp Kutusuna taşınacaktır. Devam etmek istiyor musunuz?"
+msgstr "{0} spam emails will be moved to Trash. Do you want to continue?"
+
+#: globalPlugins/mail/ui/delete_actions.py:261
+#, python-brace-format
+msgid "Seçili {0} spam e-postası Çöp Kutusuna taşınacaktır. Devam etmek istiyor musunuz?"
+msgstr "The selected {0} spam emails will be moved to Trash. Do you want to continue?"
+
+#: globalPlugins/mail/ui/delete_actions.py:263
+msgid "Spam silme uyarısı"
+msgstr "Spam deletion warning"
+
+#: globalPlugins/mail/ui/delete_actions.py:266
+#, python-brace-format
+msgid ""
+"{0} e-posta Tüm Postalar klasöründen Çöp Kutusuna taşınacaktır. Bu işlem, Gmail hesabınızda "
+"e-postayı Çöp Kutusuna taşıyabilir. Devam etmek istiyor musunuz?"
+msgstr ""
+"{0} emails will be moved from All Mail to Trash. This may move the emails to Trash in your Gmail "
+"account. Do you want to continue?"
+
+#: globalPlugins/mail/ui/delete_actions.py:268
+#, python-brace-format
+msgid ""
+"Seçili {0} e-posta Tüm Postalar klasöründen Çöp Kutusuna taşınacaktır. Bu işlem, Gmail "
+"hesabınızda e-postaları Çöp Kutusuna taşıyabilir. Devam etmek istiyor musunuz?"
+msgstr ""
+"The selected {0} emails will be moved from All Mail to Trash. This may move the emails to Trash "
+"in your Gmail account. Do you want to continue?"
+
+#: globalPlugins/mail/ui/delete_actions.py:270
+msgid "Tüm Postalar silme uyarısı"
+msgstr "All Mail deletion warning"
+
+#: globalPlugins/mail/ui/delete_actions.py:273
+#, python-brace-format
+msgid "{0} e-postayı Çöp Kutusuna taşımak istiyor musunuz?"
+msgstr "Do you want to move {0} emails to Trash?"
+
+#: globalPlugins/mail/ui/delete_actions.py:275
+#, python-brace-format
+msgid "Seçili {0} e-postayı Çöp Kutusuna taşımak istiyor musunuz?"
+msgstr "Do you want to move the selected {0} emails to Trash?"
+
+#: globalPlugins/mail/ui/delete_actions.py:310
+#, python-brace-format
+msgid "{0} taslak kalıcı olarak silinecektir. Devam etmek istiyor musunuz?"
+msgstr "{0} drafts will be permanently deleted. Do you want to continue?"
+
+#: globalPlugins/mail/ui/delete_actions.py:312
+#, python-brace-format
+msgid "Seçili {0} taslak kalıcı olarak silinecektir. Devam etmek istiyor musunuz?"
+msgstr "The selected {0} drafts will be permanently deleted. Do you want to continue?"
+
+#: globalPlugins/mail/ui/delete_actions.py:316
+#, python-brace-format
+msgid "{0} e-posta kalıcı olarak silinecektir. Devam etmek istiyor musunuz?"
+msgstr "{0} emails will be permanently deleted. Do you want to continue?"
+
+#: globalPlugins/mail/ui/delete_actions.py:318
+#, python-brace-format
+msgid "Seçili {0} e-posta kalıcı olarak silinecektir. Devam etmek istiyor musunuz?"
+msgstr "The selected {0} emails will be permanently deleted. Do you want to continue?"
+
+#: globalPlugins/mail/ui/delete_actions.py:357 globalPlugins/mail/ui/delete_actions.py:412
+#: globalPlugins/mail/ui/draft_actions.py:107
+msgid "Taslak siliniyor."
+msgstr "Deleting draft."
+
+#: globalPlugins/mail/ui/delete_actions.py:402
+msgid "Lütfen silmek için e-posta seçin."
+msgstr "Select an email to delete."
+
+#: globalPlugins/mail/ui/delete_actions.py:412
+msgid "Taslaklar siliniyor."
+msgstr "Deleting drafts."
+
+#: globalPlugins/mail/ui/delete_actions.py:435
+msgid "Lütfen kalıcı olarak silmek için e-posta seçin."
+msgstr "Select an email to delete permanently."
+
+#: globalPlugins/mail/ui/delete_actions.py:476 globalPlugins/mail/ui/main_window.py:1515
+#: globalPlugins/mail/ui/main_window.py:2515 globalPlugins/mail/ui/main_window.py:2537
+msgid "Bu klasörde gösterilecek e-posta yok."
+msgstr "There are no emails to display in this folder."
+
+#: globalPlugins/mail/ui/draft_actions.py:67
+msgid "Engelsiz Mail - Taslak Düzenle"
+msgstr "Engelsiz Mail - Edit Draft"
+
+#: globalPlugins/mail/ui/draft_actions.py:80
+msgid "Taslak kaldırıldı."
+msgstr "Draft removed."
+
+#: globalPlugins/mail/ui/draft_actions.py:101 globalPlugins/mail/ui/draft_actions.py:150
+msgid "Silinecek taslak bulunamadı."
+msgstr "No draft was found to delete."
+
+#: globalPlugins/mail/ui/draft_actions.py:161
+#, python-brace-format
+msgid "Taslaklar klasörü açılamadı: {0}"
+msgstr "The Drafts folder could not be opened: {0}"
+
+#: globalPlugins/mail/ui/draft_actions.py:166
+#, python-brace-format
+msgid "Taslak UID bu klasörde bulunamadı: {0}"
+msgstr "The draft UID was not found in this folder: {0}"
+
+#: globalPlugins/mail/ui/draft_actions.py:171
+#, python-brace-format
+msgid "Taslak kalıcı olarak kaldırılamadı: {0}"
+msgstr "The draft could not be removed permanently: {0}"
+
+#: globalPlugins/mail/ui/draft_actions.py:188
+#, python-brace-format
+msgid "Taslak silme sonrasında hâlâ görünüyor: {0}"
+msgstr "The draft is still visible after deletion: {0}"
+
+#: globalPlugins/mail/ui/draft_actions.py:190
+#, python-brace-format
+msgid "Taslak silme denemesi başarısız: {0}"
+msgstr "Draft deletion attempt failed: {0}"
+
+#: globalPlugins/mail/ui/draft_actions.py:196
+msgid "Taslak, Gmail tarafından kaldırılmadı. Liste yenileniyor."
+msgstr "The draft was not removed by Gmail. Refreshing the list."
+
+#: globalPlugins/mail/ui/draft_actions.py:219 globalPlugins/mail/ui/draft_actions.py:229
+msgid "Taslak Silinemedi"
+msgstr "Draft Could Not Be Deleted"
+
+#: globalPlugins/mail/ui/draft_actions.py:228
+msgid "Taslak silinemedi."
+msgstr "The draft could not be deleted."
+
+#: globalPlugins/mail/ui/feedback_dialog.py:38
+msgid "Engelsiz Mail - Öneri ve görüş bildir"
+msgstr "Engelsiz Mail - Send Feedback"
+
+#: globalPlugins/mail/ui/feedback_dialog.py:46
+msgid ""
+"İletişim formu\n"
+"Öneri, görüş ve düşüncelerinizi bize iletebilirsiniz.\n"
+"Bildiriminiz, bağlı Gmail hesabınız üzerinden gönderilecektir.\n"
+"Bildiriminiz değerlendirilecek ve size en kısa sürede yanıt verilecektir."
+msgstr ""
+"Contact form\n"
+"You can send us your suggestions, feedback, and comments.\n"
+"Your submission will be sent through your connected Gmail account.\n"
+"Your feedback will be reviewed and we will respond as soon as possible."
+
+#: globalPlugins/mail/ui/feedback_dialog.py:55
+msgid "Ad"
+msgstr "First name"
+
+#: globalPlugins/mail/ui/feedback_dialog.py:60
+msgid "Soyad"
+msgstr "Last name"
+
+#: globalPlugins/mail/ui/feedback_dialog.py:63
+msgid "Yanıt için &e-posta adresiniz:"
+msgstr "Your &email address for replies:"
+
+#: globalPlugins/mail/ui/feedback_dialog.py:67
+msgid "Lütfen e-posta adresinizi doğru yazdığınızdan emin olun."
+msgstr "Make sure you entered your email address correctly."
+
+#: globalPlugins/mail/ui/feedback_dialog.py:74
+msgid "Yanıt için e-posta adresi"
+msgstr "Email address for replies"
+
+#: globalPlugins/mail/ui/feedback_dialog.py:77
+msgid "&Konu:"
+msgstr "&Subject:"
+
+#: globalPlugins/mail/ui/feedback_dialog.py:81
+msgid "Bildiriminizin konusu"
+msgstr "Subject of your feedback"
+
+#: globalPlugins/mail/ui/feedback_dialog.py:88 globalPlugins/mail/ui/search_dialog.py:76
+msgid "Konu"
+msgstr "Subject"
+
+#: globalPlugins/mail/ui/feedback_dialog.py:91
+msgid "&Bildirim metni:"
+msgstr "Feedback &message:"
+
+#: globalPlugins/mail/ui/feedback_dialog.py:95
+msgid "Bildirim metniniz"
+msgstr "Your feedback message"
+
+#: globalPlugins/mail/ui/feedback_dialog.py:102
+msgid "Bildirim metni"
+msgstr "Feedback message"
+
+#: globalPlugins/mail/ui/feedback_dialog.py:106
+msgid "&Gönder"
+msgstr "Sen&d"
+
+#: globalPlugins/mail/ui/feedback_dialog.py:153
+msgid "Lütfen ad alanını doldurun."
+msgstr "Enter your first name."
+
+#: globalPlugins/mail/ui/feedback_dialog.py:156
+msgid "Lütfen soyad alanını doldurun."
+msgstr "Enter your last name."
+
+#: globalPlugins/mail/ui/feedback_dialog.py:159
+msgid "Size yanıt verilebilmesi için lütfen geçerli bir e-posta adresi yazın."
+msgstr "Enter a valid email address so we can reply to you."
+
+#: globalPlugins/mail/ui/feedback_dialog.py:162
+msgid "Lütfen konu alanını doldurun."
+msgstr "Enter a subject."
+
+#: globalPlugins/mail/ui/feedback_dialog.py:165
+msgid "Lütfen bildirim metni alanını doldurun."
+msgstr "Enter your feedback message."
+
+#: globalPlugins/mail/ui/feedback_dialog.py:173
+msgid "Öneri ve görüş göndermek için önce Hesap menüsünden Bağlan seçeneğiyle Gmail hesabınızı bağlayın."
+msgstr "To send feedback, first connect your Gmail account using Connect on the Account menu."
+
+#: globalPlugins/mail/ui/feedback_dialog.py:174
+msgid "Hesap bilgisi eksik"
+msgstr "Account information is missing"
+
+#: globalPlugins/mail/ui/feedback_dialog.py:198
+msgid "Öneri ve görüş gönderiliyor."
+msgstr "Sending feedback."
+
+#: globalPlugins/mail/ui/feedback_dialog.py:205
+msgid "Konu belirtilmedi"
+msgstr "No subject specified"
+
+#: globalPlugins/mail/ui/feedback_dialog.py:206
+#, python-brace-format
+msgid "[Engelsiz Mail] Öneri ve Görüş: {0}"
+msgstr "[Engelsiz Mail] Feedback: {0}"
+
+#: globalPlugins/mail/ui/feedback_dialog.py:208
+#, python-brace-format
+msgid ""
+"Engelsiz Mail eklentisi üzerinden öneri ve görüş bildirimi gönderildi.\n"
+"\n"
+"Ad: {0}\n"
+"Soyad: {1}\n"
+"Yanıt için e-posta: {2}\n"
+"Eklenti: Engelsiz Mail\n"
+"Gönderen Gmail hesabı: {3}\n"
+"Konu: {4}\n"
+"\n"
+"Bildirim metni:\n"
+"{5}\n"
+msgstr ""
+"Feedback was sent through the Engelsiz Mail add-on.\n"
+"\n"
+"First name: {0}\n"
+"Last name: {1}\n"
+"Reply email: {2}\n"
+"Add-on: Engelsiz Mail\n"
+"Sending Gmail account: {3}\n"
+"Subject: {4}\n"
+"\n"
+"Feedback message:\n"
+"{5}\n"
+
+#: globalPlugins/mail/ui/feedback_dialog.py:227
+msgid "Öneri ve görüş gönderilemedi. Lütfen bağlantınızı ve Google uygulama şifrenizi denetleyin."
+msgstr "Feedback could not be sent. Check your connection and Google app password."
+
+#: globalPlugins/mail/ui/feedback_dialog.py:238
+msgid "Öneri ve görüşünüz gönderildi."
+msgstr "Your feedback was sent."
+
+#: globalPlugins/mail/ui/folder_view.py:43 globalPlugins/mail/ui/main_window.py:419
+msgid "E-posta klasörleri"
+msgstr "Email folders"
+
+#: globalPlugins/mail/ui/folder_view.py:48 globalPlugins/mail/ui/main_window.py:420
+msgid "Klasörler"
+msgstr "Folders"
+
+#: globalPlugins/mail/ui/keyboard_handlers.py:81 globalPlugins/mail/ui/main_window.py:2372
+msgid "İşaretlenecek e-posta yok."
+msgstr "There are no emails to select."
+
+#: globalPlugins/mail/ui/keyboard_handlers.py:87
+msgid "İşaret kaldırıldı."
+msgstr "Selection cleared."
+
+#: globalPlugins/mail/ui/keyboard_handlers.py:90 globalPlugins/mail/ui/main_window.py:2377
+#: globalPlugins/mail/ui/message_list.py:99
+msgid "[İşaretli] "
+msgstr "[Selected] "
+
+#: globalPlugins/mail/ui/keyboard_handlers.py:91
+msgid "E-posta işaretlendi."
+msgstr "Email selected."
+
+#: globalPlugins/mail/ui/main_window.py:176
+msgid "Yenilikler dosyası bulunamadı. Lütfen eklenti klasörünü denetleyin."
+msgstr "The What's New file could not be found. Check the add-on folder."
+
+#: globalPlugins/mail/ui/main_window.py:200
+#, python-brace-format
+msgid ""
+"{0}\n"
+"\n"
+"Eklenti sürümü: {1}\n"
+"NVDA sürümü: {2}\n"
+"Geliştirici: Mehmet Aykurt\n"
+"E-posta: m.aykurt38@gmail.com\n"
+"Lisans: GNU Genel Kamu Lisansı, sürüm 2.0\n"
+"\n"
+"Engelsiz Mail, NVDA ekran okuyucusu kullanıcıları için geliştirilen erişilebilir e-posta "
+"eklentisidir."
+msgstr ""
+"{0}\n"
+"\n"
+"Add-on version: {1}\n"
+"NVDA version: {2}\n"
+"Developer: Mehmet Aykurt\n"
+"Email: m.aykurt38@gmail.com\n"
+"License: GNU General Public License, version 2.0\n"
+"\n"
+"Engelsiz Mail is an accessible email add-on developed for NVDA screen reader users."
+
+#: globalPlugins/mail/ui/main_window.py:205 globalPlugins/mail/ui/main_window.py:210
+#, python-brace-format
+msgid "{0} Hakkında"
+msgstr "About {0}"
+
+#: globalPlugins/mail/ui/main_window.py:506
+msgid "&Yeni e-posta yaz\tCtrl+N"
+msgstr "&Compose email\tCtrl+N"
+
+#: globalPlugins/mail/ui/main_window.py:507
+msgid "&Aç...\tCtrl+O"
+msgstr "&Open...\tCtrl+O"
+
+#: globalPlugins/mail/ui/main_window.py:508
+msgid "&Kaydet...\tCtrl+S"
+msgstr "&Save...\tCtrl+S"
+
+#: globalPlugins/mail/ui/main_window.py:510
+msgid "&Çıkış\tAlt+F4"
+msgstr "E&xit\tAlt+F4"
+
+#: globalPlugins/mail/ui/main_window.py:511
+msgid "&Dosya"
+msgstr "&File"
+
+#: globalPlugins/mail/ui/main_window.py:514
+msgid "&Bağlan...\tAlt+B"
+msgstr "&Connect...\tAlt+B"
+
+#: globalPlugins/mail/ui/main_window.py:515
+msgid "Bağlantıyı &denetle...\tF9"
+msgstr "C&heck connection...\tF9"
+
+#: globalPlugins/mail/ui/main_window.py:516
+msgid "Hesap bilgilerini &sil"
+msgstr "&Delete account information"
+
+#: globalPlugins/mail/ui/main_window.py:517
+msgid "&Hesap"
+msgstr "&Account"
+
+#: globalPlugins/mail/ui/main_window.py:520
+msgid "&Ara...\tCtrl+F"
+msgstr "&Search...\tCtrl+F"
+
+#: globalPlugins/mail/ui/main_window.py:522
+msgid "&Tümünü işaretle\tCtrl+A"
+msgstr "Select &all\tCtrl+A"
+
+#: globalPlugins/mail/ui/main_window.py:523
+msgid "İşaretleri &kaldır\tCtrl+Shift+A"
+msgstr "&Clear selections\tCtrl+Shift+A"
+
+#: globalPlugins/mail/ui/main_window.py:526
+msgid "A&rşive gönder\tAlt+R"
+msgstr "Send to a&rchive\tAlt+R"
+
+#: globalPlugins/mail/ui/main_window.py:527
+msgid "Arşiv klasörlerini &yönet...\tAlt+Shift+R"
+msgstr "&Manage archive folders...\tAlt+Shift+R"
+
+#: globalPlugins/mail/ui/main_window.py:528
+msgid "A&rşiv"
+msgstr "A&rchive"
+
+#: globalPlugins/mail/ui/main_window.py:529
+msgid "Kişil&er...\tAlt+K"
+msgstr "Con&tacts...\tAlt+K"
+
+#: globalPlugins/mail/ui/main_window.py:530
+msgid "İm&za...\tAlt+I"
+msgstr "S&ignature...\tAlt+I"
+
+#: globalPlugins/mail/ui/main_window.py:532 globalPlugins/mail/ui/main_window.py:2358
+msgid "&Sil\tAlt+S"
+msgstr "&Delete\tAlt+S"
+
+#: globalPlugins/mail/ui/main_window.py:533 globalPlugins/mail/ui/main_window.py:2359
+msgid "&Kalıcı olarak sil\tShift+Delete"
+msgstr "Delete &permanently\tShift+Delete"
+
+#: globalPlugins/mail/ui/main_window.py:536
+msgid "&Yenile\tF5"
+msgstr "Re&fresh\tF5"
+
+#: globalPlugins/mail/ui/main_window.py:537
+msgid "&E-posta"
+msgstr "&Email"
+
+#: globalPlugins/mail/ui/main_window.py:540
+msgid "&Yazı tipi..."
+msgstr "&Font..."
+
+#: globalPlugins/mail/ui/main_window.py:541
+msgid "Yazı &boyutu..."
+msgstr "Font &size..."
+
+#: globalPlugins/mail/ui/main_window.py:542
+msgid "Yazı &stili..."
+msgstr "Font s&tyle..."
+
+#: globalPlugins/mail/ui/main_window.py:544
+msgid "&Metin rengi..."
+msgstr "Text &color..."
+
+#: globalPlugins/mail/ui/main_window.py:545
+msgid "&Arka plan rengi..."
+msgstr "&Background color..."
+
+#: globalPlugins/mail/ui/main_window.py:546
+msgid "Sistem &renklerini kullan"
+msgstr "Use s&ystem colors"
+
+#: globalPlugins/mail/ui/main_window.py:552
+msgid "&Varsayılan görünüme dön"
+msgstr "&Restore default appearance"
+
+#: globalPlugins/mail/ui/main_window.py:553
+msgid "&Görünüm"
+msgstr "&View"
+
+#: globalPlugins/mail/ui/main_window.py:556
+msgid "&E-posta sayısı..."
+msgstr "&Email count..."
+
+#: globalPlugins/mail/ui/main_window.py:557
+msgid "&Bildirimler..."
+msgstr "&Notifications..."
+
+#: globalPlugins/mail/ui/main_window.py:558
+msgid "Ön i&zleme"
+msgstr "Pre&view"
+
+#: globalPlugins/mail/ui/main_window.py:563
+msgid "&Konuşmaları grupla"
+msgstr "&Group conversations"
+
+#: globalPlugins/mail/ui/main_window.py:569
+msgid "Silme işleminden önce onay i&ste"
+msgstr "Ask for confirmation before &deleting"
+
+#: globalPlugins/mail/ui/main_window.py:575
+msgid "&Kalıcı silme işleminden önce onay iste"
+msgstr "Ask for confirmation before &permanent deletion"
+
+#: globalPlugins/mail/ui/main_window.py:582
+msgid "Gönderilen e-posta adreslerini oto&matik kaydet"
+msgstr "Automatically save &recipient addresses"
+
+#: globalPlugins/mail/ui/main_window.py:587
+msgid "Escape tuşuyla eklentiyi kapa&t"
+msgstr "&Close the add-on with Escape"
+
+#: globalPlugins/mail/ui/main_window.py:592
+msgid "İçe/&dışa aktar..."
+msgstr "&Import/export..."
+
+#: globalPlugins/mail/ui/main_window.py:594
+msgid "&Yerel veritabanını sıfırla..."
+msgstr "Reset &local database..."
+
+#: globalPlugins/mail/ui/main_window.py:595
+msgid "&Ayarlar"
+msgstr "&Settings"
+
+#: globalPlugins/mail/ui/main_window.py:598
+msgid "&Yardım kılavuzu\tF1"
+msgstr "&User guide\tF1"
+
+#: globalPlugins/mail/ui/main_window.py:599
+msgid "Ye&nilikler"
+msgstr "&What's New"
+
+#: globalPlugins/mail/ui/main_window.py:605
+msgid "Geliştiricinin diğer &eklentileri"
+msgstr "Developer's other &add-ons"
+
+#: globalPlugins/mail/ui/main_window.py:608
+msgid "&Hakkında"
+msgstr "A&bout"
+
+#: globalPlugins/mail/ui/main_window.py:609
+msgid "Öneri ve &görüş bildir..."
+msgstr "Send &feedback..."
+
+#: globalPlugins/mail/ui/main_window.py:610
+msgid "&Yardım"
+msgstr "&Help"
+
+#: globalPlugins/mail/ui/main_window.py:658
+msgid "İmza"
+msgstr "Signature"
+
+#: globalPlugins/mail/ui/main_window.py:663
+msgid "İmza kaydedilemedi. Lütfen dosya izinlerini denetleyin."
+msgstr "The signature could not be saved. Check file permissions."
+
+#: globalPlugins/mail/ui/main_window.py:665
+msgid "İmza kaydedildi."
+msgstr "Signature saved."
+
+#: globalPlugins/mail/ui/main_window.py:668
+msgid "Kayıtlı imzayı silmek istediğinizden emin misiniz?"
+msgstr "Are you sure you want to delete the saved signature?"
+
+#: globalPlugins/mail/ui/main_window.py:669
+msgid "İmzayı sil"
+msgstr "Delete signature"
+
+#: globalPlugins/mail/ui/main_window.py:676
+msgid "İmza silinemedi. Lütfen dosya izinlerini denetleyin."
+msgstr "The signature could not be deleted. Check file permissions."
+
+#: globalPlugins/mail/ui/main_window.py:678
+msgid "İmza silindi."
+msgstr "Signature deleted."
+
+#: globalPlugins/mail/ui/main_window.py:683
+msgid "İmza işlemi sırasında bir hata oluştu."
+msgstr "An error occurred while processing the signature."
+
+#: globalPlugins/mail/ui/main_window.py:690 globalPlugins/mail/ui/search_dialog.py:140
+msgid "Arama yapmak için önce Gmail hesabınızı bağlayın."
+msgstr "Connect your Gmail account before searching."
+
+#: globalPlugins/mail/ui/main_window.py:698
+msgid "Arama sonucunun bulunduğu klasör açılamadı."
+msgstr "The folder containing the search result could not be opened."
+
+#: globalPlugins/mail/ui/main_window.py:702
+msgid "E-postanın bulunduğu klasör açılıyor..."
+msgstr "Opening the folder containing the email..."
+
+#: globalPlugins/mail/ui/main_window.py:736
+msgid "Yazı tipini seçin:"
+msgstr "Select a font:"
+
+#: globalPlugins/mail/ui/main_window.py:737
+msgid "Yazı tipi"
+msgstr "Font"
+
+#: globalPlugins/mail/ui/main_window.py:748 globalPlugins/mail/ui/main_window.py:760
+msgid "Yazı tipi seçilemedi."
+msgstr "The font could not be selected."
+
+#: globalPlugins/mail/ui/main_window.py:752
+msgid "Yazı tipi ayarı kaydedilemedi. Lütfen dosya izinlerini denetleyin."
+msgstr "The font setting could not be saved. Check file permissions."
+
+#: globalPlugins/mail/ui/main_window.py:755
+#, python-brace-format
+msgid "Yazı tipi {0} olarak ayarlandı."
+msgstr "Font set to {0}."
+
+#: globalPlugins/mail/ui/main_window.py:774
+#, python-brace-format
+msgid "Yazı tipi boyutunu {0} ile {1} arasında yazın:"
+msgstr "Enter a font size between {0} and {1}:"
+
+#: globalPlugins/mail/ui/main_window.py:775
+msgid "Yazı boyutu"
+msgstr "Font size"
+
+#: globalPlugins/mail/ui/main_window.py:784
+msgid "Yazı tipi boyutu ayarı kaydedilemedi. Lütfen dosya izinlerini denetleyin."
+msgstr "The font size setting could not be saved. Check file permissions."
+
+#: globalPlugins/mail/ui/main_window.py:787
+#, python-brace-format
+msgid "Yazı tipi boyutu {0} olarak ayarlandı."
+msgstr "Font size set to {0}."
+
+#: globalPlugins/mail/ui/main_window.py:794
+msgid "Yazı tipi boyutu ayarlanamadı."
+msgstr "The font size could not be set."
+
+#: globalPlugins/mail/ui/main_window.py:805
+msgid "Yazı stilini seçin:"
+msgstr "Select a font style:"
+
+#: globalPlugins/mail/ui/main_window.py:806
+msgid "Yazı stili"
+msgstr "Font style"
+
+#: globalPlugins/mail/ui/main_window.py:820
+msgid "Yazı stili ayarı kaydedilemedi. Lütfen dosya izinlerini denetleyin."
+msgstr "The font style setting could not be saved. Check file permissions."
+
+#: globalPlugins/mail/ui/main_window.py:823
+#, python-brace-format
+msgid "Yazı stili {0} olarak ayarlandı."
+msgstr "Font style set to {0}."
+
+#: globalPlugins/mail/ui/main_window.py:828
+msgid "Yazı stili ayarlanamadı."
+msgstr "The font style could not be set."
+
+#: globalPlugins/mail/ui/main_window.py:839
+msgid "Metin rengini seçin:"
+msgstr "Select a text color:"
+
+#: globalPlugins/mail/ui/main_window.py:840
+msgid "Metin rengi"
+msgstr "Text color"
+
+#: globalPlugins/mail/ui/main_window.py:854
+msgid "Metin rengi ayarı kaydedilemedi. Lütfen dosya izinlerini denetleyin."
+msgstr "The text color setting could not be saved. Check file permissions."
+
+#: globalPlugins/mail/ui/main_window.py:857
+#, python-brace-format
+msgid "Metin rengi {0} olarak ayarlandı."
+msgstr "Text color set to {0}."
+
+#: globalPlugins/mail/ui/main_window.py:862
+msgid "Metin rengi ayarlanamadı."
+msgstr "The text color could not be set."
+
+#: globalPlugins/mail/ui/main_window.py:873
+msgid "Arka plan rengini seçin:"
+msgstr "Select a background color:"
+
+#: globalPlugins/mail/ui/main_window.py:874
+msgid "Arka plan rengi"
+msgstr "Background color"
+
+#: globalPlugins/mail/ui/main_window.py:888
+msgid "Arka plan rengi ayarı kaydedilemedi. Lütfen dosya izinlerini denetleyin."
+msgstr "The background color setting could not be saved. Check file permissions."
+
+#: globalPlugins/mail/ui/main_window.py:891
+#, python-brace-format
+msgid "Arka plan rengi {0} olarak ayarlandı."
+msgstr "Background color set to {0}."
+
+#: globalPlugins/mail/ui/main_window.py:896
+msgid "Arka plan rengi ayarlanamadı."
+msgstr "The background color could not be set."
+
+#: globalPlugins/mail/ui/main_window.py:906
+msgid "Sistem renkleri kullanılacak."
+msgstr "System colors will be used."
+
+#: globalPlugins/mail/ui/main_window.py:906
+msgid "Özel renk ayarları kullanılacak."
+msgstr "Custom color settings will be used."
+
+#: globalPlugins/mail/ui/main_window.py:908
+msgid "Sistem renkleri ayarı kaydedilemedi."
+msgstr "The system color setting could not be saved."
+
+#: globalPlugins/mail/ui/main_window.py:911
+msgid "Sistem renkleri ayarı değiştirilemedi."
+msgstr "The system color setting could not be changed."
+
+#: globalPlugins/mail/ui/main_window.py:917
+msgid "Yazı tipi, yazı tipi boyutu, yazı stili, metin rengi ve arka plan rengi varsayılana döndürüldü."
+msgstr "The font, font size, font style, text color, and background color were restored to their defaults."
+
+#: globalPlugins/mail/ui/main_window.py:919
+msgid "Görünüm ayarları sıfırlanamadı. Lütfen dosya izinlerini denetleyin."
+msgstr "The appearance settings could not be reset. Check file permissions."
+
+#: globalPlugins/mail/ui/main_window.py:950
+msgid ""
+"Hesap bilgisi bulunamadı.\n"
+"Şimdi bir hesap eklemek ister misiniz?"
+msgstr ""
+"No account information was found.\n"
+"Would you like to add an account now?"
+
+#: globalPlugins/mail/ui/main_window.py:964
+msgid "Silinecek kayıtlı hesap bilgisi yok."
+msgstr "There is no saved account information to delete."
+
+#: globalPlugins/mail/ui/main_window.py:967
+msgid "Kayıtlı hesap bilgilerini silmek istediğinizden emin misiniz?"
+msgstr "Are you sure you want to delete the saved account information?"
+
+#: globalPlugins/mail/ui/main_window.py:968
+msgid "Hesap bilgilerini sil"
+msgstr "Delete account information"
+
+#: globalPlugins/mail/ui/main_window.py:976
+msgid "Hesap bilgileri silinemedi. Lütfen dosya izinlerini denetleyin."
+msgstr "The account information could not be deleted. Check file permissions."
+
+#: globalPlugins/mail/ui/main_window.py:982 globalPlugins/mail/ui/main_window.py:996
+msgid "Hesap bilgileriniz silinmiştir."
+msgstr "Your account information has been deleted."
+
+#: globalPlugins/mail/ui/main_window.py:983
+msgid "Hesap bilgileri silindi"
+msgstr "Account information deleted"
+
+#: globalPlugins/mail/ui/main_window.py:1002
+msgid "Hesap bilgileri silinirken bir hata oluştu."
+msgstr "An error occurred while deleting the account information."
+
+#: globalPlugins/mail/ui/main_window.py:1006
+msgid "Bağlantı denetimi zaten devam ediyor. Lütfen bekleyin."
+msgstr "A connection check is already in progress. Please wait."
+
+#: globalPlugins/mail/ui/main_window.py:1010
+msgid "Bağlantı denetimi başlatıldı. Lütfen bekleyin."
+msgstr "Connection check started. Please wait."
+
+#: globalPlugins/mail/ui/main_window.py:1021
+msgid ""
+"Bağlantı denetimi tamamlanamadı.\n"
+"\n"
+msgstr ""
+"The connection check could not be completed.\n"
+"\n"
+
+#: globalPlugins/mail/ui/main_window.py:1044
+msgid "E-postalar yeni sayıya göre yükleniyor..."
+msgstr "Loading emails using the new count..."
+
+#: globalPlugins/mail/ui/main_window.py:1054
+msgid "Silme işleminden önce onay sorulacak."
+msgstr "Confirmation will be requested before deletion."
+
+#: globalPlugins/mail/ui/main_window.py:1054
+msgid "Silme işleminden önce onay sorulmayacak."
+msgstr "Confirmation will not be requested before deletion."
+
+#: globalPlugins/mail/ui/main_window.py:1056
+msgid "Silme onayı ayarı kaydedilemedi."
+msgstr "The deletion confirmation setting could not be saved."
+
+#: globalPlugins/mail/ui/main_window.py:1070
+msgid "Kalıcı silme işleminden önce onay sorulacak."
+msgstr "Confirmation will be requested before permanent deletion."
+
+#: globalPlugins/mail/ui/main_window.py:1070
+msgid "Kalıcı silme işleminden önce onay sorulmayacak."
+msgstr "Confirmation will not be requested before permanent deletion."
+
+#: globalPlugins/mail/ui/main_window.py:1072
+msgid "Kalıcı silme onayı ayarı kaydedilemedi."
+msgstr "The permanent deletion confirmation setting could not be saved."
+
+#: globalPlugins/mail/ui/main_window.py:1085
+msgid "Gönderilen adresler otomatik kaydedilecek."
+msgstr "Recipient addresses will be saved automatically."
+
+#: globalPlugins/mail/ui/main_window.py:1085
+msgid "Gönderilen adresler otomatik kaydedilmeyecek."
+msgstr "Recipient addresses will not be saved automatically."
+
+#: globalPlugins/mail/ui/main_window.py:1087
+msgid "Adres otomatik kaydetme ayarı kaydedilemedi."
+msgstr "The automatic address saving setting could not be saved."
+
+#: globalPlugins/mail/ui/main_window.py:1100
+msgid "Escape tuşu eklentiyi kapatacak."
+msgstr "The Escape key will close the add-on."
+
+#: globalPlugins/mail/ui/main_window.py:1100
+msgid "Escape tuşu eklentiyi kapatmayacak."
+msgstr "The Escape key will not close the add-on."
+
+#: globalPlugins/mail/ui/main_window.py:1102
+msgid "Escape ile kapatma ayarı kaydedilemedi."
+msgstr "The close-with-Escape setting could not be saved."
+
+#: globalPlugins/mail/ui/main_window.py:1133
+msgid "Ön izleme etkinleştirildi."
+msgstr "Preview enabled."
+
+#: globalPlugins/mail/ui/main_window.py:1139
+msgid "Ön izleme kapatıldı."
+msgstr "Preview disabled."
+
+#: globalPlugins/mail/ui/main_window.py:1148
+msgid "Ön izleme ayarı kaydedilemedi."
+msgstr "The preview setting could not be saved."
+
+#: globalPlugins/mail/ui/main_window.py:1154
+msgid "Ön izleme hazırlanıyor..."
+msgstr "Preparing preview..."
+
+#: globalPlugins/mail/ui/main_window.py:1178
+msgid "Konuşma gruplama ayarı kaydedilemedi."
+msgstr "The conversation grouping setting could not be saved."
+
+#: globalPlugins/mail/ui/main_window.py:1181
+msgid "Konuşmalar gruplanacak."
+msgstr "Conversations will be grouped."
+
+#: globalPlugins/mail/ui/main_window.py:1181
+msgid "E-postalar ayrı ayrı gösterilecek."
+msgstr "Emails will be shown individually."
+
+#: globalPlugins/mail/ui/main_window.py:1186
+msgid "Konuşmalar hazırlanıyor..."
+msgstr "Preparing conversations..."
+
+#: globalPlugins/mail/ui/main_window.py:1186
+msgid "E-postalar hazırlanıyor..."
+msgstr "Preparing emails..."
+
+#: globalPlugins/mail/ui/main_window.py:1230
+msgid "Ön izleme için klasör açılamadı."
+msgstr "The folder could not be opened for preview."
+
+#: globalPlugins/mail/ui/main_window.py:1365
+#, python-brace-format
+msgid ""
+"Seçili e-postaya '{0}' etiketi eklenecektir. Tüm Postalar Gmail'in ana görünümü olduğu için "
+"e-posta burada görünmeye devam edebilir. Devam etmek istiyor musunuz?"
+msgstr ""
+"The '{0}' label will be added to the selected email. Because All Mail is Gmail's main view, the "
+"email may continue to appear there. Do you want to continue?"
+
+#: globalPlugins/mail/ui/main_window.py:1367
+#, python-brace-format
+msgid ""
+"Seçili {0} e-postaya '{1}' etiketi eklenecektir. Tüm Postalar Gmail'in ana görünümü olduğu için "
+"e-postalar burada görünmeye devam edebilir. Devam etmek istiyor musunuz?"
+msgstr ""
+"The '{1}' label will be added to the selected {0} emails. Because All Mail is Gmail's main view, "
+"the emails may continue to appear there. Do you want to continue?"
+
+#: globalPlugins/mail/ui/main_window.py:1369
+msgid "Tüm Postalar taşıma uyarısı"
+msgstr "All Mail move warning"
+
+#: globalPlugins/mail/ui/main_window.py:1442
+msgid "Devam eden işlem tamamlanınca e-posta listesi otomatik yenilenecek."
+msgstr "The email list will refresh automatically when the current operation is complete."
+
+#: globalPlugins/mail/ui/main_window.py:1709
+msgid "Klasörler güncelleniyor."
+msgstr "Updating folders."
+
+#: globalPlugins/mail/ui/main_window.py:1715
+msgid "E-posta listesi güncelleniyor."
+msgstr "Updating email list."
+
+#: globalPlugins/mail/ui/main_window.py:1810
+msgid "Silme Hatası"
+msgstr "Deletion Error"
+
+#: globalPlugins/mail/ui/main_window.py:1826
+msgid "Klasör yüklenirken lütfen bekleyin."
+msgstr "Please wait while the folder is loading."
+
+#: globalPlugins/mail/ui/main_window.py:1859
+msgid "Taslaklar sunucudan yenilenecek."
+msgstr "Drafts will be refreshed from the server."
+
+#: globalPlugins/mail/ui/main_window.py:1881 globalPlugins/mail/ui/main_window.py:1897
+#, python-brace-format
+msgid "{0} yükleniyor..."
+msgstr "Loading {0}..."
+
+#: globalPlugins/mail/ui/main_window.py:1987
+#, python-brace-format
+msgid "{0} e-posta '{1}' klasörüne taşınacaktır. Devam etmek istiyor musunuz?"
+msgstr "{0} emails will be moved to the '{1}' folder. Do you want to continue?"
+
+#: globalPlugins/mail/ui/main_window.py:1989
+#, python-brace-format
+msgid "Seçili {0} e-posta '{1}' klasörüne taşınacaktır. Devam etmek istiyor musunuz?"
+msgstr "The selected {0} emails will be moved to the '{1}' folder. Do you want to continue?"
+
+#: globalPlugins/mail/ui/main_window.py:1991
+msgid "Taşıma onayı"
+msgstr "Confirm move"
+
+#: globalPlugins/mail/ui/main_window.py:1996
+msgid "Lütfen taşımak için e-posta seçin."
+msgstr "Select an email to move."
+
+#: globalPlugins/mail/ui/main_window.py:2000 globalPlugins/mail/ui/main_window.py:2065
+msgid "Hedef klasör bulunamadı."
+msgstr "The target folder could not be found."
+
+#: globalPlugins/mail/ui/main_window.py:2003
+msgid "E-posta zaten seçili klasörde bulunuyor."
+msgstr "The email is already in the selected folder."
+
+#: globalPlugins/mail/ui/main_window.py:2008 globalPlugins/mail/ui/main_window.py:2067
+msgid "Kaynak ve hedef klasör aynı."
+msgstr "The source and target folders are the same."
+
+#: globalPlugins/mail/ui/main_window.py:2042
+#, python-brace-format
+msgid "E-postalar '{0}' klasörüne taşınıyor."
+msgstr "Moving emails to the '{0}' folder."
+
+#: globalPlugins/mail/ui/main_window.py:2044
+#, python-brace-format
+msgid "E-posta '{0}' klasörüne taşınıyor."
+msgstr "Moving the email to the '{0}' folder."
+
+#: globalPlugins/mail/ui/main_window.py:2061
+msgid "Taşınacak e-posta bulunamadı."
+msgstr "No email was found to move."
+
+#: globalPlugins/mail/ui/main_window.py:2081
+msgid "Hedef klasör etiketi hazırlanamadı."
+msgstr "The target folder label could not be prepared."
+
+#: globalPlugins/mail/ui/main_window.py:2087
+msgid "E-postalar hedef etikete eklenemedi."
+msgstr "The emails could not be added to the target label."
+
+#: globalPlugins/mail/ui/main_window.py:2094
+#, python-brace-format
+msgid "E-postaya '{0}' etiketi eklendi. Tüm Postalarda görünmeye devam edebilir."
+msgstr "The '{0}' label was added to the email. It may continue to appear in All Mail."
+
+#: globalPlugins/mail/ui/main_window.py:2094
+#, python-brace-format
+msgid "E-postalara '{0}' etiketi eklendi. Tüm Postalarda görünmeye devam edebilirler."
+msgstr "The '{0}' label was added to the emails. They may continue to appear in All Mail."
+
+#: globalPlugins/mail/ui/main_window.py:2096
+#, python-brace-format
+msgid "E-posta '{0}' klasörüne taşındı."
+msgstr "The email was moved to the '{0}' folder."
+
+#: globalPlugins/mail/ui/main_window.py:2096
+#, python-brace-format
+msgid "E-postalar '{0}' klasörüne taşındı."
+msgstr "The emails were moved to the '{0}' folder."
+
+#: globalPlugins/mail/ui/main_window.py:2111
+msgid "Taşıma işlemi sırasında bir hata oluştu."
+msgstr "An error occurred during the move operation."
+
+#: globalPlugins/mail/ui/main_window.py:2116
+msgid ""
+"Yerel veritabanı, çevrim dışı e-posta içerikleri ve önbelleğe alınmış ekler tamamen silinecektir."
+" Gmail hesabınızdaki e-postalar, hesap bilgileriniz, kişileriniz ve ayarlarınız silinmeyecektir. "
+"Devam etmek istiyor musunuz?"
+msgstr ""
+"The local database, offline email content, and cached attachments will be deleted completely. "
+"Emails in your Gmail account, account information, contacts, and settings will not be deleted. Do"
+" you want to continue?"
+
+#: globalPlugins/mail/ui/main_window.py:2120
+msgid "Yerel veritabanını sıfırla"
+msgstr "Reset local database"
+
+#: globalPlugins/mail/ui/main_window.py:2123
+msgid "Yerel veritabanı sıfırlanıyor."
+msgstr "Resetting local database."
+
+#: globalPlugins/mail/ui/main_window.py:2140
+msgid "Yerel veritabanı ve ek önbelleği sıfırlandı. E-postalar yeniden eşitlenecektir."
+msgstr "The local database and attachment cache were reset. Emails will be synchronized again."
+
+#: globalPlugins/mail/ui/main_window.py:2145 globalPlugins/mail/ui/main_window.py:2167
+#: globalPlugins/mail/ui/main_window.py:2192
+msgid "Önce Gmail hesabınıza bağlanın."
+msgstr "Connect to your Gmail account first."
+
+#: globalPlugins/mail/ui/main_window.py:2148
+msgid ""
+"Çöp Kutusundaki bütün e-postalar Gmail hesabınızdan kalıcı olarak silinecektir. Bu işlem geri "
+"alınamaz. Devam etmek istiyor musunuz?"
+msgstr ""
+"All emails in Trash will be permanently deleted from your Gmail account. This action cannot be "
+"undone. Do you want to continue?"
+
+#: globalPlugins/mail/ui/main_window.py:2151
+msgid "Çöp Kutusunu boşalt"
+msgstr "Empty Trash"
+
+#: globalPlugins/mail/ui/main_window.py:2161
+msgid "Çöp Kutusu listeden temizlendi. Kalıcı silme arka planda sürüyor."
+msgstr "Trash was cleared from the list. Permanent deletion is continuing in the background."
+
+#: globalPlugins/mail/ui/main_window.py:2170
+msgid ""
+"Spam klasöründeki bütün e-postalar Gmail hesabınızdan kalıcı olarak silinecektir. Bu işlem geri "
+"alınamaz. Devam etmek istiyor musunuz?"
+msgstr ""
+"All emails in the Spam folder will be permanently deleted from your Gmail account. This action "
+"cannot be undone. Do you want to continue?"
+
+#: globalPlugins/mail/ui/main_window.py:2173
+msgid "Spam klasörünü boşalt"
+msgstr "Empty Spam folder"
+
+#: globalPlugins/mail/ui/main_window.py:2186
+msgid "Spam klasörü listeden temizlendi. Kalıcı silme arka planda sürüyor."
+msgstr "The Spam folder was cleared from the list. Permanent deletion is continuing in the background."
+
+#: globalPlugins/mail/ui/main_window.py:2195
+msgid ""
+"Gönderilen E-postalar klasöründeki bütün e-postalar Çöp Kutusuna taşınacaktır. Bu e-postalar Çöp "
+"Kutusu boşaltılana kadar geri alınabilir. Devam etmek istiyor musunuz?"
+msgstr ""
+"All emails in the Sent Mail folder will be moved to Trash. These emails can be recovered until "
+"Trash is emptied. Do you want to continue?"
+
+#: globalPlugins/mail/ui/main_window.py:2200
+msgid "Gönderilenleri Çöp Kutusuna taşı"
+msgstr "Move Sent Mail to Trash"
+
+#: globalPlugins/mail/ui/main_window.py:2219
+msgid "Gönderilen E-postalar listeden temizlendi. Taşıma arka planda sürüyor."
+msgstr "Sent Mail has been cleared from the list. The move continues in the background."
+
+#: globalPlugins/mail/ui/main_window.py:2256
+msgid "Bu klasör için toplu işlem zaten arka planda sürüyor."
+msgstr "A bulk operation for this folder is already running in the background."
+
+#: globalPlugins/mail/ui/main_window.py:2286
+msgid "İşlem başlatılamadı. Lütfen yeniden deneyin."
+msgstr "The operation could not be started. Try again."
+
+#: globalPlugins/mail/ui/main_window.py:2328
+msgid "Gönderilenleri Çöp Kutusuna &taşı..."
+msgstr "Move Sent Mail to &Trash..."
+
+#: globalPlugins/mail/ui/main_window.py:2331
+msgid "Çöp Kutusunu &boşalt..."
+msgstr "&Empty Trash..."
+
+#: globalPlugins/mail/ui/main_window.py:2333
+msgid "Spam klasörünü &boşalt..."
+msgstr "&Empty Spam folder..."
+
+#: globalPlugins/mail/ui/main_window.py:2341
+msgid "&Yanıtla\tCtrl+R"
+msgstr "&Reply\tCtrl+R"
+
+#: globalPlugins/mail/ui/main_window.py:2342
+msgid "İ&let\tCtrl+Shift+F"
+msgstr "&Forward\tCtrl+Shift+F"
+
+#: globalPlugins/mail/ui/main_window.py:2352
+msgid "Taşınabilecek klasör yok"
+msgstr "No folders are available for moving"
+
+#: globalPlugins/mail/ui/main_window.py:2369
+msgid "İşaretlemek için önce bir klasöre girin."
+msgstr "Open a folder before selecting emails."
+
+#: globalPlugins/mail/ui/main_window.py:2378
+#, python-brace-format
+msgid "{0} e-posta işaretlendi."
+msgstr "{0} emails selected."
+
+#: globalPlugins/mail/ui/main_window.py:2382 globalPlugins/mail/ui/main_window.py:2385
+msgid "Kaldırılacak işaret yok."
+msgstr "There are no selections to clear."
+
+#: globalPlugins/mail/ui/main_window.py:2390
+msgid "İşaretler kaldırıldı."
+msgstr "Selections cleared."
+
+#: globalPlugins/mail/ui/message_actions.py:81
+msgid "Daha önce kaydettiğiniz EML dosyasını seçin."
+msgstr "Select an EML file you saved previously."
+
+#: globalPlugins/mail/ui/message_actions.py:82
+msgid "EML dosyaları (*.eml)|*.eml"
+msgstr "EML files (*.eml)|*.eml"
+
+#: globalPlugins/mail/ui/message_actions.py:99 globalPlugins/mail/ui/message_actions.py:134
+msgid "Lütfen EML uzantılı bir dosya seçin."
+msgstr "Select a file with the EML extension."
+
+#: globalPlugins/mail/ui/message_actions.py:111
+msgid ""
+"Seçtiğiniz EML dosyası Gelen Kutusuna eklenecektir. Bu işlem e-postayı yeniden göndermez; "
+"yalnızca Gmail hesabınıza bir kopya olarak ekler. Devam etmek istiyor musunuz?"
+msgstr ""
+"The selected EML file will be added to Inbox. This does not resend the email; it only adds a copy"
+" to your Gmail account. Do you want to continue?"
+
+#: globalPlugins/mail/ui/message_actions.py:114
+msgid "EML dosyasını aç"
+msgstr "Open EML file"
+
+#: globalPlugins/mail/ui/message_actions.py:122
+msgid "EML dosyası açılıyor."
+msgstr "Opening EML file."
+
+#: globalPlugins/mail/ui/message_actions.py:132
+msgid "EML dosyası bulunamadı."
+msgstr "The EML file could not be found."
+
+#: globalPlugins/mail/ui/message_actions.py:149
+msgid "EML dosyası Gelen Kutusuna eklenemedi."
+msgstr "The EML file could not be added to Inbox."
+
+#: globalPlugins/mail/ui/message_actions.py:151
+msgid "EML dosyası Gelen Kutusuna eklendi."
+msgstr "The EML file was added to Inbox."
+
+#: globalPlugins/mail/ui/message_actions.py:155
+msgid "Gelen Kutusu yenileniyor..."
+msgstr "Refreshing Inbox..."
+
+#: globalPlugins/mail/ui/message_actions.py:166
+msgid ""
+"EML dosyası açılırken bir hata oluştu. Lütfen dosyayı, bağlantınızı ve hesap bilgilerinizi "
+"denetleyin."
+msgstr ""
+"An error occurred while opening the EML file. Check the file, your connection, and your account "
+"information."
+
+#: globalPlugins/mail/ui/message_actions.py:174
+msgid "Kaydetmek için önce bir klasöre girin ve e-posta seçin."
+msgstr "To save, first open a folder and select an email."
+
+#: globalPlugins/mail/ui/message_actions.py:176
+msgid "Kaydetmek için e-posta seçin."
+msgstr "Select an email to save."
+
+#: globalPlugins/mail/ui/message_actions.py:188
+msgid "E-postayı kaydet"
+msgstr "Save email"
+
+#: globalPlugins/mail/ui/message_actions.py:191
+msgid "EML dosyaları (*.eml)|*.eml|TXT dosyaları (*.txt)|*.txt"
+msgstr "EML files (*.eml)|*.eml|TXT files (*.txt)|*.txt"
+
+#: globalPlugins/mail/ui/message_actions.py:215
+#, python-brace-format
+msgid "E-posta {0} olarak kaydediliyor."
+msgstr "Saving email as {0}."
+
+#: globalPlugins/mail/ui/message_actions.py:254
+#, python-brace-format
+msgid "Klasör: {0}"
+msgstr "Folder: {0}"
+
+#: globalPlugins/mail/ui/message_actions.py:255
+#, python-brace-format
+msgid "IMAP klasörü: {0}"
+msgstr "IMAP folder: {0}"
+
+#: globalPlugins/mail/ui/message_actions.py:256
+#, python-brace-format
+msgid "Ek sayısı: {0}"
+msgstr "Number of attachments: {0}"
+
+#: globalPlugins/mail/ui/message_actions.py:270
+msgid "Desteklenmeyen kaydetme biçimi."
+msgstr "Unsupported save format."
+
+#: globalPlugins/mail/ui/message_actions.py:281 globalPlugins/mail/ui/message_actions.py:289
+msgid "Kaydedilecek e-posta"
+msgstr "Email to save"
+
+#: globalPlugins/mail/ui/message_actions.py:285
+msgid "E-posta sunucudan alınamadı."
+msgstr "The email could not be retrieved from the server."
+
+#: globalPlugins/mail/ui/message_actions.py:288 globalPlugins/mail/ui/message_actions.py:491
+msgid "E-posta içeriği alınamadı."
+msgstr "The email content could not be retrieved."
+
+#: globalPlugins/mail/ui/message_actions.py:303
+#, python-brace-format
+msgid ""
+"E-posta dosyaya yazılamadı: {0}. Seçilen klasör yazma korumalı olabilir, disk dolu olabilir veya "
+"güvenlik yazılımı dosyayı kilitlemiş olabilir."
+msgstr ""
+"The email could not be saved to the file: {0}. The selected folder may be write-protected, the "
+"disk may be full, or security software may have locked the file."
+
+#: globalPlugins/mail/ui/message_actions.py:313
+msgid "Kaydetme işlemi sırasında bir hata oluştu. Lütfen dosya izinlerini ve bağlantınızı denetleyin."
+msgstr "An error occurred while saving. Check file permissions and your connection."
+
+#: globalPlugins/mail/ui/message_actions.py:318
+msgid "E-posta kaydedildi"
+msgstr "Email saved"
+
+#: globalPlugins/mail/ui/message_actions.py:324
+#, python-brace-format
+msgid ""
+"E-postanız {0} formatında kaydedilmiştir.\n"
+"\n"
+"Klasör: {1}"
+msgstr ""
+"Your email has been saved in {0} format.\n"
+"\n"
+"Folder: {1}"
+
+#: globalPlugins/mail/ui/message_actions.py:330
+msgid "Klasörü aç"
+msgstr "Open folder"
+
+#: globalPlugins/mail/ui/message_actions.py:331
+msgid "Kapat"
+msgstr "Close"
+
+#: globalPlugins/mail/ui/message_actions.py:347
+msgid "Kaydedilen klasör bulunamadı."
+msgstr "The saved folder could not be found."
+
+#: globalPlugins/mail/ui/message_actions.py:354
+msgid "Kaydedilen klasör açılamadı."
+msgstr "The saved folder could not be opened."
+
+#: globalPlugins/mail/ui/message_actions.py:390 globalPlugins/mail/ui/message_actions.py:397
+msgid "E-posta yazma penceresi açılamadı."
+msgstr "The compose email window could not be opened."
+
+#: globalPlugins/mail/ui/message_actions.py:391
+msgid "E-posta yazma hatası"
+msgstr "Compose email error"
+
+#: globalPlugins/mail/ui/message_actions.py:453
+msgid "Lütfen işlem yapmak istediğiniz e-postayı seçin."
+msgstr "Select the email you want to work with."
+
+#: globalPlugins/mail/ui/message_actions.py:458
+msgid "Yanıt hazırlanıyor."
+msgstr "Preparing reply."
+
+#: globalPlugins/mail/ui/message_actions.py:459
+msgid "İletilecek e-posta hazırlanıyor."
+msgstr "Preparing email to forward."
+
+#: globalPlugins/mail/ui/message_actions.py:488 globalPlugins/mail/ui/message_actions.py:495
+msgid "Yanıt veya iletme için e-posta"
+msgstr "Email for reply or forwarding"
+
+#: globalPlugins/mail/ui/message_actions.py:535
+msgid "E-posta hazırlanırken bir hata oluştu."
+msgstr "An error occurred while preparing the email."
+
+#: globalPlugins/mail/ui/message_actions.py:544 globalPlugins/mail/ui/message_view.py:353
+#, python-brace-format
+msgid ""
+"\n"
+"\n"
+"\n"
+"--- Orijinal E-posta ---\n"
+"{0}"
+msgstr ""
+"\n"
+"\n"
+"\n"
+"--- Original Email ---\n"
+"{0}"
+
+#: globalPlugins/mail/ui/message_actions.py:550 globalPlugins/mail/ui/message_view.py:369
+#, python-brace-format
+msgid ""
+"\n"
+"\n"
+"\n"
+"--- İletilen E-posta ---\n"
+"{0}"
+msgstr ""
+"\n"
+"\n"
+"\n"
+"--- Forwarded Email ---\n"
+"{0}"
+
+#: globalPlugins/mail/ui/message_actions.py:583
+msgid "Taslak düzenleniyor."
+msgstr "Editing draft."
+
+#: globalPlugins/mail/ui/message_actions.py:583
+msgid "E-posta görüntüleniyor."
+msgstr "Displaying email."
+
+#: globalPlugins/mail/ui/message_actions.py:605
+msgid "Konuşmanın bulunduğu klasör açılamadı."
+msgstr "The folder containing the conversation could not be opened."
+
+#: globalPlugins/mail/ui/message_actions.py:615
+msgid "Konuşmadaki e-postalar bulunamadı."
+msgstr "The emails in the conversation could not be found."
+
+#: globalPlugins/mail/ui/message_actions.py:624
+msgid "İleti gövdesi önbelleğe alınamadı."
+msgstr "The message body could not be cached."
+
+#: globalPlugins/mail/ui/message_actions.py:626
+#, python-brace-format
+msgid ""
+"{0}. ileti\n"
+"Kimden: {1}\n"
+"Kime: {2}\n"
+"{3}Tarih: {4}\n"
+"{5}\n"
+"{6}"
+msgstr ""
+"Message {0}\n"
+"From: {1}\n"
+"To: {2}\n"
+"{3}Date: {4}\n"
+"{5}\n"
+"{6}"
+
+#: globalPlugins/mail/ui/message_actions.py:669
+msgid "Konuşma açılırken bir hata oluştu."
+msgstr "An error occurred while opening the conversation."
+
+#: globalPlugins/mail/ui/message_actions.py:682
+msgid "Eklerin indirileceği e-posta bilgisi bulunamadı."
+msgstr "The email information required to download attachments could not be found."
+
+#: globalPlugins/mail/ui/message_actions.py:687
+msgid "Ekler sunucudan alınamadı."
+msgstr "Attachments could not be retrieved from the server."
+
+#: globalPlugins/mail/ui/message_actions.py:690
+msgid "Ekler için e-posta içeriği boş döndü."
+msgstr "The email content for attachments was empty."
+
+#: globalPlugins/mail/ui/message_actions.py:694
+msgid "Bu e-postada kaydedilebilir ek dosya bulunamadı."
+msgstr "This email has no attachments that can be saved."
+
+#: globalPlugins/mail/ui/message_actions.py:704
+msgid "Kaydedilebilir ek dosya bulunamadı."
+msgstr "No attachments that can be saved were found."
+
+#: globalPlugins/mail/ui/message_actions.py:705 globalPlugins/mail/ui/message_view.py:334
+#, python-brace-format
+msgid "{0} ek dosya kaydedildi. Klasör: {1}"
+msgstr "{0} attachment files saved. Folder: {1}"
+
+#: globalPlugins/mail/ui/message_actions.py:711
+msgid "Ekler indirilemedi. Lütfen bağlantınızı ve dosya izinlerini denetleyin."
+msgstr "Attachments could not be downloaded. Check your connection and file permissions."
+
+#: globalPlugins/mail/ui/message_actions.py:788
+msgid "E-posta metni ek dosyaları indirmeden alınamadı."
+msgstr "The email text could not be retrieved without downloading attachment files."
+
+#: globalPlugins/mail/ui/message_actions.py:797
+msgid "E-posta açılırken bir hata oluştu."
+msgstr "An error occurred while opening the email."
+
+#: globalPlugins/mail/ui/message_list.py:20
+msgid "Eki var. "
+msgstr "Has attachments. "
+
+#: globalPlugins/mail/ui/message_list.py:31
+msgid "Bilgi yok."
+msgstr "No information. "
+
+#: globalPlugins/mail/ui/message_list.py:57
+msgid "Kime"
+msgstr "To"
+
+#: globalPlugins/mail/ui/message_list.py:58 globalPlugins/mail/ui/search_dialog.py:75
+msgid "Kimden"
+msgstr "From"
+
+#: globalPlugins/mail/ui/message_list.py:93
+msgid "okunmamış"
+msgstr "unread"
+
+#: globalPlugins/mail/ui/message_list.py:110
+msgid "E-posta listesi"
+msgstr "Email list"
+
+#: globalPlugins/mail/ui/message_view.py:37
+msgid "E-posta"
+msgstr "Email"
+
+#: globalPlugins/mail/ui/message_view.py:47
+#, python-brace-format
+msgid ""
+"\n"
+"Bu e-postada {0} ek dosya var.\n"
+msgstr ""
+"\n"
+"This email has {0} attachment files.\n"
+
+#: globalPlugins/mail/ui/message_view.py:49
+msgid "Bazı ekler çevrim dışı önbellekte bulunmuyor.\n"
+msgstr "Some attachments are not available in the offline cache.\n"
+
+#: globalPlugins/mail/ui/message_view.py:77
+msgid "(?m)^\\d+\\. ileti\\r?\\nKimden:"
+msgstr "(?m)^\\d+\\. message\\r?\\nFrom:"
+
+#: globalPlugins/mail/ui/message_view.py:84
+msgid "E-posta içeriği"
+msgstr "Email content"
+
+#: globalPlugins/mail/ui/message_view.py:90
+#, python-brace-format
+msgid "&Ekleri kaydet ({0})"
+msgstr "&Save attachments ({0})"
+
+#: globalPlugins/mail/ui/message_view.py:90
+msgid "&Ekleri kaydet"
+msgstr "&Save attachments"
+
+#: globalPlugins/mail/ui/message_view.py:95
+msgid "&Yanıtla"
+msgstr "&Reply"
+
+#: globalPlugins/mail/ui/message_view.py:99
+msgid "İ&let"
+msgstr "&Forward"
+
+#: globalPlugins/mail/ui/message_view.py:103
+msgid "A&rşivle"
+msgstr "Archi&ve"
+
+#: globalPlugins/mail/ui/message_view.py:187
+msgid "Bu e-postada bağlantı bulunmuyor."
+msgstr "This email contains no links."
+
+#: globalPlugins/mail/ui/message_view.py:219
+#, python-brace-format
+msgid "Bağlantı {0} bölü {1}. {2}"
+msgstr "Link {0} of {1}. {2}"
+
+#: globalPlugins/mail/ui/message_view.py:223
+msgid "Bağlantıya gidilemedi."
+msgstr "Could not navigate to the link."
+
+#: globalPlugins/mail/ui/message_view.py:228
+msgid "İmlecin bulunduğu yerde bağlantı yok."
+msgstr "There is no link at the cursor position."
+
+#: globalPlugins/mail/ui/message_view.py:238
+msgid "Pano açılamadı."
+msgstr "The clipboard could not be opened."
+
+#: globalPlugins/mail/ui/message_view.py:242
+msgid "Bağlantı panoya yazılamadı."
+msgstr "The link could not be written to the clipboard."
+
+#: globalPlugins/mail/ui/message_view.py:249
+msgid "Bağlantı panoya kopyalandı."
+msgstr "Link copied to the clipboard."
+
+#: globalPlugins/mail/ui/message_view.py:252
+msgid "Bağlantı panoya kopyalanamadı."
+msgstr "The link could not be copied to the clipboard."
+
+#: globalPlugins/mail/ui/message_view.py:261
+msgid "Geçersiz HTTP bağlantısı."
+msgstr "Invalid HTTP link."
+
+#: globalPlugins/mail/ui/message_view.py:263
+msgid "Bağlantı varsayılan tarayıcıda açılıyor."
+msgstr "Opening the link in the default browser."
+
+#: globalPlugins/mail/ui/message_view.py:269 globalPlugins/mail/ui/message_view.py:280
+msgid "Bağlantı açılamadı."
+msgstr "The link could not be opened."
+
+#: globalPlugins/mail/ui/message_view.py:277
+msgid "Varsayılan tarayıcı açılamadı."
+msgstr "The default browser could not be opened."
+
+#: globalPlugins/mail/ui/message_view.py:310
+msgid "Eklerin kaydedileceği klasörü seçin:"
+msgstr "Select the folder where attachments will be saved:"
+
+#: globalPlugins/mail/ui/message_view.py:322
+msgid "Ekler indiriliyor."
+msgstr "Downloading attachments."
+
+#: globalPlugins/mail/ui/message_view.py:336
+msgid "Kaydedilecek ek dosya bulunamadı."
+msgstr "No attachment files were found to save."
+
+#: globalPlugins/mail/ui/message_view.py:339
+msgid "Ekler kaydedilemedi. Lütfen dosya izinlerini denetleyin."
+msgstr "Attachments could not be saved. Check file permissions."
+
+#: globalPlugins/mail/ui/other_addons.py:57
+msgid "Engelsiz Nota"
+msgstr "Engelsiz Nota"
+
+#: globalPlugins/mail/ui/other_addons.py:59
+msgid ""
+"Engelsiz Nota e-katalog sisteminde eser aramanızı, eser ayrıntılarını incelemenizi ve "
+"favorilerinizi yönetmenizi sağlayan erişilebilir müzik kütüphanesi asistanıdır."
+msgstr ""
+"Engelsiz Nota is an accessible music library assistant that lets you search the e-catalog, review"
+" work details, and manage your favorites."
+
+#: globalPlugins/mail/ui/other_addons.py:70
+msgid "GETEM E-Kütüphane"
+msgstr "GETEM E-Library"
+
+#: globalPlugins/mail/ui/other_addons.py:72
+msgid ""
+"GETEM e-katalog sisteminde kitap aramanızı, kitap ayrıntılarını incelemenizi ve kişisel favori "
+"okuma listenizi yönetmenizi sağlayan erişilebilir kütüphane eklentisidir."
+msgstr ""
+"An accessible library add-on that lets you search the GETEM e-catalog, review book details, and "
+"manage your personal favorite reading list."
+
+#: globalPlugins/mail/ui/other_addons.py:83
+msgid "Kurum Rehberi"
+msgstr "Organization Directory"
+
+#: globalPlugins/mail/ui/other_addons.py:85
+msgid ""
+"Kurum ve personel iletişim bilgilerini kaydetme, arama, düzenleme, yedekleme, içe ve dışa aktarma"
+" özellikleri sunan erişilebilir ve özelleştirilebilir rehber eklentisidir."
+msgstr ""
+"An accessible and customizable directory add-on for saving, searching, editing, backing up, "
+"importing, and exporting organization and staff contact information."
+
+#: globalPlugins/mail/ui/other_addons.py:96
+msgid "Suno AI Prompt Oluşturucu"
+msgstr "Suno AI Prompt Generator"
+
+#: globalPlugins/mail/ui/other_addons.py:98
+msgid ""
+"Müzik türü, makam, tempo, duygu, enstrüman, vokal ve prodüksiyon seçenekleriyle Suno AI için "
+"erişilebilir biçimde İngilizce müzik promptları oluşturmanızı sağlar."
+msgstr ""
+"Creates English music prompts for Suno AI accessibly, with options for music genre, makam, tempo,"
+" mood, instrument, vocals, and production."
+
+#: globalPlugins/mail/ui/other_addons.py:109
+msgid "Dosya Arşivim"
+msgstr "My File Archive"
+
+#: globalPlugins/mail/ui/other_addons.py:111
+msgid ""
+"Sınırsız alan, sınırsız dosya...\n"
+"Dijital çevrim içi dosya depolama arşivi olan İnternet Archive sistemiyle entegre çalışan bu "
+"eklenti, NVDA kullanıcılarının tüm dosyalarını düzenli biçimde saklamasını, dilediğinde "
+"indirmesini veya paylaşım bağlantısı oluşturmasını sağlar. Sık kullanılan tüm işlemleri klavye "
+"kısayollarıyla erişilebilir kılarak arşiv yönetimini kolaylaştırır.\n"
+"(NVDA+Shift+A)"
+msgstr ""
+"Unlimited space, unlimited files...\n"
+"This add-on integrates with Internet Archive, a digital online file storage archive, allowing "
+"NVDA users to store all their files in an organized way, download them whenever they want, or "
+"create shareable links. It makes archive management easier by providing keyboard shortcuts for "
+"all frequently used operations.\n"
+"(NVDA+Shift+A)"
+
+#: globalPlugins/mail/ui/other_addons.py:135
+msgid "İndirme adresi geçersiz."
+msgstr "The download address is invalid."
+
+#: globalPlugins/mail/ui/other_addons.py:138
+msgid "Güvenli bir indirme adresi alınamadı."
+msgstr "A secure download address could not be obtained."
+
+#: globalPlugins/mail/ui/other_addons.py:157
+msgid "İndirilenler klasörü bulunamadı."
+msgstr "The Downloads folder could not be found."
+
+#: globalPlugins/mail/ui/other_addons.py:174
+msgid "Eklenti bilgileri internetten alınamadı."
+msgstr "Add-on information could not be retrieved from the internet."
+
+#: globalPlugins/mail/ui/other_addons.py:177
+msgid "Eklenti bilgi dosyası beklenenden büyük."
+msgstr "The add-on information file is larger than expected."
+
+#: globalPlugins/mail/ui/other_addons.py:181
+msgid "Eklenti bilgi dosyası okunamadı."
+msgstr "The add-on information file could not be read."
+
+#: globalPlugins/mail/ui/other_addons.py:183
+msgid "Eklenti bilgi dosyasının biçimi geçersiz."
+msgstr "The add-on information file format is invalid."
+
+#: globalPlugins/mail/ui/other_addons.py:193
+msgid "İndirilecek dosyanın adı alınamadı."
+msgstr "The name of the file to download could not be obtained."
+
+#: globalPlugins/mail/ui/other_addons.py:195
+msgid "Bağlantı bir NVDA eklenti dosyasına ait değil."
+msgstr "The link does not point to an NVDA add-on file."
+
+#: globalPlugins/mail/ui/other_addons.py:202
+msgid "Eklentinin doğrulama bilgisi geçersiz."
+msgstr "The add-on verification information is invalid."
+
+#: globalPlugins/mail/ui/other_addons.py:232 globalPlugins/mail/ui/other_addons.py:251
+msgid "Eklenti dosyası beklenenden büyük."
+msgstr "The add-on file is larger than expected."
+
+#: globalPlugins/mail/ui/other_addons.py:256
+msgid "İndirilen eklenti dosyası boş."
+msgstr "The downloaded add-on file is empty."
+
+#: globalPlugins/mail/ui/other_addons.py:259
+msgid "İndirilen dosyanın güvenlik doğrulaması başarısız oldu."
+msgstr "Security verification of the downloaded file failed."
+
+#: globalPlugins/mail/ui/other_addons.py:267 globalPlugins/mail/ui/other_addons.py:301
+#: globalPlugins/mail/ui/other_addons.py:307
+msgid "Eklenti indirilemedi."
+msgstr "The add-on could not be downloaded."
+
+#: globalPlugins/mail/ui/other_addons.py:289
+msgid "İndirilenler klasörü açılamadı."
+msgstr "The Downloads folder could not be opened."
+
+#: globalPlugins/mail/ui/other_addons.py:331
+msgid "Açıklama:"
+msgstr "Description:"
+
+#: globalPlugins/mail/ui/other_addons.py:341
+msgid "Açıklama"
+msgstr "Description"
+
+#: globalPlugins/mail/ui/other_addons.py:345
+msgid "&İndir"
+msgstr "&Download"
+
+#: globalPlugins/mail/ui/other_addons.py:361
+#, python-brace-format
+msgid "{0} indiriliyor."
+msgstr "Downloading {0}."
+
+#: globalPlugins/mail/ui/search_dialog.py:33
+msgid "Gönderen adına veya adresine göre"
+msgstr "By sender name or address"
+
+#: globalPlugins/mail/ui/search_dialog.py:34
+msgid "Konuya göre"
+msgstr "By subject"
+
+#: globalPlugins/mail/ui/search_dialog.py:35
+msgid "E-posta içeriğine göre"
+msgstr "By email content"
+
+#: globalPlugins/mail/ui/search_dialog.py:36
+msgid "Okunmamış e-postalar"
+msgstr "Unread emails"
+
+#: globalPlugins/mail/ui/search_dialog.py:37
+msgid "Okunmuş e-postalar"
+msgstr "Read emails"
+
+#: globalPlugins/mail/ui/search_dialog.py:44
+msgid "E-postalarda ara"
+msgstr "Search emails"
+
+#: globalPlugins/mail/ui/search_dialog.py:53
+msgid "Arama &türünü seçin:"
+msgstr "Select search &type:"
+
+#: globalPlugins/mail/ui/search_dialog.py:55
+msgid "Arama türünü seçin"
+msgstr "Select search type"
+
+#: globalPlugins/mail/ui/search_dialog.py:60
+msgid "&Aranacak metin:"
+msgstr "&Search text:"
+
+#: globalPlugins/mail/ui/search_dialog.py:62
+msgid "Aranacak metin"
+msgstr "Search text"
+
+#: globalPlugins/mail/ui/search_dialog.py:66
+msgid "&Ara"
+msgstr "Searc&h"
+
+#: globalPlugins/mail/ui/search_dialog.py:70
+msgid "Arama ölçütlerini seçip aranacak metni yazın."
+msgstr "Select the search criteria and enter the text to search for."
+
+#: globalPlugins/mail/ui/search_dialog.py:74
+msgid "Arama sonuçları"
+msgstr "Search results"
+
+#: globalPlugins/mail/ui/search_dialog.py:78
+msgid "Tarih"
+msgstr "Date"
+
+#: globalPlugins/mail/ui/search_dialog.py:83
+msgid "E-postayı &aç"
+msgstr "&Open email"
+
+#: globalPlugins/mail/ui/search_dialog.py:84
+msgid "&Klasöre git"
+msgstr "&Go to folder"
+
+#: globalPlugins/mail/ui/search_dialog.py:121
+msgid "İçerik araması önbelleğe alınmış e-posta metinlerinde yapılır."
+msgstr "Content searches are performed on cached email text."
+
+#: globalPlugins/mail/ui/search_dialog.py:126
+msgid "Aranacak metni yazıp Enter tuşuna basın."
+msgstr "Enter the search text and press Enter."
+
+#: globalPlugins/mail/ui/search_dialog.py:134
+msgid "Lütfen aranacak metni yazın."
+msgstr "Enter the text to search for."
+
+#: globalPlugins/mail/ui/search_dialog.py:148
+msgid "Aranıyor."
+msgstr "Searching."
+
+#: globalPlugins/mail/ui/search_dialog.py:175
+msgid "Arama sırasında bir hata oluştu."
+msgstr "An error occurred during the search."
+
+#: globalPlugins/mail/ui/search_dialog.py:176
+msgid "E-postalar aranırken bir hata oluştu."
+msgstr "An error occurred while searching emails."
+
+#: globalPlugins/mail/ui/search_dialog.py:199
+msgid "Sonuç bulunamadı."
+msgstr "No results found."
+
+#: globalPlugins/mail/ui/search_dialog.py:201
+#, python-brace-format
+msgid "İlk {0} arama sonucu gösteriliyor."
+msgstr "Showing the first {0} search results."
+
+#: globalPlugins/mail/ui/search_dialog.py:203 globalPlugins/mail/ui/search_dialog.py:265
+#, python-brace-format
+msgid "{0} arama sonucu bulundu."
+msgstr "{0} search results found."
+
+#: globalPlugins/mail/ui/search_dialog.py:206
+msgid "Arama sonucunda e-posta bulunamadı."
+msgstr "No email was found in the search results."
+
+#: globalPlugins/mail/ui/search_dialog.py:208
+#, python-brace-format
+msgid "Arama sonucunda 500'den fazla e-posta bulundu. İlk {0} sonuç gösteriliyor."
+msgstr "More than 500 emails were found. Showing the first {0} results."
+
+#: globalPlugins/mail/ui/search_dialog.py:210
+#, python-brace-format
+msgid "Arama sonucunda toplam {0} e-posta bulundu."
+msgstr "A total of {0} emails were found."
+
+#: globalPlugins/mail/ui/search_dialog.py:230
+msgid "Lütfen bir arama sonucu seçin."
+msgstr "Select a search result."
+
+#: globalPlugins/mail/ui/search_dialog.py:242
+msgid "E-posta açılıyor..."
+msgstr "Opening email..."
+
+#: globalPlugins/mail/ui/search_dialog.py:256
+msgid "E-posta açılamadı. Başka bir sonuç seçebilirsiniz."
+msgstr "The email could not be opened. You can select another result."
+
+#: globalPlugins/mail/ui/search_dialog.py:262
+msgid "Okunmamış e-postalar güncelleniyor..."
+msgstr "Updating unread emails..."
+
+#: globalPlugins/mail/ui/settings_dialogs.py:68
+msgid "Yardım dosyası bulunamadı. Lütfen eklenti klasörünü denetleyin."
+msgstr "The help file could not be found. Check the add-on folder."
+
+#: globalPlugins/mail/ui/settings_dialogs.py:83
+msgid ""
+"Uygulama şifresi sayfası açılamadı. Adresi tarayıcınızda açabilirsiniz: "
+"https://myaccount.google.com/apppasswords"
+msgstr ""
+"The app password page could not be opened. You can open this address in your browser: "
+"https://myaccount.google.com/apppasswords"
+
+#: globalPlugins/mail/ui/settings_dialogs.py:88
+msgid "Engelsiz Mail - Hesaba bağlan"
+msgstr "Engelsiz Mail - Connect Account"
+
+#: globalPlugins/mail/ui/settings_dialogs.py:100
+msgid "&Görünen adınız:"
+msgstr "Your &display name:"
+
+#: globalPlugins/mail/ui/settings_dialogs.py:102
+msgid "Görünen ad"
+msgstr "Display name"
+
+#: globalPlugins/mail/ui/settings_dialogs.py:105
+msgid "&E-posta adresiniz:"
+msgstr "Your &email address:"
+
+#: globalPlugins/mail/ui/settings_dialogs.py:110
+msgid "&Google uygulama şifreniz (16 karakter):"
+msgstr "Your &Google app password (16 characters):"
+
+#: globalPlugins/mail/ui/settings_dialogs.py:112
+msgid "Google uygulama şifresi"
+msgstr "Google app password"
+
+#: globalPlugins/mail/ui/settings_dialogs.py:117
+msgid "Kayıtlı uygulama şifresi korunacaktır. Değiştirmek istemiyorsanız bu alanı boş bırakabilirsiniz."
+msgstr "The saved app password will be kept. Leave this field empty if you do not want to change it."
+
+#: globalPlugins/mail/ui/settings_dialogs.py:122
+msgid "&Kaydet ve bağlan"
+msgstr "&Save and connect"
+
+#: globalPlugins/mail/ui/settings_dialogs.py:126
+msgid "Uygulama şifresi &oluştur"
+msgstr "&Create app password"
+
+#: globalPlugins/mail/ui/settings_dialogs.py:130
+msgid "Uygulama şifresi &yardımı"
+msgstr "App password &help"
+
+#: globalPlugins/mail/ui/settings_dialogs.py:151
+msgid "Bağlantı denetleniyor. Lütfen işlemin tamamlanmasını bekleyin."
+msgstr "Checking connection. Please wait for the operation to complete."
+
+#: globalPlugins/mail/ui/settings_dialogs.py:185
+msgid "Lütfen e-posta adresi alanını doldurun."
+msgstr "Fill in the email address field."
+
+#: globalPlugins/mail/ui/settings_dialogs.py:194
+msgid "E-posta adresini değiştirdiğiniz için yeni Google uygulama şifresini yazmanız gerekir."
+msgstr "Because you changed the email address, you must enter a new Google app password."
+
+#: globalPlugins/mail/ui/settings_dialogs.py:196
+msgid "Lütfen Google uygulama şifresi alanını doldurun."
+msgstr "Fill in the Google app password field."
+
+#: globalPlugins/mail/ui/settings_dialogs.py:200
+msgid "Uygulama şifresi eksik görünüyor. Lütfen Google tarafından verilen şifreyi boşluksuz yazın."
+msgstr "The app password appears to be incomplete. Enter the password provided by Google without spaces."
+
+#: globalPlugins/mail/ui/settings_dialogs.py:213
+msgid "Bağlantı denetleniyor. Lütfen bekleyin."
+msgstr "Checking connection. Please wait."
+
+#: globalPlugins/mail/ui/settings_dialogs.py:233
+msgid "Gmail bağlantısı kuruldu. E-posta adresiniz ve uygulama şifreniz kaydedildi."
+msgstr "Gmail connection established. Your email address and app password were saved."
+
+#: globalPlugins/mail/ui/settings_dialogs.py:234
+msgid "Bağlantı başarılı"
+msgstr "Connection successful"
+
+#: globalPlugins/mail/ui/settings_dialogs.py:240
+msgid "Hesap bilgileri kaydedilemedi. Lütfen dosya izinlerini denetleyin."
+msgstr "The account information could not be saved. Check file permissions."
+
+#: globalPlugins/mail/ui/settings_dialogs.py:248
+msgid ""
+"Gmail hesabına bağlanılamadı. Lütfen e-posta adresinizi, Google uygulama şifrenizi ve internet "
+"bağlantınızı denetleyin. Ayrıntılı denetim için Hesap menüsündeki Bağlantıyı denetle seçeneğini "
+"kullanabilirsiniz."
+msgstr ""
+"Could not connect to the Gmail account. Check your email address, Google app password, and "
+"internet connection. For a detailed check, use Check Connection on the Account menu."
+
+#: globalPlugins/mail/ui/settings_dialogs.py:249
+msgid "Bağlantı başarısız"
+msgstr "Connection failed"
+
+#: globalPlugins/mail/ui/settings_dialogs.py:258
+msgid "Listelenecek e-posta sayısı boş bırakılamaz."
+msgstr "The number of emails to list cannot be empty."
+
+#: globalPlugins/mail/ui/settings_dialogs.py:262
+msgid "Listelenecek e-posta sayısı yalnızca rakamlardan oluşmalıdır."
+msgstr "The number of emails to list must contain digits only."
+
+#: globalPlugins/mail/ui/settings_dialogs.py:264
+#, python-brace-format
+msgid "Listelenecek e-posta sayısı {0} ile {1} arasında olmalıdır."
+msgstr "The number of emails to list must be between {0} and {1}."
+
+#: globalPlugins/mail/ui/settings_dialogs.py:270
+msgid "Engelsiz Mail - Bağlantı denetimi"
+msgstr "Engelsiz Mail - Connection Check"
+
+#: globalPlugins/mail/ui/settings_dialogs.py:277
+msgid "Bağlantı denetimi özeti:"
+msgstr "Connection check summary:"
+
+#: globalPlugins/mail/ui/settings_dialogs.py:279
+msgid "Bağlantı denetimi özeti"
+msgstr "Connection check summary"
+
+#: globalPlugins/mail/ui/settings_dialogs.py:283
+msgid "Bağlantı denetimi ayrıntıları"
+msgstr "Connection check details"
+
+#: globalPlugins/mail/ui/settings_dialogs.py:289 globalPlugins/mail/ui/settings_dialogs.py:324
+msgid "&Ayrıntıları görüntüle"
+msgstr "&Show details"
+
+#: globalPlugins/mail/ui/settings_dialogs.py:306
+msgid ""
+"Bağlantı denetimi tamamlandı. Sorun algılandı. Ayrıntıları görüntüleyerek sorunun hangi aşamada "
+"oluştuğunu inceleyebilirsiniz."
+msgstr "Connection check completed. A problem was detected. Show the details to see which stage failed."
+
+#: globalPlugins/mail/ui/settings_dialogs.py:308
+msgid ""
+"Bağlantı denetimi tamamlandı. Bağlantınız çalışıyor; ancak uyarı var. Ayrıntıları görüntüleyerek "
+"uyarıları inceleyebilirsiniz."
+msgstr ""
+"Connection check completed. The connection works, but warnings were detected. Show the details to"
+" review them."
+
+#: globalPlugins/mail/ui/settings_dialogs.py:310
+msgid "Bağlantı denetimi tamamlandı. Bağlantınız başarılı. Herhangi bir sorun algılanmadı."
+msgstr "Connection check completed successfully. No problems were detected."
+
+#: globalPlugins/mail/ui/settings_dialogs.py:311
+msgid ""
+"Bağlantı denetimi tamamlandı. Sonuç kesin olarak doğrulanamadı. Ayrıntıları görüntüleyerek "
+"denetim adımlarını inceleyebilirsiniz."
+msgstr ""
+"Connection check completed, but the result could not be verified conclusively. Show the details "
+"to review the check steps."
+
+#: globalPlugins/mail/ui/settings_dialogs.py:317
+msgid "Ayrıntıları &gizle"
+msgstr "&Hide details"
+
+#: globalPlugins/mail/ui/settings_dialogs.py:332
+msgid "Engelsiz Mail - E-posta sayısı"
+msgstr "Engelsiz Mail - Email Count"
+
+#: globalPlugins/mail/ui/settings_dialogs.py:336
+#, python-brace-format
+msgid "Listelenecek e-posta sayısı ({0} ile {1} arasında):"
+msgstr "Number of emails to list (between {0} and {1}):"
+
+#: globalPlugins/mail/ui/settings_dialogs.py:342
+msgid "Listelenecek e-posta sayısı"
+msgstr "Number of emails to list"
+
+#: globalPlugins/mail/ui/settings_dialogs.py:368
+#, python-brace-format
+msgid "Listelenecek e-posta sayısı {0} olarak kaydedildi."
+msgstr "Number of emails to list saved as {0}."
+
+#: globalPlugins/mail/ui/settings_dialogs.py:371
+msgid "E-posta sayısı kaydedilemedi. Lütfen dosya izinlerini denetleyin."
+msgstr "The email count could not be saved. Check file permissions."
+
+#: globalPlugins/mail/ui/settings_dialogs.py:376
+msgid "Engelsiz Mail - Bildirimler"
+msgstr "Engelsiz Mail - Notifications"
+
+#: globalPlugins/mail/ui/settings_dialogs.py:382
+msgid "&Yeni e-posta geldiğinde bildir"
+msgstr "&Notify me when a new email arrives"
+
+#: globalPlugins/mail/ui/settings_dialogs.py:387
+msgid "&Sesle bildir"
+msgstr "Notify with &sound"
+
+#: globalPlugins/mail/ui/settings_dialogs.py:392
+msgid "&Mesajla bildir"
+msgstr "Notify with &message"
+
+#: globalPlugins/mail/ui/settings_dialogs.py:397
+msgid "Bildirim sesi"
+msgstr "Notification sound"
+
+#: globalPlugins/mail/ui/settings_dialogs.py:399
+msgid "&Varsayılan sistem sesini kullan"
+msgstr "Use the &default system sound"
+
+#: globalPlugins/mail/ui/settings_dialogs.py:400
+msgid "&Kullanıcı tanımlı WAV dosyası kullan"
+msgstr "Use a custom &WAV file"
+
+#: globalPlugins/mail/ui/settings_dialogs.py:411
+msgid "Bildirim sesi dosyası"
+msgstr "Notification sound file"
+
+#: globalPlugins/mail/ui/settings_dialogs.py:413
+msgid "G&öz at..."
+msgstr "&Browse..."
+
+#: globalPlugins/mail/ui/settings_dialogs.py:416
+msgid "&Dinle"
+msgstr "&Preview"
+
+#: globalPlugins/mail/ui/settings_dialogs.py:422
+msgid "Gönderen e-posta &adresini bildir"
+msgstr "Announce sender email &address"
+
+#: globalPlugins/mail/ui/settings_dialogs.py:425
+msgid "&Konuyu bildir"
+msgstr "Announce s&ubject"
+
+#: globalPlugins/mail/ui/settings_dialogs.py:477
+msgid "Bildirim sesi olarak kullanılacak WAV dosyasını seçin"
+msgstr "Select a WAV file to use as the notification sound"
+
+#: globalPlugins/mail/ui/settings_dialogs.py:479
+msgid "WAV dosyaları (*.wav)|*.wav"
+msgstr "WAV files (*.wav)|*.wav"
+
+#: globalPlugins/mail/ui/settings_dialogs.py:499
+msgid "Varsayılan sistem sesi çalınıyor."
+msgstr "Playing the default system sound."
+
+#: globalPlugins/mail/ui/settings_dialogs.py:502
+msgid "Varsayılan sistem sesi çalınamadı."
+msgstr "The default system sound could not be played."
+
+#: globalPlugins/mail/ui/settings_dialogs.py:506
+msgid "Dinlenecek WAV dosyası seçilmedi."
+msgstr "No WAV file was selected to preview."
+
+#: globalPlugins/mail/ui/settings_dialogs.py:510
+msgid "Yalnızca WAV uzantılı bildirim sesi dinlenebilir."
+msgstr "Only WAV notification sound files can be previewed."
+
+#: globalPlugins/mail/ui/settings_dialogs.py:514
+msgid "Seçilen bildirim sesi dosyası bulunamadı."
+msgstr "The selected notification sound file could not be found."
+
+#: globalPlugins/mail/ui/settings_dialogs.py:518
+msgid "Bu sistemde ses dinleme desteği kullanılamıyor."
+msgstr "Sound preview is not available on this system."
+
+#: globalPlugins/mail/ui/settings_dialogs.py:522
+msgid "Bildirim sesi çalınıyor."
+msgstr "Playing notification sound."
+
+#: globalPlugins/mail/ui/settings_dialogs.py:525
+msgid "Bildirim sesi çalınamadı."
+msgstr "The notification sound could not be played."
+
+#: globalPlugins/mail/ui/settings_dialogs.py:535
+msgid "Bildirimler için sesle bildir veya mesajla bildir seçeneklerinden en az biri açılmalıdır."
+msgstr "At least one of Notify with sound or Notify with message must be enabled for notifications."
+
+#: globalPlugins/mail/ui/settings_dialogs.py:540
+msgid "Kullanıcı tanımlı ses için geçerli bir WAV dosyası seçilmelidir."
+msgstr "A valid WAV file must be selected for the custom sound."
+
+#: globalPlugins/mail/ui/settings_dialogs.py:551
+msgid "Bildirim ayarları kaydedildi."
+msgstr "Notification settings saved."
+
+#: globalPlugins/mail/ui/settings_dialogs.py:554
+msgid "Bildirim ayarları kaydedilemedi. Lütfen dosya izinlerini denetleyin."
+msgstr "Notification settings could not be saved. Check file permissions."
+
+#: globalPlugins/mail/ui/settings_transfer_dialog.py:38
+msgid "Engelsiz Mail - İçe/dışa aktar"
+msgstr "Engelsiz Mail - Import/Export"
+
+#: globalPlugins/mail/ui/settings_transfer_dialog.py:43
+msgid ""
+"Engelsiz Mail ayarlarını ve hesap bilgilerini ZIP dosyası olarak yedekleyebilir veya daha önce "
+"oluşturulmuş bir yedeği geri yükleyebilirsiniz."
+msgstr ""
+"You can back up Engelsiz Mail settings and account information to a ZIP file, or restore a backup"
+" created previously."
+
+#: globalPlugins/mail/ui/settings_transfer_dialog.py:51
+msgid "&İçe aktar"
+msgstr "&Import"
+
+#: globalPlugins/mail/ui/settings_transfer_dialog.py:55
+msgid "&Dışa aktar"
+msgstr "&Export"
+
+#: globalPlugins/mail/ui/settings_transfer_dialog.py:70
+msgid ""
+"Bu yedek e-posta adresinizi ve Google uygulama şifrenizi içerir. ZIP dosyası şifrelenmez. Yedeği "
+"güvenli bir yerde saklayın.\n"
+"\n"
+"Devam etmek istiyor musunuz?"
+msgstr ""
+"This backup contains your email address and Google app password. The ZIP file is not encrypted. "
+"Store the backup in a secure location.\n"
+"\n"
+"Do you want to continue?"
+
+#: globalPlugins/mail/ui/settings_transfer_dialog.py:76
+msgid "Ayarları dışa aktar"
+msgstr "Export settings"
+
+#: globalPlugins/mail/ui/settings_transfer_dialog.py:82
+#, python-brace-format
+msgid "Engelsiz-Mail-Ayarlari-{0}.zip"
+msgstr "Engelsiz-Mail-Settings-{0}.zip"
+
+#: globalPlugins/mail/ui/settings_transfer_dialog.py:85
+msgid "Engelsiz Mail ayar yedeğini kaydedin"
+msgstr "Save the Engelsiz Mail settings backup"
+
+#: globalPlugins/mail/ui/settings_transfer_dialog.py:88
+#: globalPlugins/mail/ui/settings_transfer_dialog.py:118
+msgid "ZIP dosyaları (*.zip)|*.zip"
+msgstr "ZIP files (*.zip)|*.zip"
+
+#: globalPlugins/mail/ui/settings_transfer_dialog.py:100
+#, python-brace-format
+msgid ""
+"Ayar yedeği oluşturuldu.\n"
+"\n"
+"{0}"
+msgstr ""
+"Settings backup created.\n"
+"\n"
+"{0}"
+
+#: globalPlugins/mail/ui/settings_transfer_dialog.py:101
+msgid "Ayarlar dışa aktarıldı"
+msgstr "Settings exported"
+
+#: globalPlugins/mail/ui/settings_transfer_dialog.py:111
+msgid "Ayarlar dışa aktarılamadı."
+msgstr "Settings could not be exported."
+
+#: globalPlugins/mail/ui/settings_transfer_dialog.py:116
+msgid "Engelsiz Mail ayar yedeğini seçin"
+msgstr "Select an Engelsiz Mail settings backup"
+
+#: globalPlugins/mail/ui/settings_transfer_dialog.py:129
+msgid ""
+"Mevcut Engelsiz Mail ayarları ve hesap bilgileri seçilen yedekle değiştirilecektir. Devam etmek "
+"istiyor musunuz?"
+msgstr ""
+"The current Engelsiz Mail settings and account information will be replaced with the selected "
+"backup. Do you want to continue?"
+
+#: globalPlugins/mail/ui/settings_transfer_dialog.py:130
+msgid "Ayarları içe aktar"
+msgstr "Import settings"
+
+#: globalPlugins/mail/ui/settings_transfer_dialog.py:139
+msgid "Ayarlar içe aktarıldı. Değişikliklerin tamamının uygulanması için NVDA'yı yeniden başlatın."
+msgstr "Settings imported. Restart NVDA for all changes to take effect."
+
+#: globalPlugins/mail/ui/settings_transfer_dialog.py:140
+msgid "Ayarlar içe aktarıldı"
+msgstr "Settings imported"
+
+#: globalPlugins/mail/ui/settings_transfer_dialog.py:150
+msgid "Ayarlar içe aktarılamadı."
+msgstr "Settings could not be imported."
+
+#: globalPlugins/mail/ui/signature_dialog.py:29
+msgid "&İmza metni:"
+msgstr "&Signature text:"
+
+#: globalPlugins/mail/ui/signature_dialog.py:39
+msgid "İmza metni"
+msgstr "Signature text"

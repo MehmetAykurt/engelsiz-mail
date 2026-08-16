@@ -1,5 +1,14 @@
 # -*- coding: utf-8 -*-
 
+
+# NVDA eklenti çevirilerini bu modül için etkinleştir.
+try:
+    import addonHandler
+    addonHandler.initTranslation()
+except (ImportError, AttributeError):
+    # NVDA dışındaki otomatik testlerde Türkçe kaynak metni aynen kullan.
+    _ = lambda metin: metin
+
 import html
 import re
 from email.header import decode_header
@@ -24,7 +33,7 @@ RE_MOJIBAKE_ISARETLERI = re.compile(r"(?:Ã|Â|Ä|Å|�)")
 RE_EPOSTA_ALT_BILGI_AYRACI = re.compile(r"^\s*[-=]{4,}\s*$")
 RE_URL_SONU_KOSELI_EPOSTA = re.compile(r"^(?P<url>https?://[^\s\[]+)\s+\[[^\]\r\n]+@[^]\r\n]+\]\s*$", re.IGNORECASE)
 RE_HTTP_BAGLANTI_ADAYI = re.compile(r"https?://[^\s<>\"']+", re.IGNORECASE)
-RE_YANIT_KONU_ONEKI = re.compile(r"^\s*re\s*:\s*(.+)$", re.IGNORECASE)
+RE_YANIT_KONU_ONEKI = re.compile(r"^\s*(?:re|ynt)\s*:\s*(.+)$", re.IGNORECASE)
 RE_ILETILMIS_KONU_ONEKI = re.compile(r"^\s*(?:fw|fwd)\s*:\s*(.+)$", re.IGNORECASE)
 RE_ALINTI_ISARETI = re.compile(r"(?<!\S)>{1,8}(?=\s)")
 RE_KOSELI_EPOSTA_ADRESI = re.compile(r"<([A-Z0-9._%+\-=]+@[A-Z0-9.-]+\.[A-Z]{2,})>", re.IGNORECASE)
@@ -36,6 +45,56 @@ RE_ALINTI_YAZDI_SATIRI = re.compile(
     r"^(?P<kisi>.+?)\s+şunları yazdı\s*\((?P<tarih>[^)\r\n]+)\)\s*:\s*$",
     re.IGNORECASE,
 )
+
+
+def metin_cozum_kalitesini_puanla(metin):
+    """Metin çözümleme adaylarını Türkçe okunabilirlik ve bozulma bakımından karşılaştırır."""
+    metin = str(metin or "")
+    bozukluk = len(RE_MOJIBAKE_ISARETLERI.findall(metin))
+    degisim = metin.count("�")
+    denetim = sum(
+        1 for karakter in metin
+        if ord(karakter) < 32 and karakter not in "\t\r\n"
+    )
+    turkce = sum(1 for karakter in metin if karakter in "çğıöşüÇĞİÖŞÜ")
+    return (degisim * 100) + (bozukluk * 8) + (denetim * 4) - turkce
+
+
+def eposta_baytlarini_metne_coz(veri, bildirilen_karakter_kumesi="utf-8"):
+    """E-posta gövde baytlarını, yanlış charset bildirimlerine karşı Türkçe metni koruyarak çözer."""
+    if isinstance(veri, str):
+        return metin_kodlama_bozulmasini_duzelt(veri)
+    if not isinstance(veri, (bytes, bytearray)):
+        return ""
+
+    kodlamalar = [bildirilen_karakter_kumesi, "utf-8", "windows-1254", "iso-8859-9", "windows-1252", "latin-1"]
+    benzersiz = []
+    gorulen = set()
+    for kodlama in kodlamalar:
+        kodlama = str(kodlama or "").strip()
+        anahtar = kodlama.lower()
+        if anahtar and anahtar not in gorulen:
+            benzersiz.append(kodlama)
+            gorulen.add(anahtar)
+
+    adaylar = []
+    for kodlama in benzersiz:
+        try:
+            adaylar.append(veri.decode(kodlama, errors="strict"))
+        except (LookupError, UnicodeDecodeError):
+            continue
+    if adaylar:
+        return metin_kodlama_bozulmasini_duzelt(min(adaylar, key=metin_cozum_kalitesini_puanla))
+
+    yedekler = []
+    for kodlama in benzersiz:
+        try:
+            yedekler.append(veri.decode(kodlama, errors="replace"))
+        except LookupError:
+            continue
+    if yedekler:
+        return metin_kodlama_bozulmasini_duzelt(min(yedekler, key=metin_cozum_kalitesini_puanla))
+    return veri.decode("utf-8", errors="replace")
 
 
 def metin_kodlama_bozulmasini_duzelt(metin):
@@ -178,7 +237,8 @@ def konu_gosterimini_duzenle(konu):
     for _ in range(20):
         eslesme = RE_YANIT_KONU_ONEKI.match(kalan)
         if eslesme:
-            etiketler.append("Yanıtlanmış")
+            if "Yanıtlanmış" not in etiketler:
+                etiketler.append("Yanıtlanmış")
             kalan = eslesme.group(1).strip()
             continue
         eslesme = RE_ILETILMIS_KONU_ONEKI.match(kalan)
@@ -332,20 +392,20 @@ def duz_metni_ekran_okuyucu_icin_temizle(metin):
 
 def turkce_tarih_yap(tarih_metni):
     if not tarih_metni:
-        return "Tarih yok"
+        return _("Tarih yok")
     aylar = {
-        1: "Ocak",
-        2: "Şubat",
-        3: "Mart",
-        4: "Nisan",
-        5: "Mayıs",
-        6: "Haziran",
-        7: "Temmuz",
-        8: "Ağustos",
-        9: "Eylül",
-        10: "Ekim",
-        11: "Kasım",
-        12: "Aralık",
+        1: _("Ocak"),
+        2: _("Şubat"),
+        3: _("Mart"),
+        4: _("Nisan"),
+        5: _("Mayıs"),
+        6: _("Haziran"),
+        7: _("Temmuz"),
+        8: _("Ağustos"),
+        9: _("Eylül"),
+        10: _("Ekim"),
+        11: _("Kasım"),
+        12: _("Aralık"),
     }
     try:
         tarih = parsedate_to_datetime(tarih_metni)

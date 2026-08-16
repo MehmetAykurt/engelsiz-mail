@@ -1,7 +1,17 @@
 # -*- coding: utf-8 -*-
 """Taslak düzenleme, kaydetme, gönderme sonrası temizlik ve silme yardımcıları."""
 
+# NVDA eklenti çevirilerini bu modül için etkinleştir.
+try:
+    import addonHandler
+    addonHandler.initTranslation()
+except (ImportError, AttributeError):
+    # NVDA dışındaki otomatik testlerde Türkçe kaynak metni aynen kullan.
+    _ = lambda metin: metin
+
+
 import ui
+import wx
 
 from ..config import ayarlari_yukle
 from ..errors import MailHatasi
@@ -18,6 +28,16 @@ from ..ui_helpers import (
     pencere_kullanilabilir_mi,
 )
 from .compose_window import YeniPostaPenceresi
+
+
+def _taslak_sayilarini_yenile(pencere):
+    hedefler = ["Taslaklar", "Tüm Postalar"]
+    pencere.sistem_klasor_sayilarini_guncelle_tetikle(hedefler)
+    wx.CallLater(
+        5000,
+        pencere.sistem_klasor_sayilarini_guncelle_tetikle,
+        hedefler,
+    )
 
 
 def _taslak_silme_gorevi_baslat(pencere, ids, klasor, basari_mesaji):
@@ -44,7 +64,7 @@ def taslak_penceresini_ac(pencere, veri):
         varsayilan_gizli=veri.get("gizli", ""),
         varsayilan_konu=veri.get("konu", ""),
         varsayilan_icerik=veri.get("icerik", ""),
-        baslik="Engelsiz Mail - Taslak Düzenle",
+        baslik=_("Engelsiz Mail - Taslak Düzenle"),
         gonderildi_callback=lambda: pencere.taslak_gonderildi(veri.get("id"), veri.get("klasor")),
         taslak_sil_callback=lambda: pencere.taslak_sil_iste(veri.get("id"), veri.get("klasor")),
         taslak_kaydet_callback=lambda: pencere.taslak_kaydedildi(veri.get("id"), veri.get("klasor")),
@@ -57,7 +77,7 @@ def taslak_penceresini_ac(pencere, veri):
 def taslak_gonderildi(pencere, mail_id, kaynak_klasor):
     if not mail_id:
         return False
-    _taslak_silme_gorevi_baslat(pencere, [mail_id], kaynak_klasor, "Taslak kaldırıldı.")
+    _taslak_silme_gorevi_baslat(pencere, [mail_id], kaynak_klasor, _("Taslak kaldırıldı."))
     return True
 
 
@@ -71,18 +91,20 @@ def taslak_kaydedildi(pencere, mail_id=None, kaynak_klasor=None):
 
     if pencere.secili_kategori == "Taslaklar" and pencere.hesap_bilgisi_var_mi():
         pencere.yenilemeyi_gecikmeli_tetikle(None, pencere.secili_kategori, None, None, True)
+    if pencere.hesap_bilgisi_var_mi():
+        _taslak_sayilarini_yenile(pencere)
     return False
 
 
 def taslak_sil_iste(pencere, mail_id, kaynak_klasor):
     if not mail_id:
-        ui.message("Silinecek taslak bulunamadı.")
+        ui.message(_("Silinecek taslak bulunamadı."))
         return False
     if not pencere.taslak_silme_onayi_al():
         pencere.liste.SetFocus()
         return False
     mesaj_soyle_ve_sonra_calistir(
-        "Taslak siliniyor.",
+        _("Taslak siliniyor."),
         lambda: _taslak_silme_gorevi_baslat(pencere, [mail_id], kaynak_klasor, ""),
         ad="Taslak silme",
     )
@@ -125,7 +147,7 @@ def sunucudan_taslak_sil(pencere, ids, klasor, basari_mesaji="", ayarlar=None, j
     try:
         uidler = [str(uid) for uid in ids if str(uid or "").strip()]
         if not uidler:
-            raise MailHatasi("Silinecek taslak bulunamadı.")
+            raise MailHatasi(_("Silinecek taslak bulunamadı."))
 
         silindi = False
         silinen_klasor = None
@@ -136,17 +158,17 @@ def sunucudan_taslak_sil(pencere, ids, klasor, basari_mesaji="", ayarlar=None, j
                 try:
                     tip, _veri = imap.select(aday_klasor, readonly=False)
                     if tip != "OK":
-                        son_hata = f"Taslaklar klasörü açılamadı: {aday_klasor}"
+                        son_hata = _('Taslaklar klasörü açılamadı: {0}').format(aday_klasor)
                         continue
 
                     mevcut_uidler = uidleri_klasorde_ara(imap, uidler)
                     if not mevcut_uidler:
-                        son_hata = f"Taslak UID bu klasörde bulunamadı: {aday_klasor}"
+                        son_hata = _('Taslak UID bu klasörde bulunamadı: {0}').format(aday_klasor)
                         continue
 
                     uid_seti = ",".join(sorted(mevcut_uidler, key=lambda x: int(x) if x.isdigit() else x))
                     try:
-                        imap_uidleri_kalici_sil(imap, uid_seti, f"Taslak kalıcı olarak kaldırılamadı: {aday_klasor}")
+                        imap_uidleri_kalici_sil(imap, uid_seti, _('Taslak kalıcı olarak kaldırılamadı: {0}').format(aday_klasor))
                     except MailHatasi as e:
                         son_hata = str(e)
                         continue
@@ -163,15 +185,15 @@ def sunucudan_taslak_sil(pencere, ids, klasor, basari_mesaji="", ayarlar=None, j
                         silinen_uidler = set(mevcut_uidler)
                         break
 
-                    son_hata = f"Taslak silme sonrasında hâlâ görünüyor: {aday_klasor}"
+                    son_hata = _('Taslak silme sonrasında hâlâ görünüyor: {0}').format(aday_klasor)
                 except Exception as e:
-                    son_hata = f"Taslak silme denemesi başarısız: {aday_klasor}"
+                    son_hata = _('Taslak silme denemesi başarısız: {0}').format(aday_klasor)
                     hata_kaydet(son_hata, e)
                     continue
 
         if not silindi:
             hata_kaydet(son_hata or "Taslak silinemedi.")
-            raise MailHatasi("Taslak, Gmail tarafından kaldırılmadı. Liste yenileniyor.")
+            raise MailHatasi(_("Taslak, Gmail tarafından kaldırılmadı. Liste yenileniyor."))
 
         try:
             klasor_uidlerini_pasif_yap(
@@ -184,6 +206,9 @@ def sunucudan_taslak_sil(pencere, ids, klasor, basari_mesaji="", ayarlar=None, j
             gorev_veya_pencere_icin_call_after(pencere, jeton, ui.message, basari_mesaji)
         gorev_veya_pencere_icin_call_after(pencere, jeton, pencere.listeden_mesajlari_kaldir, uidler)
         gorev_veya_pencere_icin_call_after(pencere, jeton, pencere.yenilemeyi_gecikmeli_tetikle, None, kategori, None, None, True)
+        gorev_veya_pencere_icin_call_after(
+            pencere, jeton, _taslak_sayilarini_yenile, pencere
+        )
     except MailHatasi as e:
         hata_kaydet(str(e))
         gorev_veya_pencere_icin_call_after(
@@ -191,7 +216,7 @@ def sunucudan_taslak_sil(pencere, ids, klasor, basari_mesaji="", ayarlar=None, j
             jeton,
             pencere.silme_hatasi_penceresi_goster,
             str(e),
-            "Taslak Silinemedi",
+            _("Taslak Silinemedi"),
         )
         gorev_veya_pencere_icin_call_after(pencere, jeton, pencere.yenilemeyi_gecikmeli_tetikle, None, kategori, None, None, True)
     except Exception as e:
@@ -200,7 +225,7 @@ def sunucudan_taslak_sil(pencere, ids, klasor, basari_mesaji="", ayarlar=None, j
             pencere,
             jeton,
             pencere.silme_hatasi_penceresi_goster,
-            "Taslak silinemedi.",
-            "Taslak Silinemedi",
+            _("Taslak silinemedi."),
+            _("Taslak Silinemedi"),
         )
         gorev_veya_pencere_icin_call_after(pencere, jeton, pencere.yenilemeyi_gecikmeli_tetikle, None, kategori, None, None, True)

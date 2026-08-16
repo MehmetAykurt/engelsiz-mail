@@ -1,5 +1,14 @@
 # -*- coding: utf-8 -*-
 
+
+# NVDA eklenti çevirilerini bu modül için etkinleştir.
+try:
+    import addonHandler
+    addonHandler.initTranslation()
+except (ImportError, AttributeError):
+    # NVDA dışındaki otomatik testlerde Türkçe kaynak metni aynen kullan.
+    _ = lambda metin: metin
+
 import base64
 import ctypes
 from ctypes import wintypes
@@ -22,7 +31,7 @@ class _DATA_BLOB(ctypes.Structure):
 def _dpapi_modullerini_al():
     """Windows DPAPI işlevlerini döndürür."""
     if os.name != "nt" or not hasattr(ctypes, "WinDLL"):
-        raise MailHatasi("Windows DPAPI bu ortamda kullanılamıyor.")
+        raise MailHatasi(_("Windows DPAPI bu ortamda kullanılamıyor."))
 
     crypt32 = ctypes.WinDLL("crypt32", use_last_error=True)
     kernel32 = ctypes.WinDLL("kernel32", use_last_error=True)
@@ -105,12 +114,12 @@ def uygulama_sifresini_coz(sifreli_deger):
     if not sifreli_deger:
         return ""
     if not sifreli_deger.startswith(SIFRE_DPAPI_ON_EK):
-        raise MailHatasi("Uygulama şifresi desteklenmeyen bir biçimde saklanmış.")
+        raise MailHatasi(_("Uygulama şifresi desteklenmeyen bir biçimde saklanmış."))
 
     try:
         sifreli_veri = base64.b64decode(sifreli_deger[len(SIFRE_DPAPI_ON_EK):].encode("ascii"), validate=True)
     except Exception as e:
-        raise MailHatasi("Kayıtlı uygulama şifresi okunamadı.") from e
+        raise MailHatasi(_("Kayıtlı uygulama şifresi okunamadı.")) from e
 
     crypt32, kernel32 = _dpapi_modullerini_al()
     giris_blob, _tampon = _blob_olustur(sifreli_veri)

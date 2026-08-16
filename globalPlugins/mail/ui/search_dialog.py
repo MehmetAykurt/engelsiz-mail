@@ -1,11 +1,21 @@
 # -*- coding: utf-8 -*-
 """E-posta önbelleğinde erişilebilir arama penceresi."""
 
+# NVDA eklenti çevirilerini bu modül için etkinleştir.
+try:
+    import addonHandler
+    addonHandler.initTranslation()
+except (ImportError, AttributeError):
+    # NVDA dışındaki otomatik testlerde Türkçe kaynak metni aynen kullan.
+    _ = lambda metin: metin
+
+
 import wx
 import ui
 
 from ..config import ayarlari_yukle
 from ..logger import hata_kaydet
+from ..folders import klasor_gorunen_adi
 from ..message_center import mesaj_soyle_ve_sonra_calistir
 from ..message_parser import gonderen_gosterimini_al
 from ..search import epostalarda_ara
@@ -20,18 +30,18 @@ from .message_view import MesajOkumaPenceresi
 
 
 ARAMA_SECENEKLERI = (
-    ("Gönderen adına veya adresine göre", "gonderen"),
-    ("Konuya göre", "konu"),
-    ("E-posta içeriğine göre", "icerik"),
-    ("Okunmamış e-postalar", "okunmamis"),
-    ("Okunmuş e-postalar", "okunmus"),
+    (_("Gönderen adına veya adresine göre"), "gonderen"),
+    (_("Konuya göre"), "konu"),
+    (_("E-posta içeriğine göre"), "icerik"),
+    (_("Okunmamış e-postalar"), "okunmamis"),
+    (_("Okunmuş e-postalar"), "okunmus"),
 )
 OKUNMA_DURUMU_ARAMA_TURLERI = {"okunmamis", "okunmus"}
 
 
 class EpostalardaAraPenceresi(wx.Dialog):
     def __init__(self, parent, ebeveyn_pencere):
-        super().__init__(parent, title="E-postalarda Ara")
+        super().__init__(parent, title=_("E-postalarda ara"))
         self.ebeveyn = ebeveyn_pencere
         self.sonuclar = []
         self._arama_no = 0
@@ -40,39 +50,39 @@ class EpostalardaAraPenceresi(wx.Dialog):
         self.Bind(wx.EVT_WINDOW_DESTROY, self._pencere_yok_ediliyor)
 
         duzen = wx.BoxSizer(wx.VERTICAL)
-        duzen.Add(wx.StaticText(self, label="Arama &türünü seçiniz:"), 0, wx.ALL, 5)
+        duzen.Add(wx.StaticText(self, label=_("Arama &türünü seçin:")), 0, wx.ALL, 5)
         self.cmb_tur = wx.Choice(self, choices=[etiket for etiket, _deger in ARAMA_SECENEKLERI])
-        self.cmb_tur.SetName("Arama türünü seçiniz")
+        self.cmb_tur.SetName(_("Arama türünü seçin"))
         self.cmb_tur.SetSelection(0)
         self.cmb_tur.Bind(wx.EVT_CHOICE, self.arama_turu_degisti)
         duzen.Add(self.cmb_tur, 0, wx.LEFT | wx.RIGHT | wx.BOTTOM | wx.EXPAND, 5)
 
-        duzen.Add(wx.StaticText(self, label="&Aranacak metin:"), 0, wx.ALL, 5)
+        duzen.Add(wx.StaticText(self, label=_("&Aranacak metin:")), 0, wx.ALL, 5)
         self.txt_aranan = wx.TextCtrl(self, style=wx.TE_PROCESS_ENTER)
-        self.txt_aranan.SetName("Aranacak metin")
+        self.txt_aranan.SetName(_("Aranacak metin"))
         self.txt_aranan.Bind(wx.EVT_TEXT_ENTER, self.aramayi_baslat)
         duzen.Add(self.txt_aranan, 0, wx.LEFT | wx.RIGHT | wx.BOTTOM | wx.EXPAND, 5)
 
-        self.btn_ara = wx.Button(self, label="&Ara")
+        self.btn_ara = wx.Button(self, label=_("&Ara"))
         self.btn_ara.Bind(wx.EVT_BUTTON, self.aramayi_baslat)
         duzen.Add(self.btn_ara, 0, wx.LEFT | wx.RIGHT | wx.BOTTOM, 5)
 
-        self.durum = wx.StaticText(self, label="Arama ölçütlerini seçip aranacak metni yazın.")
+        self.durum = wx.StaticText(self, label=_("Arama ölçütlerini seçip aranacak metni yazın."))
         duzen.Add(self.durum, 0, wx.LEFT | wx.RIGHT | wx.BOTTOM | wx.EXPAND, 5)
 
         self.liste = wx.ListCtrl(self, style=wx.LC_REPORT | wx.LC_SINGLE_SEL)
-        self.liste.SetName("Arama sonuçları")
-        self.liste.InsertColumn(0, "Kimden", width=235)
-        self.liste.InsertColumn(1, "Konu", width=300)
-        self.liste.InsertColumn(2, "Klasör", width=175)
-        self.liste.InsertColumn(3, "Tarih", width=180)
+        self.liste.SetName(_("Arama sonuçları"))
+        self.liste.InsertColumn(0, _("Kimden"), width=235)
+        self.liste.InsertColumn(1, _("Konu"), width=300)
+        self.liste.InsertColumn(2, _("Klasör"), width=175)
+        self.liste.InsertColumn(3, _("Tarih"), width=180)
         self.liste.Bind(wx.EVT_LIST_ITEM_ACTIVATED, self.epostayi_ac)
         duzen.Add(self.liste, 1, wx.LEFT | wx.RIGHT | wx.BOTTOM | wx.EXPAND, 5)
 
         dugmeler = wx.BoxSizer(wx.HORIZONTAL)
-        self.btn_ac = wx.Button(self, label="E-postayı &Aç")
-        self.btn_klasor = wx.Button(self, label="&Klasöre Git")
-        self.btn_kapat = wx.Button(self, wx.ID_CLOSE, "&Kapat")
+        self.btn_ac = wx.Button(self, label=_("E-postayı &aç"))
+        self.btn_klasor = wx.Button(self, label=_("&Klasöre git"))
+        self.btn_kapat = wx.Button(self, wx.ID_CLOSE, _("&Kapat"))
         self.btn_ac.Bind(wx.EVT_BUTTON, self.epostayi_ac)
         self.btn_klasor.Bind(wx.EVT_BUTTON, self.klasore_git)
         self.btn_kapat.Bind(wx.EVT_BUTTON, lambda event: self.EndModal(wx.ID_CLOSE))
@@ -108,12 +118,12 @@ class EpostalardaAraPenceresi(wx.Dialog):
         self.txt_aranan.Enable(not durum_aramasi)
         if arama_turu == "icerik":
             self.durum.SetLabel(
-                "İçerik araması önbelleğe alınmış e-posta metinlerinde yapılır."
+                _("İçerik araması önbelleğe alınmış e-posta metinlerinde yapılır.")
             )
         elif durum_aramasi:
             self.durum.SetLabel("")
         else:
-            self.durum.SetLabel("Aranacak metni yazıp Enter tuşuna basın.")
+            self.durum.SetLabel(_("Aranacak metni yazıp Enter tuşuna basın."))
         if event is not None:
             event.Skip()
 
@@ -121,13 +131,13 @@ class EpostalardaAraPenceresi(wx.Dialog):
         arama_turu = self._secili_arama_turu()
         aranan = self.txt_aranan.GetValue().strip()
         if not aranan and arama_turu not in OKUNMA_DURUMU_ARAMA_TURLERI:
-            ui.message("Lütfen aranacak metni yazın.")
+            ui.message(_("Lütfen aranacak metni yazın."))
             self.txt_aranan.SetFocus()
             return
         ayarlar = dict(ayarlari_yukle())
         eposta = str(ayarlar.get("eposta", "") or "").strip()
         if not eposta:
-            ui.message("Arama yapmak için önce Gmail hesabınızı bağlayın.")
+            ui.message(_("Arama yapmak için önce Gmail hesabınızı bağlayın."))
             return
         self._arama_no += 1
         arama_no = self._arama_no
@@ -135,7 +145,7 @@ class EpostalardaAraPenceresi(wx.Dialog):
         self.liste.DeleteAllItems()
         self.sonuclar = []
         mesaj_soyle_ve_sonra_calistir(
-            "Aranıyor.",
+            _("Aranıyor."),
             lambda: self._arama_gorevini_baslat(
                 eposta, aranan, arama_turu, arama_no
             ),
@@ -162,8 +172,8 @@ class EpostalardaAraPenceresi(wx.Dialog):
             return
         self.btn_ara.Enable()
         if hata is not None:
-            self.durum.SetLabel("Arama sırasında bir hata oluştu.")
-            ui.message("E-postalar aranırken bir hata oluştu.")
+            self.durum.SetLabel(_("Arama sırasında bir hata oluştu."))
+            ui.message(_("E-postalar aranırken bir hata oluştu."))
             if self.txt_aranan.IsEnabled():
                 self.txt_aranan.SetFocus()
             else:
@@ -178,7 +188,7 @@ class EpostalardaAraPenceresi(wx.Dialog):
             konu = konu_gosterimini_duzenle(
                 guvenli_coz(sonuc.get("subject", "") or "Konusuz") or "Konusuz"
             )
-            klasor = str(sonuc.get("display_name") or sonuc.get("imap_name") or "Bilinmiyor")
+            klasor = klasor_gorunen_adi(str(sonuc.get("display_name") or sonuc.get("imap_name") or _("Bilinmiyor")))
             tarih = turkce_tarih_yap(sonuc.get("date_header", ""))
             satir = self.liste.InsertItem(indeks, kimden)
             self.liste.SetItem(satir, 1, konu)
@@ -186,18 +196,18 @@ class EpostalardaAraPenceresi(wx.Dialog):
             self.liste.SetItem(satir, 3, tarih)
         adet = len(self.sonuclar)
         self.durum.SetLabel(
-            "Sonuç bulunamadı."
+            _("Sonuç bulunamadı.")
             if adet == 0
-            else f"İlk {adet} arama sonucu gösteriliyor."
+            else _('İlk {0} arama sonucu gösteriliyor.').format(adet)
             if daha_fazla_sonuc_var
-            else f"{adet} arama sonucu bulundu."
+            else _('{0} arama sonucu bulundu.').format(adet)
         )
         mesaj_soyle_ve_sonra_calistir(
-            "Arama sonucunda e-posta bulunamadı."
+            _("Arama sonucunda e-posta bulunamadı.")
             if adet == 0
-            else f"Arama sonucunda 500'den fazla e-posta bulundu. İlk {adet} sonuç gösteriliyor."
+            else _("Arama sonucunda 500'den fazla e-posta bulundu. İlk {0} sonuç gösteriliyor.").format(adet)
             if daha_fazla_sonuc_var
-            else f"Arama sonucunda toplam {adet} e-posta bulundu.",
+            else _('Arama sonucunda toplam {0} e-posta bulundu.').format(adet),
             lambda: self._arama_sonrasi_odakla(adet, arama_no),
             ad="Arama sonucu sayısını bildirme",
         )
@@ -217,7 +227,7 @@ class EpostalardaAraPenceresi(wx.Dialog):
     def _secili_sonuc(self):
         indeks = self.liste.GetFocusedItem()
         if indeks < 0 or indeks >= len(self.sonuclar):
-            ui.message("Lütfen bir arama sonucu seçin.")
+            ui.message(_("Lütfen bir arama sonucu seçin."))
             return None
         return self.sonuclar[indeks]
 
@@ -229,7 +239,7 @@ class EpostalardaAraPenceresi(wx.Dialog):
             return
         self._eposta_aciliyor = True
         self.btn_ac.Disable()
-        self.durum.SetLabel("E-posta açılıyor...")
+        self.durum.SetLabel(_("E-posta açılıyor..."))
         arka_planda_calistir(
             self.ebeveyn.sunucudan_icerik_indir,
             str(sonuc.get("uid")),
@@ -243,16 +253,16 @@ class EpostalardaAraPenceresi(wx.Dialog):
         self._eposta_aciliyor = False
         self.btn_ac.Enable()
         if not veri:
-            self.durum.SetLabel("E-posta açılamadı. Başka bir sonuç seçebilirsiniz.")
+            self.durum.SetLabel(_("E-posta açılamadı. Başka bir sonuç seçebilirsiniz."))
             self.liste.SetFocus()
             return
         pencere = MesajOkumaPenceresi(self, veri, self.ebeveyn)
         guvenli_modal_goster(pencere, self.liste, self)
         if self._secili_arama_turu() == "okunmamis":
-            self.durum.SetLabel("Okunmamış e-postalar güncelleniyor...")
+            self.durum.SetLabel(_("Okunmamış e-postalar güncelleniyor..."))
             wx.CallAfter(self.aramayi_baslat)
             return
-        self.durum.SetLabel(f"{len(self.sonuclar)} arama sonucu bulundu.")
+        self.durum.SetLabel(_('{0} arama sonucu bulundu.').format(len(self.sonuclar)))
 
     def klasore_git(self, event=None):
         sonuc = self._secili_sonuc()

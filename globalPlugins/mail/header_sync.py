@@ -1,6 +1,15 @@
 # -*- coding: utf-8 -*-
 """IMAP başlıklarını paketler halinde yerel SQLite veritabanına eşitler."""
 
+# NVDA eklenti çevirilerini bu modül için etkinleştir.
+try:
+    import addonHandler
+    addonHandler.initTranslation()
+except (ImportError, AttributeError):
+    # NVDA dışındaki otomatik testlerde Türkçe kaynak metni aynen kullan.
+    _ = lambda metin: metin
+
+
 import email
 import email.utils
 import re
@@ -89,7 +98,7 @@ def _bayrak_kaydi_hazirla(uid, fetch_sonucu):
 def baslik_kaydini_hazirla(uid, fetch_sonucu):
     ham_baslik = ham_mesaj_verisi_al(fetch_sonucu)
     if not ham_baslik:
-        raise MailHatasi(f"E-posta başlığı boş döndü: UID {uid}.")
+        raise MailHatasi(_('E-posta başlığı boş döndü: UID {0}.').format(uid))
     mesaj = email.message_from_bytes(ham_baslik, policy=email_policy.default)
     metin = _fetch_metin(fetch_sonucu)
     flags_eslesme = re.search(r"\bFLAGS\s+\(([^)]*)\)", metin, re.IGNORECASE)
@@ -150,11 +159,11 @@ def _klasor_basliklarini_senkronize_et(
 ):
     uidvalidity = imap_uidvalidity_al(imap)
     if uidvalidity <= 0:
-        raise MailHatasi("Klasör UIDVALIDITY bilgisi alınamadığı için güvenli senkronizasyon başlatılamadı.")
+        raise MailHatasi(_("Klasör UIDVALIDITY bilgisi alınamadığı için güvenli eşitleme başlatılamadı."))
     if sunucu_uidleri is None:
         tip, arama_verisi = imap.uid("SEARCH", "ALL")
         if tip != "OK":
-            raise MailHatasi("E-posta UID listesi alınamadı.")
+            raise MailHatasi(_("E-posta UID listesi alınamadı."))
         sunucu_uidleri = uidleri_ayristir(arama_verisi)
     else:
         sunucu_uidleri = [str(uid) for uid in sunucu_uidleri if str(uid).isdigit()]
@@ -177,10 +186,10 @@ def _klasor_basliklarini_senkronize_et(
             }
         tip, fetch_verisi = imap.uid("FETCH", ",".join(uid_parcasi), "(FLAGS)")
         if tip != "OK":
-            raise MailHatasi("E-posta durum bayrakları sunucudan alınamadı.")
+            raise MailHatasi(_("E-posta durum bayrakları sunucudan alınamadı."))
         harita = _bayrak_fetch_sonuclarini_uidlere_ayir(fetch_verisi)
         if any(uid not in harita for uid in uid_parcasi):
-            raise MailHatasi("Bazı e-posta durumları sunucudan eksik döndü.")
+            raise MailHatasi(_("Bazı e-posta durumları sunucudan eksik döndü."))
         bayrak_paketini_kaydet(
             klasor_id,
             uidvalidity,
@@ -201,11 +210,11 @@ def _klasor_basliklarini_senkronize_et(
             }
         tip, fetch_verisi = imap.uid("FETCH", ",".join(uid_parcasi), BASLIK_FETCH_KOMUTU)
         if tip != "OK":
-            raise MailHatasi("E-posta başlıkları sunucudan alınamadı.")
+            raise MailHatasi(_("E-posta başlıkları sunucudan alınamadı."))
         harita = fetch_sonuclarini_uidlere_ayir(fetch_verisi)
         eksik_yanitlar = [uid for uid in uid_parcasi if uid not in harita]
         if eksik_yanitlar:
-            raise MailHatasi("Bazı e-posta başlıkları sunucudan eksik döndü; senkronizasyon daha sonra sürdürülecek.")
+            raise MailHatasi(_("Bazı e-posta başlıkları sunucudan eksik döndü; eşitleme daha sonra sürdürülecek."))
         kayitlar = [baslik_kaydini_hazirla(uid, harita[uid]) for uid in uid_parcasi]
         baslik_paketini_kaydet(hesap_id, klasor_id, uidvalidity, kayitlar)
         kaydedilen += len(kayitlar)

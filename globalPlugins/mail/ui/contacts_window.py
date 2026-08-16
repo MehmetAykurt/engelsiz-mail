@@ -1,6 +1,15 @@
 # -*- coding: utf-8 -*-
 # Engelsiz Mail - kişiler arayüz pencereleri
 
+
+# NVDA eklenti çevirilerini bu modül için etkinleştir.
+try:
+    import addonHandler
+    addonHandler.initTranslation()
+except (ImportError, AttributeError):
+    # NVDA dışındaki otomatik testlerde Türkçe kaynak metni aynen kullan.
+    _ = lambda metin: metin
+
 import wx
 import ui
 
@@ -18,28 +27,28 @@ from ..ui_helpers import gorunum_denetimlerine_uygula
 
 
 class KisiDuzenlemePenceresi(wx.Dialog):
-    def __init__(self, parent, kisi=None, baslik="Kişi Oluştur"):
+    def __init__(self, parent, kisi=None, baslik=_("Kişi Oluştur")):
         super().__init__(parent, title=baslik)
         kisi = dict(kisi or {})
         duzen = wx.BoxSizer(wx.VERTICAL)
-        duzen.Add(wx.StaticText(self, label="&Ad:"), 0, wx.LEFT | wx.RIGHT | wx.TOP, 5)
+        duzen.Add(wx.StaticText(self, label=_("&Ad:")), 0, wx.LEFT | wx.RIGHT | wx.TOP, 5)
         self.txt_ad = wx.TextCtrl(self, value=str(kisi.get("ad", "")))
-        self.txt_ad.SetName("Kişi adı")
+        self.txt_ad.SetName(_("Kişi adı"))
         duzen.Add(self.txt_ad, 0, wx.ALL | wx.EXPAND, 5)
 
-        duzen.Add(wx.StaticText(self, label="&Soyad:"), 0, wx.LEFT | wx.RIGHT | wx.TOP, 5)
+        duzen.Add(wx.StaticText(self, label=_("&Soyad:")), 0, wx.LEFT | wx.RIGHT | wx.TOP, 5)
         self.txt_soyad = wx.TextCtrl(self, value=str(kisi.get("soyad", "")))
-        self.txt_soyad.SetName("Kişi soyadı")
+        self.txt_soyad.SetName(_("Kişi soyadı"))
         duzen.Add(self.txt_soyad, 0, wx.ALL | wx.EXPAND, 5)
 
-        duzen.Add(wx.StaticText(self, label="&E-posta adresi:"), 0, wx.LEFT | wx.RIGHT | wx.TOP, 5)
+        duzen.Add(wx.StaticText(self, label=_("&E-posta adresi:")), 0, wx.LEFT | wx.RIGHT | wx.TOP, 5)
         self.txt_eposta = wx.TextCtrl(self, value=str(kisi.get("eposta", "")))
-        self.txt_eposta.SetName("Kişi e-posta adresi")
+        self.txt_eposta.SetName(_("Kişi e-posta adresi"))
         duzen.Add(self.txt_eposta, 0, wx.ALL | wx.EXPAND, 5)
 
         btn_duzen = wx.BoxSizer(wx.HORIZONTAL)
-        tamam_btn = wx.Button(self, wx.ID_OK, "&Kaydet")
-        iptal_btn = wx.Button(self, wx.ID_CANCEL, "İ&ptal")
+        tamam_btn = wx.Button(self, wx.ID_OK, _("&Kaydet"))
+        iptal_btn = wx.Button(self, wx.ID_CANCEL, _("İ&ptal"))
         btn_duzen.Add(tamam_btn, 0, wx.ALL, 5)
         btn_duzen.Add(iptal_btn, 0, wx.ALL, 5)
         duzen.Add(btn_duzen, 0, wx.CENTER | wx.BOTTOM, 10)
@@ -60,11 +69,11 @@ class KisiDuzenlemePenceresi(wx.Dialog):
     def kaydet(self, event):
         veri = self.veri_al()
         if not veri["ad"] and not veri["soyad"]:
-            ui.message("Lütfen ad veya soyad alanlarından en az birini yazın.")
+            ui.message(_("Lütfen ad veya soyad alanlarından en az birini yazın."))
             self.txt_ad.SetFocus()
             return
         if not eposta_adresi_gecerli_mi(veri["eposta"]):
-            ui.message("Lütfen geçerli bir e-posta adresi yazın.")
+            ui.message(_("Lütfen geçerli bir e-posta adresi yazın."))
             self.txt_eposta.SetFocus()
             return
         self.EndModal(wx.ID_OK)
@@ -72,22 +81,22 @@ class KisiDuzenlemePenceresi(wx.Dialog):
 
 class KisilerPenceresi(wx.Dialog):
     def __init__(self, parent):
-        super().__init__(parent, title="Engelsiz Mail - Kişiler")
+        super().__init__(parent, title=_("Engelsiz Mail - Kişiler"))
         self.kisiler = kisileri_yukle()
         duzen = wx.BoxSizer(wx.VERTICAL)
-        duzen.Add(wx.StaticText(self, label="&Kişiler:"), 0, wx.ALL, 5)
+        duzen.Add(wx.StaticText(self, label=_("&Kişiler:")), 0, wx.ALL, 5)
         self.liste = wx.ListCtrl(self, style=wx.LC_REPORT | wx.LC_SINGLE_SEL)
-        self.liste.SetName("Kişiler listesi")
+        self.liste.SetName(_("Kişiler listesi"))
         self.liste.InsertColumn(0, " ", width=700)
         self.liste.Bind(wx.EVT_LIST_ITEM_ACTIVATED, self.duzenle)
         duzen.Add(self.liste, 1, wx.ALL | wx.EXPAND, 5)
         gorunum_denetimlerine_uygula(self.liste)
 
         btn_duzen = wx.BoxSizer(wx.HORIZONTAL)
-        self.ekle_btn = wx.Button(self, label="&Ekle")
-        self.duzenle_btn = wx.Button(self, label="&Düzenle")
-        self.sil_btn = wx.Button(self, label="&Sil")
-        kapat_btn = wx.Button(self, wx.ID_CANCEL, "&Kapat")
+        self.ekle_btn = wx.Button(self, label=_("&Ekle"))
+        self.duzenle_btn = wx.Button(self, label=_("&Düzenle"))
+        self.sil_btn = wx.Button(self, label=_("&Sil"))
+        kapat_btn = wx.Button(self, wx.ID_CANCEL, _("&Kapat"))
         self.ekle_btn.Bind(wx.EVT_BUTTON, self.ekle)
         self.duzenle_btn.Bind(wx.EVT_BUTTON, self.duzenle)
         self.sil_btn.Bind(wx.EVT_BUTTON, self.sil)
@@ -136,8 +145,8 @@ class KisilerPenceresi(wx.Dialog):
     def rehber_durum_metni(self):
         sayi = len(self.kisiler)
         if sayi <= 0:
-            return "Rehberinizde kayıtlı kişi bulunamadı."
-        return f"Rehberde {sayi} kişi listelendi."
+            return _("Rehberinizde kayıtlı kişi bulunamadı.")
+        return _('Rehberde {0} kişi listelendi.').format(sayi)
 
     def rehber_durumunu_soyle(self, on_mesaj=None):
         mesajlar = []
@@ -174,7 +183,7 @@ class KisilerPenceresi(wx.Dialog):
         return indeks
 
     def ekle(self, event):
-        pencere = KisiDuzenlemePenceresi(self, baslik="Kişi Oluştur")
+        pencere = KisiDuzenlemePenceresi(self, baslik=_("Kişi Oluştur"))
         kisi = None
         try:
             if pencere.ShowModal() == wx.ID_OK:
@@ -192,24 +201,24 @@ class KisilerPenceresi(wx.Dialog):
         if kisi is not None:
             try:
                 if not kisi_ekle_veya_guncelle(kisi):
-                    ui.message("Kişi kaydedilemedi. Lütfen dosya izinlerini kontrol edin.")
+                    ui.message(_("Kişi kaydedilemedi. Lütfen dosya izinlerini denetleyin."))
                     return
                 self.kisiler = kisileri_yukle()
                 self.listeyi_doldur(kisi.get("eposta", ""))
-                self.rehber_durumunu_gecikmeli_soyle("Kişi kaydedildi.")
+                self.rehber_durumunu_gecikmeli_soyle(_("Kişi kaydedildi."))
             except MailHatasi as e:
                 ui.message(str(e))
             except Exception as e:
                 hata_kaydet("Kişi kaydedilemedi.", e)
-                ui.message("Kişi kaydedilemedi.")
+                ui.message(_("Kişi kaydedilemedi."))
 
     def duzenle(self, event=None):
         indeks = self.secili_indeks()
         if indeks is None:
-            ui.message("Düzenlenecek kişi seçilmedi.")
+            ui.message(_("Düzenlenecek kişi seçilmedi."))
             return
         eski = dict(self.kisiler[indeks])
-        pencere = KisiDuzenlemePenceresi(self, eski, "Kişi Düzenle")
+        pencere = KisiDuzenlemePenceresi(self, eski, _("Kişi Düzenle"))
         kisi = None
         try:
             if pencere.ShowModal() == wx.ID_OK:
@@ -227,25 +236,25 @@ class KisilerPenceresi(wx.Dialog):
         if kisi is not None:
             try:
                 if not kisi_ekle_veya_guncelle(kisi, eski_eposta=eski.get("eposta", "")):
-                    ui.message("Kişi güncellenemedi. Lütfen dosya izinlerini kontrol edin.")
+                    ui.message(_("Kişi güncellenemedi. Lütfen dosya izinlerini denetleyin."))
                     return
                 self.kisiler = kisileri_yukle()
                 self.listeyi_doldur(kisi.get("eposta", ""))
-                self.rehber_durumunu_gecikmeli_soyle("Kişi güncellendi.")
+                self.rehber_durumunu_gecikmeli_soyle(_("Kişi güncellendi."))
             except MailHatasi as e:
                 ui.message(str(e))
             except Exception as e:
                 hata_kaydet("Kişi güncellenemedi.", e)
-                ui.message("Kişi güncellenemedi.")
+                ui.message(_("Kişi güncellenemedi."))
 
     def sil(self, event):
         indeks = self.secili_indeks()
         if indeks is None:
-            ui.message("Silinecek kişi seçilmedi.")
+            ui.message(_("Silinecek kişi seçilmedi."))
             return
         kisi = self.kisiler[indeks]
-        isim = kisi_gorunen_ad(kisi) or "seçili kişi"
-        sonuc = wx.MessageBox(f"{isim} silinsin mi?", "Kişi Sil", wx.YES_NO | wx.NO_DEFAULT | wx.ICON_QUESTION, self)
+        isim = kisi_gorunen_ad(kisi) or _("seçili kişi")
+        sonuc = wx.MessageBox(_('{0} silinsin mi?').format(isim), _("Kişiyi sil"), wx.YES_NO | wx.NO_DEFAULT | wx.ICON_QUESTION, self)
         if sonuc != wx.YES:
             self.liste.SetFocus()
             return
@@ -253,44 +262,44 @@ class KisilerPenceresi(wx.Dialog):
             yeni_kisiler = list(self.kisiler)
             del yeni_kisiler[indeks]
             if not kisileri_kaydet(yeni_kisiler):
-                ui.message("Kişi silinemedi. Lütfen dosya izinlerini kontrol edin.")
+                ui.message(_("Kişi silinemedi. Lütfen dosya izinlerini denetleyin."))
                 return
             self.kisiler = kisileri_yukle()
             self.listeyi_doldur()
-            self.rehber_durumunu_gecikmeli_soyle("Kişi silindi.")
+            self.rehber_durumunu_gecikmeli_soyle(_("Kişi silindi."))
         except Exception as e:
             hata_kaydet("Kişi silinemedi.", e)
-            ui.message("Kişi silinemedi.")
+            ui.message(_("Kişi silinemedi."))
 
 
 class KisiSecPenceresi(wx.Dialog):
     def __init__(self, parent):
-        super().__init__(parent, title="Kişilerden Alıcı Seç")
+        super().__init__(parent, title=_("Kişilerden alıcı seç"))
         self.kisiler = kisileri_yukle()
         self.secili_kisiler = []
         self.isaretli_indeksler_kumesi = set()
 
         duzen = wx.BoxSizer(wx.VERTICAL)
-        duzen.Add(wx.StaticText(self, label="&Kişiler:"), 0, wx.ALL, 5)
+        duzen.Add(wx.StaticText(self, label=_("&Kişiler:")), 0, wx.ALL, 5)
 
         # wx.CheckListBox bazı Windows/wx/NVDA birleşimlerinde boşluk tuşunu
         # denetimin varsayılan etkinleştirme davranışına bırakabiliyor. Bu da
         # işaretleme yerine beklenmeyen pencere/düzenleme davranışına yol açabiliyor.
         # Bu yüzden seçim penceresinde işaret durumunu biz yönetiyoruz.
         self.liste = wx.ListCtrl(self, style=wx.LC_REPORT | wx.LC_SINGLE_SEL)
-        self.liste.SetName("Seçilecek kişiler listesi")
-        self.liste.InsertColumn(0, "Durum", width=110)
+        self.liste.SetName(_("Seçilecek kişiler listesi"))
+        self.liste.InsertColumn(0, _("Durum"), width=110)
         self.liste.InsertColumn(1, " ", width=560)
         self.liste.Bind(wx.EVT_KEY_DOWN, self.liste_tusuna_basildi)
         duzen.Add(self.liste, 1, wx.ALL | wx.EXPAND, 5)
         gorunum_denetimlerine_uygula(self.liste)
 
-        bilgi = wx.StaticText(self, label="Boşluk tuşuyla kişileri işaretleyip kaldırabilirsiniz. Ekle düğmesi işaretli kişileri alıcı alanına ekler.")
+        bilgi = wx.StaticText(self, label=_("Boşluk tuşuyla kişileri işaretleyip kaldırabilirsiniz. Ekle düğmesi işaretli kişileri alıcı alanına ekler."))
         duzen.Add(bilgi, 0, wx.LEFT | wx.RIGHT | wx.BOTTOM, 5)
 
         btn_duzen = wx.BoxSizer(wx.HORIZONTAL)
-        tamam_btn = wx.Button(self, wx.ID_OK, "&Ekle")
-        iptal_btn = wx.Button(self, wx.ID_CANCEL, "İ&ptal")
+        tamam_btn = wx.Button(self, wx.ID_OK, _("&Ekle"))
+        iptal_btn = wx.Button(self, wx.ID_CANCEL, _("İ&ptal"))
         tamam_btn.Bind(wx.EVT_BUTTON, self.tamam)
         btn_duzen.Add(tamam_btn, 0, wx.ALL, 5)
         btn_duzen.Add(iptal_btn, 0, wx.ALL, 5)
@@ -307,7 +316,7 @@ class KisiSecPenceresi(wx.Dialog):
         if not self.kisiler:
             return
         for indeks, kisi in enumerate(self.kisiler):
-            durum = "İşaretli" if indeks in self.isaretli_indeksler_kumesi else "İşaretli değil"
+            durum = _("İşaretli") if indeks in self.isaretli_indeksler_kumesi else _("İşaretli değil")
             item = self.liste.InsertItem(indeks, durum)
             self.liste.SetItem(item, 1, kisi_gorunen_ad(kisi))
         self.liste.Select(0)
@@ -322,9 +331,9 @@ class KisiSecPenceresi(wx.Dialog):
     def isaret_durumunu_soyle(self, indeks):
         if indeks is None or indeks < 0 or indeks >= len(self.kisiler):
             return
-        durum = "işaretli" if indeks in self.isaretli_indeksler_kumesi else "işaretli değil"
+        durum = _("işaretli") if indeks in self.isaretli_indeksler_kumesi else _("işaretli değil")
         ad = kisi_gorunen_ad(self.kisiler[indeks])
-        ui.message(f"{ad}, {durum}.")
+        ui.message(_('{0}, {1}.').format(ad, durum))
 
     def isareti_degistir(self, indeks):
         if indeks is None or indeks < 0 or indeks >= len(self.kisiler):
@@ -333,7 +342,7 @@ class KisiSecPenceresi(wx.Dialog):
             self.isaretli_indeksler_kumesi.remove(indeks)
         else:
             self.isaretli_indeksler_kumesi.add(indeks)
-        self.liste.SetItem(indeks, 0, "İşaretli" if indeks in self.isaretli_indeksler_kumesi else "İşaretli değil")
+        self.liste.SetItem(indeks, 0, _("İşaretli") if indeks in self.isaretli_indeksler_kumesi else _("İşaretli değil"))
         self.liste.Select(indeks)
         self.liste.Focus(indeks)
         self.isaret_durumunu_soyle(indeks)
@@ -350,16 +359,16 @@ class KisiSecPenceresi(wx.Dialog):
 
     def tamam(self, event):
         if not self.kisiler:
-            ui.message("Kayıtlı kişi yok.")
+            ui.message(_("Kayıtlı kişi yok."))
             return
         secimler = sorted(self.isaretli_indeksler_kumesi)
         if not secimler:
-            ui.message("Lütfen boşluk tuşuyla en az bir kişi işaretleyin.")
+            ui.message(_("Lütfen boşluk tuşuyla en az bir kişi işaretleyin."))
             self.liste.SetFocus()
             return
         self.secili_kisiler = [self.kisiler[i] for i in secimler if 0 <= i < len(self.kisiler)]
         if not self.secili_kisiler:
-            ui.message("Geçerli kişi seçilemedi.")
+            ui.message(_("Geçerli kişi seçilemedi."))
             return
         self.EndModal(wx.ID_OK)
 

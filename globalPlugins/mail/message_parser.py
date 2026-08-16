@@ -1,5 +1,14 @@
 # -*- coding: utf-8 -*-
 
+
+# NVDA eklenti çevirilerini bu modül için etkinleştir.
+try:
+    import addonHandler
+    addonHandler.initTranslation()
+except (ImportError, AttributeError):
+    # NVDA dışındaki otomatik testlerde Türkçe kaynak metni aynen kullan.
+    _ = lambda metin: metin
+
 import base64
 import email
 import email.utils
@@ -9,6 +18,7 @@ import re
 
 from .logger import hata_kaydet
 from .text_utils import (
+    eposta_baytlarini_metne_coz,
     eposta_basligi_tek_satir_yap,
     guvenli_coz,
     html_icerik_gibi_gorunuyor_mu,
@@ -51,7 +61,7 @@ def grup_araci_adresini_temizle(adres):
 
 
 
-def gonderen_gosterimini_al(deger, varsayilan="Bilinmiyor"):
+def gonderen_gosterimini_al(deger, varsayilan=_("Bilinmiyor")):
     """From başlığından görünen adı öncelikli, yoksa e-posta adresini döndürür."""
     kaynak = guvenli_coz(deger or "").strip()
     if not kaynak:
@@ -66,7 +76,7 @@ def adres_basligini_duzenle(deger):
     adresler = []
     gorulen = set()
     kaynak = str(deger or "").replace(";", ",")
-    kaynak = eposta_basligi_tek_satir_yap(kaynak)
+    kaynak = eposta_basligi_tek_satir_yap(kaynak).strip().rstrip(" ,")
     for ad, adres in email.utils.getaddresses([kaynak]):
         adres = grup_araci_adresini_temizle(adres)
         ad = guvenli_coz(ad).strip()
@@ -126,7 +136,7 @@ def adres_basligini_gosterime_hazirla(
     return "; ".join(sonuc) or str(varsayilan or "")
 
 
-def gonderen_basligini_gosterime_hazirla(deger, varsayilan="Bilinmiyor"):
+def gonderen_basligini_gosterime_hazirla(deger, varsayilan=_("Bilinmiyor")):
     """From başlığını aracı grup adını temizleyerek `Ad - adres` biçiminde döndürür."""
     kaynak = guvenli_coz(deger or "").strip()
     ad, adres = email.utils.parseaddr(kaynak)
@@ -257,40 +267,7 @@ def onizleme_verisini_metin_yap(veri, karakter_kumesi="utf-8"):
     üreten sonuç seçilir. Böylece başlıksız UTF-8 Türkçe metinler, latin-1
     gibi kodlamalara erken düşüp bozulmaz.
     """
-    if isinstance(veri, str):
-        return veri
-
-    denenecekler = []
-    karakter_kumesi = str(karakter_kumesi or "").strip()
-    if karakter_kumesi:
-        denenecekler.append(karakter_kumesi)
-    denenecekler.extend(["utf-8", "iso-8859-9", "windows-1254", "latin-1"])
-
-    benzersiz = []
-    for kodlama in denenecekler:
-        kodlama = str(kodlama or "").strip()
-        if kodlama and kodlama.lower() not in [k.lower() for k in benzersiz]:
-            benzersiz.append(kodlama)
-
-    yedekler = []
-    for kodlama in benzersiz:
-        try:
-            metin = veri.decode(kodlama, errors="strict")
-            if metin:
-                return metin
-        except Exception:
-            pass
-        try:
-            metin = veri.decode(kodlama, errors="replace")
-            if metin:
-                yedekler.append((metin.count("\ufffd"), kodlama.lower() not in ("utf-8", "utf8"), metin))
-        except Exception:
-            continue
-
-    if yedekler:
-        yedekler.sort(key=lambda oge: (oge[0], oge[1]))
-        return yedekler[0][2]
-    return veri.decode("utf-8", errors="replace")
+    return eposta_baytlarini_metne_coz(veri, karakter_kumesi)
 
 
 
@@ -516,6 +493,11 @@ def onizleme_email_parca_metni_al(parca):
 
         try:
             metin = parca.get_content()
+            if isinstance(metin, str) and "�" in metin:
+                payload = parca.get_payload(decode=True)
+                if payload is not None:
+                    karakter_kumesi = parca.get_content_charset() or "utf-8"
+                    metin = eposta_baytlarini_metne_coz(payload, karakter_kumesi)
         except Exception:
             payload = parca.get_payload(decode=True)
             if payload is None:

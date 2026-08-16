@@ -5,7 +5,13 @@ import threading
 
 import wx
 
-from .config import ayarlari_yukle, onizleme_ayari_yukle
+from .config import (
+    MESAJ_SAYISI_ALANI,
+    VARSAYILAN_MESAJ_SAYISI,
+    ayarlari_yukle,
+    mesaj_sayisini_duzenle,
+    onizleme_ayari_yukle,
+)
 from .folders import (
     SISTEM_KLASORLERI,
     imap_klasor_haritasi_olustur,
@@ -26,26 +32,70 @@ from .vendor import imaplib
 
 
 BASLANGIC_SENKRONIZASYON_GECIKMESI_MS = 15000
+BASLANGIC_SENKRONIZASYON_KILIT_YENIDEN_DENEME_MS = 5000
+BASLANGIC_SENKRONIZASYON_AG_YENIDEN_DENEME_MS = 60000
+
+
+def son_uidleri_sinirla(uidler, sinir):
+    """Sunucunun artan UID listesinden en yeni kayıtları, yeniden eskiye döndürür."""
+    sinir = mesaj_sayisini_duzenle(sinir, VARSAYILAN_MESAJ_SAYISI)
+    temiz_uidler = list(uidler or [])
+    return list(reversed(temiz_uidler[-sinir:]))
 
 
 class BaslangicSenkronizasyonYoneticisi:
-    """Tek seferlik ve iptal edilebilir sessiz başlangıç senkronizasyonunu yönetir."""
+    """Başarılı olana kadar yeniden denenebilen sessiz başlangıç eşitlemesini yönetir."""
 
     def __init__(self, gecikme_ms=BASLANGIC_SENKRONIZASYON_GECIKMESI_MS):
         self._iptal = threading.Event()
-        self._basladi = False
+        self._durum_kilidi = threading.Lock()
+        self._baglanti_kilidi = threading.Lock()
+        self._aktif_baglanti = None
+        self._calisiyor = False
+        self._tamamlandi = False
         self._zamanlayici = None
+        self._zamanlayiciyi_ayarla(gecikme_ms)
+
+    def _zamanlayiciyi_ayarla(self, gecikme_ms):
+        """Yalnız wx ana iş parçacığında yeni çalışma zamanlayıcısını kurar."""
+        if self._iptal.is_set() or self._tamamlandi:
+            return
         try:
+            if self._zamanlayici:
+                self._zamanlayici.Stop()
             self._zamanlayici = wx.CallLater(max(0, int(gecikme_ms)), self._baslat)
         except Exception as e:
+            self._zamanlayici = None
             hata_kaydet("Başlangıç senkronizasyon zamanlayıcısı oluşturulamadı.", e)
+
+    def _calisma_bitti(self, yeniden_dene_ms=None):
+        """İşçi sonucunu ana iş parçacığında kaydeder ve gerekirse yeniden planlar."""
+        with self._durum_kilidi:
+            self._calisiyor = False
+            if yeniden_dene_ms is None:
+                self._tamamlandi = True
+        if yeniden_dene_ms is not None and not self._iptal.is_set():
+            self._zamanlayiciyi_ayarla(yeniden_dene_ms)
+
+    def _sonucu_ana_is_parcacigina_aktar(self, yeniden_dene_ms=None):
+        try:
+            wx.CallAfter(self._calisma_bitti, yeniden_dene_ms)
+        except Exception as e:
+            hata_kaydet("Başlangıç senkronizasyon sonucu ana iş parçacığına aktarılamadı.", e)
+            with self._durum_kilidi:
+                self._calisiyor = False
 
     def _baslat(self):
         self._zamanlayici = None
-        if self._iptal.is_set() or self._basladi:
-            return
-        self._basladi = True
-        arka_planda_calistir(self._calistir)
+        with self._durum_kilidi:
+            if self._iptal.is_set() or self._calisiyor or self._tamamlandi:
+                return
+            self._calisiyor = True
+        try:
+            arka_planda_calistir(self._calistir)
+        except Exception as e:
+            hata_kaydet("Başlangıç senkronizasyon iş parçacığı başlatılamadı.", e)
+            self._calisma_bitti()
 
     def durdur(self):
         self._iptal.set()
@@ -56,6 +106,13 @@ class BaslangicSenkronizasyonYoneticisi:
                 zamanlayici.Stop()
             except Exception as e:
                 hata_kaydet("Başlangıç senkronizasyon zamanlayıcısı durdurulamadı.", e)
+        with self._baglanti_kilidi:
+            aktif_baglanti = self._aktif_baglanti
+        if aktif_baglanti is not None:
+            try:
+                aktif_baglanti.shutdown()
+            except Exception as e:
+                hata_kaydet("Başlangıç senkronizasyonunun etkin IMAP bağlantısı kapatılamadı.", e)
 
     def _klasor_sirasi(self, klasor_haritasi, ozel_klasorler):
         oncelik = [
@@ -82,25 +139,62 @@ class BaslangicSenkronizasyonYoneticisi:
 
     def _calistir(self):
         if self._iptal.is_set():
+            self._sonucu_ana_is_parcacigina_aktar()
             return
         try:
             # Bos semayi da hesap ve ag kontrolunden bagimsiz olarak arka planda kur.
             veritabani_hazirla()
         except Exception as e:
             hata_kaydet("Baslangic veritabani hazirligi tamamlanamadi.", e)
+            self._sonucu_ana_is_parcacigina_aktar()
             return
-        ayarlar = ayarlari_yukle()
+        try:
+            ayarlar = ayarlari_yukle()
+        except Exception as e:
+            hata_kaydet("Başlangıç senkronizasyon ayarları okunamadı.", e)
+            self._sonucu_ana_is_parcacigina_aktar()
+            return
         eposta = str(ayarlar.get("eposta", "") or "").strip()
         sifre = str(ayarlar.get("sifre", "") or "").strip()
         if not eposta or not sifre:
+            self._sonucu_ana_is_parcacigina_aktar()
             return
+        mesaj_sayisi = mesaj_sayisini_duzenle(
+            ayarlar.get(MESAJ_SAYISI_ALANI, VARSAYILAN_MESAJ_SAYISI)
+        )
         # Senkronizasyon bekleyen bir silmeyi yeniden görünür yapmadan önce
         # çevrimdışı kuyruğu sunucuya uygulamayı dene.
-        bekleyen_silmeleri_isle(ayarlar, eposta)
         try:
-            with ImapBaglantisi(ayarlar) as imap:
+            silme_sonucu = bekleyen_silmeleri_isle(ayarlar, eposta)
+        except Exception as e:
+            uyari_kaydet(
+                "Bekleyen silmeler başlangıçta uygulanamadı; eşitleme daha sonra yeniden denenecek.",
+                e,
+            )
+            self._sonucu_ana_is_parcacigina_aktar(
+                BASLANGIC_SENKRONIZASYON_AG_YENIDEN_DENEME_MS
+            )
+            return
+        if bool((silme_sonucu or {}).get("kilitli")):
+            # Aynı anda başlayan kuyruk yöneticisi bitmeden normal eşitleme
+            # eski sunucu görünümünü yeniden yazmasın; kısa süre sonra tekrar dene.
+            if not self._iptal.is_set():
+                self._sonucu_ana_is_parcacigina_aktar(
+                    BASLANGIC_SENKRONIZASYON_KILIT_YENIDEN_DENEME_MS
+                )
+            return
+        yeniden_dene_ms = None
+        baglanti = ImapBaglantisi(ayarlar)
+        with self._baglanti_kilidi:
+            if self._iptal.is_set():
+                self._sonucu_ana_is_parcacigina_aktar()
+                return
+            self._aktif_baglanti = baglanti
+        try:
+            with baglanti as imap:
                 tip, liste_verisi = imap.list()
                 if tip != "OK":
+                    yeniden_dene_ms = BASLANGIC_SENKRONIZASYON_AG_YENIDEN_DENEME_MS
                     return
                 klasor_haritasi, ozel_klasorler = imap_klasor_haritasi_olustur(liste_verisi)
                 # Ancak LIST cevabinin tum satirlari anlasilabiliyorsa envanteri
@@ -113,6 +207,7 @@ class BaslangicSenkronizasyonYoneticisi:
                         if "\\NOSELECT" not in bayraklar
                     }
                     hesap_klasor_envanterini_uzlastir(eposta, secilebilirler)
+                govde_onbellegi_durdu = False
                 for kategori, imap_klasoru in self._klasor_sirasi(
                     klasor_haritasi, ozel_klasorler
                 ):
@@ -126,6 +221,9 @@ class BaslangicSenkronizasyonYoneticisi:
                         if tip != "OK":
                             continue
                         sunucu_uidleri = uidleri_ayristir(arama_verisi)
+                        onbellek_uidleri = son_uidleri_sinirla(
+                            sunucu_uidleri, mesaj_sayisi
+                        )
                         sonuc = klasor_basliklarini_senkronize_et(
                             imap,
                             eposta,
@@ -136,15 +234,28 @@ class BaslangicSenkronizasyonYoneticisi:
                         )
                         if sonuc.get("iptal_edildi"):
                             return
-                        govde_sonucu = klasor_govdelerini_senkronize_et(
-                            imap,
-                            eposta,
-                            imap_klasoru,
-                            sunucu_uidleri=list(reversed(sunucu_uidleri)),
-                            iptal_edildi_mi=self._iptal.is_set,
-                        )
-                        if govde_sonucu.get("iptal_edildi"):
-                            return
+                        if sonuc.get("atlandi"):
+                            yeniden_dene_ms = (
+                                BASLANGIC_SENKRONIZASYON_KILIT_YENIDEN_DENEME_MS
+                            )
+                            continue
+                        if not govde_onbellegi_durdu:
+                            govde_sonucu = klasor_govdelerini_senkronize_et(
+                                imap,
+                                eposta,
+                                imap_klasoru,
+                                sunucu_uidleri=onbellek_uidleri,
+                                iptal_edildi_mi=self._iptal.is_set,
+                            )
+                            if govde_sonucu.get("iptal_edildi"):
+                                return
+                            if govde_sonucu.get("atlandi"):
+                                yeniden_dene_ms = (
+                                    BASLANGIC_SENKRONIZASYON_KILIT_YENIDEN_DENEME_MS
+                                )
+                            govde_onbellegi_durdu = bool(
+                                govde_sonucu.get("sinira_ulasti")
+                            )
                         # Tam gövde kaydedilirken ön izleme de üretildiği için önce
                         # gövde eşitlemesini tamamla. Ön izleme açıksa yalnızca gövdesi
                         # alınamayan ve ön izlemesi hâlâ eksik iletilerin kısa bölümünü
@@ -154,17 +265,22 @@ class BaslangicSenkronizasyonYoneticisi:
                                 imap,
                                 eposta,
                                 imap_klasoru,
-                                sunucu_uidleri=list(reversed(sunucu_uidleri)),
+                                sunucu_uidleri=onbellek_uidleri,
                                 iptal_edildi_mi=self._iptal.is_set,
                             )
                             if onizleme_sonucu.get("iptal_edildi"):
                                 return
+                            if onizleme_sonucu.get("atlandi"):
+                                yeniden_dene_ms = (
+                                    BASLANGIC_SENKRONIZASYON_KILIT_YENIDEN_DENEME_MS
+                                )
                     except Exception as e:
                         if isinstance(e, (OSError, EOFError, imaplib.IMAP4.abort)):
                             uyari_kaydet(
-                                "Başlangıç önbelleği sırasında IMAP bağlantısı kesildi; kalan klasörler sonraki çalışmaya bırakıldı.",
+                                "Başlangıç önbelleği sırasında IMAP bağlantısı kesildi; eşitleme daha sonra yeniden denenecek.",
                                 e,
                             )
+                            yeniden_dene_ms = BASLANGIC_SENKRONIZASYON_AG_YENIDEN_DENEME_MS
                             break
                         hata_kaydet(
                             f"Başlangıçta klasör önbelleği eşitlenemedi: {kategori}", e
@@ -180,3 +296,9 @@ class BaslangicSenkronizasyonYoneticisi:
                 "Başlangıç e-posta senkronizasyonu bağlantı nedeniyle tamamlanamadı; daha sonra yeniden denenecek.",
                 e,
             )
+            yeniden_dene_ms = BASLANGIC_SENKRONIZASYON_AG_YENIDEN_DENEME_MS
+        finally:
+            with self._baglanti_kilidi:
+                if self._aktif_baglanti is baglanti:
+                    self._aktif_baglanti = None
+            self._sonucu_ana_is_parcacigina_aktar(yeniden_dene_ms)

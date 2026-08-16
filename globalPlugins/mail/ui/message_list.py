@@ -1,6 +1,15 @@
 # -*- coding: utf-8 -*-
 # Engelsiz Mail - ana pencere e-posta liste görünümü yardımcıları
 
+
+# NVDA eklenti çevirilerini bu modül için etkinleştir.
+try:
+    import addonHandler
+    addonHandler.initTranslation()
+except (ImportError, AttributeError):
+    # NVDA dışındaki otomatik testlerde Türkçe kaynak metni aynen kullan.
+    _ = lambda metin: metin
+
 import re
 
 import wx
@@ -8,7 +17,7 @@ import wx
 from .folder_view import LISTE_MODU_EPOSTA
 from ..logger import hata_kaydet
 
-EK_VAR_ETIKETI = "Eki var. "
+EK_VAR_ETIKETI = _("Eki var. ")
 
 
 def liste_bilgi_satiri_goster(self, mesaj):
@@ -19,7 +28,7 @@ def liste_bilgi_satiri_goster(self, mesaj):
         except Exception:
             liste_zaten_odakta = False
         self.liste.DeleteAllItems()
-        self.liste.InsertItem(0, str(mesaj or "Bilgi yok."))
+        self.liste.InsertItem(0, str(mesaj or _("Bilgi yok.")))
         try:
             if liste_zaten_odakta:
                 self.liste.Focus(0)
@@ -45,8 +54,8 @@ def liste_bilgi_satiri_goster(self, mesaj):
 def birinci_sutun_basligi(self):
     """Seçili klasöre göre birinci sütun başlığını döndürür."""
     if self.secili_kategori in ("Gönderilen E-postalar", "Taslaklar"):
-        return "Kime"
-    return "Kimden"
+        return _("Kime")
+    return _("Kimden")
 
 
 def birinci_sutun_basligini_guncelle(self):
@@ -81,12 +90,13 @@ def mesaji_listede_okundu_yap(self, mail_id):
         if mesaj.get("konusma_mi"):
             mesaj["okunmamis_sayisi"] = 0
             for alan in ("kimden", "liste_gosterim"):
+                okunmamis_deseni = r"^\d+\s+" + re.escape(_("okunmamış")) + r",\s*"
                 mesaj[alan] = re.sub(
-                    r"^\d+ okunmamış,\s*", "", str(mesaj.get(alan, "")), count=1
+                    okunmamis_deseni, "", str(mesaj.get(alan, "")), count=1
                 )
         gosterim = self.mesaj_liste_gosterimi(mesaj)
         if str(mesaj.get("id")) in self.isaretliler:
-            gosterim = "[İşaretli] " + gosterim
+            gosterim = _("[İşaretli] ") + gosterim
         try:
             self.liste.SetItem(indeks, 0, gosterim)
         except Exception:
@@ -97,5 +107,5 @@ def mesaji_listede_okundu_yap(self, mail_id):
 def eposta_modunu_hazirla(self):
     """Ana listeyi e-posta görünümü için hazırlar."""
     self.liste_modu = LISTE_MODU_EPOSTA
-    self.liste.SetName("E-posta listesi")
+    self.liste.SetName(_("E-posta listesi"))
     self.birinci_sutun_basligini_guncelle()

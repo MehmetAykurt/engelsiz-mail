@@ -1,6 +1,15 @@
 # -*- coding: utf-8 -*-
 # Engelsiz Mail - klavye ve liste olayları yardımcıları
 
+
+# NVDA eklenti çevirilerini bu modül için etkinleştir.
+try:
+    import addonHandler
+    addonHandler.initTranslation()
+except (ImportError, AttributeError):
+    # NVDA dışındaki otomatik testlerde Türkçe kaynak metni aynen kullan.
+    _ = lambda metin: metin
+
 import ui
 import wx
 
@@ -22,11 +31,6 @@ def ana_pencere_tus_yakalandi(pencere, event):
 
     if tus == wx.WXK_ESCAPE:
         if getattr(pencere, "liste_modu", LISTE_MODU_KLASOR) == LISTE_MODU_EPOSTA:
-            try:
-                pencere._yukleme_islem_no += 1
-                pencere.yukleniyor = False
-            except Exception:
-                pass
             pencere.klasor_gorunumunu_goster(pencere.secili_kategori, odak_ver=True)
             return
         if escape_kapat_ayari_yukle():
@@ -74,14 +78,14 @@ def tusa_basildi(pencere, event):
         return
     indeks = pencere.liste.GetFocusedItem()
     if indeks == -1 or indeks >= len(pencere.mailler):
-        ui.message("İşaretlenecek e-posta yok.")
+        ui.message(_("İşaretlenecek e-posta yok."))
         return
     mail_id = pencere.mailler[indeks]["id"]
     if mail_id in pencere.isaretliler:
         pencere.isaretliler.remove(mail_id)
         pencere.liste.SetItem(indeks, 0, pencere.mesaj_liste_gosterimi(pencere.mailler[indeks]))
-        ui.message("İşaret kaldırıldı.")
+        ui.message(_("İşaret kaldırıldı."))
     else:
         pencere.isaretliler.add(mail_id)
-        pencere.liste.SetItem(indeks, 0, "[İşaretli] " + pencere.mesaj_liste_gosterimi(pencere.mailler[indeks]))
-        ui.message("E-posta işaretlendi.")
+        pencere.liste.SetItem(indeks, 0, _("[İşaretli] ") + pencere.mesaj_liste_gosterimi(pencere.mailler[indeks]))
+        ui.message(_("E-posta işaretlendi."))

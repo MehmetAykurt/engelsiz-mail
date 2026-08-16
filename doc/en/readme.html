@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Engelsiz Mail NVDA Add-on - User Guide</title>
+<style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.7;
+            max-width: 1024px;
+            margin: 0 auto;
+            padding: 1.5rem;
+            color: #111;
+            background: #fff;
+        }
+        h1, h2, h3 {
+            line-height: 1.35;
+        }
+        h1 {
+            font-size: 2rem;
+        }
+        h2 {
+            margin-top: 2rem;
+            border-bottom: 1px solid #ccc;
+            padding-bottom: 0.25rem;
+        }
+        h3 {
+            margin-top: 1.35rem;
+        }
+        code, kbd {
+            font-family: Consolas, monospace;
+        }
+        kbd {
+            border: 1px solid #999;
+            border-radius: 0.2rem;
+            padding: 0.05rem 0.3rem;
+            background: #f7f7f7;
+        }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin: 1rem 0;
+        }
+        caption {
+            font-weight: bold;
+            text-align: left;
+            margin-bottom: 0.5rem;
+        }
+        th, td {
+            border: 1px solid #999;
+            padding: 0.55rem;
+            vertical-align: top;
+            text-align: left;
+        }
+        th {
+            background: #f2f2f2;
+        }
+        .not {
+            border-left: 4px solid #555;
+            padding-left: 1rem;
+            margin: 1rem 0;
+        }
+        .uyari {
+            border-left: 4px solid #8a5a00;
+            padding-left: 1rem;
+            margin: 1rem 0;
+        }
+    </style>
+</head>
+<body>
+<h1>Engelsiz Mail NVDA Add-on</h1>
+<p><strong>Add-on name:</strong> Engelsiz Mail</p>
+<p><strong>Version:</strong> 1.8.2</p>
+<p><strong>Minimum NVDA version:</strong> 2026.1</p>
+<p><strong>Developer:</strong> Mehmet Aykurt</p>
+<p><strong>Email:</strong> <a href="mailto:m.aykurt38@gmail.com">m.aykurt38@gmail.com</a></p>
+<p><strong>Official website:</strong> <a href="https://mehmetaykurt.com.tr/">mehmetaykurt.com.tr</a></p>
+<p><strong>Copyright:</strong> © 2026 Mehmet Aykurt</p>
+<p><strong>License:</strong> GNU General Public License, version 2.0</p>
+<h2>Contents</h2>
+<ol>
+<li><a href="#hakkinda">About the Add-on</a></li>
+<li><a href="#amac">Purpose of the Add-on</a></li>
+<li><a href="#one-cikanlar">Highlights of the Current Version</a></li>
+<li><a href="#guvenlik">Security and Privacy</a></li>
+<li><a href="#baglanti">Connecting a Google Account</a></li>
+<li><a href="#ana-pencere">Main Window and Menu Structure</a></li>
+<li><a href="#kisayollar">Keyboard Shortcuts</a></li>
+<li><a href="#klasorler">Folders and Email Operations</a></li>
+<li><a href="#eposta-yazma">Composing, Replying to, and Forwarding Email</a></li>
+<li><a href="#taslaklar">Draft Management</a></li>
+<li><a href="#arsiv">Archive and Move Operations</a></li>
+<li><a href="#ekler">Attachments</a></li>
+<li><a href="#baglanti-denetimi">Check Connection</a></li>
+<li><a href="#kaydet-eml">Saving and Opening EML Files</a></li>
+<li><a href="#bildirim-onizleme">Notifications and Preview</a></li>
+<li><a href="#gorunum">Appearance Settings</a></li>
+<li><a href="#oneri-gorus">Sending Feedback</a></li>
+<li><a href="#kisayol-degistirme">Changing the Add-on Opening Shortcut</a></li>
+<li><a href="#sinirlar">Known Limitations and Important Notes</a></li>
+<li><a href="#iletisim">License, Contact, and Developer Information</a></li>
+</ol>
+<h2 id="hakkinda">1. About the Add-on</h2>
+<p>Engelsiz Mail is an accessible email add-on developed for NVDA screen reader users.</p>
+<p>The add-on provides a keyboard-focused, accessible interface for essential operations such as reading and searching email, composing new email, replying, forwarding, creating drafts, managing contacts and signatures, selecting recipients from contacts, archiving, moving and deleting email, grouping conversations, announcing total and unread email counts in folders, previewing messages, receiving new-email notifications, reading offline, saving email, opening EML files, checking connections, and adjusting appearance settings.</p>
+<p>Engelsiz Mail is an independent add-on developed by Mehmet Aykurt to address the accessibility needs of NVDA users.</p>
+<h2 id="amac">2. Purpose of the Add-on</h2>
+<p>The main purpose of Engelsiz Mail is to enable blind and visually impaired NVDA users to perform essential email operations in their Gmail accounts through a simple, fast, understandable, and keyboard-friendly interface.</p>
+<p>The add-on was developed to:</p>
+<ol>
+<li>Provide easy keyboard access to email folders.</li>
+<li>Announce total and unread email counts in folders clearly.</li>
+<li>Display incoming email in a simple, readable format.</li>
+<li>Make composing, replying to, and forwarding email accessible.</li>
+<li>Make recipient selection easier through a contacts list.</li>
+<li>Present draft, archive, move, and delete operations more clearly.</li>
+<li>Provide an optional preview in the email list.</li>
+<li>Provide sound or spoken-message notifications when new email arrives.</li>
+<li>Make it easy to save email in TXT or EML format and open saved EML files.</li>
+<li>Help users troubleshoot connection problems through detailed checks.</li>
+<li>Provide a reading and writing experience that can be adjusted to different user needs through appearance settings.</li>
+</ol>
+<h2 id="one-cikanlar">3. Highlights of the Current Version</h2>
+<p>The current version highlights complete English interface and help documentation, reviewed Turkish user-facing text, near-real-time new-email notifications through IMAP IDLE, optional conversation grouping, searches by sender, subject, content, and read status, Cc and Bcc recipient fields, multiline signatures, keyboard access to links in email, offline email caching for faster opening, background synchronization, local database reset, and bulk cleanup of system folders.</p>
+<p>A detailed list of version-specific changes is available in the <strong>What's New</strong> document on the Help menu.</p>
+<h2 id="guvenlik">4. Security and Privacy</h2>
+<p>Engelsiz Mail does not send your email address, Google app password, contact history, email content, or attachments to any third-party server. The Gmail connection is established directly between the user's computer and Google servers.</p>
+<p>To connect to Gmail, the add-on requires a <strong>Google app password</strong> instead of your main Google account password. An app password is a special 16-character access code created for Google accounts with two-step verification enabled.</p>
+<h2 id="baglanti">5. Connecting a Google Account</h2>
+<p>To use Engelsiz Mail, two-step verification must be enabled on your Google account and you must create an app password for this add-on. Engelsiz Mail connects to Gmail through IMAP and SMTP.</p>
+<h3>5.1. Enable Two-Step Verification</h3>
+<p>You can open your Google account's two-step verification page using the following link:</p>
+<p><a href="https://myaccount.google.com/signinoptions/two-step-verification">Google Two-Step Verification Page</a></p>
+<p>When the page opens, you may be asked to sign in to your Google account or verify your identity. Follow the instructions on the page to enable two-step verification.</p>
+<h3>5.2. Create an App Password</h3>
+<p>After enabling two-step verification, use the following link to open the app passwords page:</p>
+<p><a href="https://myaccount.google.com/apppasswords">Google App Passwords Page</a></p>
+<p>In the app name field, you can enter <strong>Engelsiz Mail</strong> and then create an app password. Copy the 16-character password provided by Google. Do not include spaces when entering the password in Engelsiz Mail.</p>
+<div class="not">
+<p><strong>Note:</strong> The app password option may not appear for some Google accounts. This can depend on the account type, security settings, organization policy, or Google's security requirements.</p>
+</div>
+<h3>5.3. Save Account Information in Engelsiz Mail</h3>
+<ol>
+<li>Open the Engelsiz Mail main window using the <strong>NVDA + Shift + M</strong> shortcut or the <strong>Tools &gt; Engelsiz Mail</strong> option in the NVDA menu.</li>
+<li>With the main window open, press <strong>Alt</strong> to move to the menu bar.</li>
+<li><strong>Account</strong> menu.</li>
+<li><strong>Connect...</strong> option.</li>
+<li>Optionally, enter the display name to use in email you send.</li>
+<li>Enter your email address.</li>
+<li>Enter your Google app password without spaces.</li>
+<li>Activate the <strong>Save and connect</strong> button.</li>
+</ol>
+<p>The <strong>Save and connect</strong> button checks the Gmail IMAP and SMTP connections before saving the information. When the connection succeeds, the account information is stored securely and Inbox is loaded.</p>
+<p>If no account information is found, the main window asks whether you want to add an account. Choose <strong>Yes</strong> to open the connection window, or <strong>No</strong> to keep the main window open without connecting an account.</p>
+<h2 id="ana-pencere">6. Main Window and Menu Structure</h2>
+<p>If a saved and usable account is available, Inbox loads directly in email view when Engelsiz Mail opens. While in the email list, press <kbd>Escape</kbd> to return to folder view. In folder view, move to the folder you want to read and press <kbd>Enter</kbd> to open the email list for that folder.</p>
+<div class="not">
+<p><strong>List structure:</strong> In Inbox and other standard folders, the first column is <strong>From</strong>; in Sent Mail and Drafts, it is <strong>To</strong> . The second column contains the subject and, when Preview is enabled, a short content summary. Emails with attachments are marked “Has attachments,” and selected emails are marked “[Selected].”</p>
+</div>
+<p>With the window open, press <strong>Alt</strong> to open the menu bar. The menus appear in this order:</p>
+<ul>
+<li><strong>File</strong></li>
+<li><strong>Account</strong></li>
+<li><strong>Email</strong></li>
+<li><strong>View</strong></li>
+<li><strong>Settings</strong></li>
+<li><strong>Help</strong></li>
+</ul>
+<h3>6.1. File Menu</h3>
+<ul>
+<li><strong>Compose email</strong>: Opens the window for composing a new email.</li>
+<li><strong>Save...</strong>: Opens the Save dialog to save the focused email in EML or TXT format.</li>
+<li><strong>Open...</strong>: Lets you select a valid EML file on your computer and upload it to the Gmail Inbox.</li>
+<li><strong>Exit</strong>: Closes the Engelsiz Mail main window.</li>
+</ul>
+<h3>6.2. Account Menu</h3>
+<ul>
+<li><strong>Connect...</strong>: Opens the connection window where you enter the email address and Google app password for the Gmail account.</li>
+<li><strong>Check connection...</strong>: Performs detailed checks of the account, IMAP, SMTP port 465, SMTP port 587, and folder access.</li>
+<li><strong>Delete account information</strong>: Deletes the saved email address and app password.</li>
+</ul>
+<h3>6.3. Email Menu</h3>
+<ul>
+<li><strong>Search...</strong>: Searches by sender, subject, cached email content, or read status.</li>
+<li><strong>Select all</strong>: Selects all emails currently shown in the list.</li>
+<li><strong>Clear selections</strong>: Clears all email selections.</li>
+<li><strong>Archive</strong>: A submenu containing Send to Archive and Manage Archive Folders.</li>
+<li><strong>Contacts...</strong>: Opens the Contacts window for creating, editing, and deleting contacts and selecting recipients from saved contacts.</li>
+<li><strong>Signature...</strong>: Opens a window where a multiline signature can be entered and the saved signature can be saved, changed, or deleted.</li>
+<li><strong>Delete</strong>: A submenu containing Delete and Delete Permanently.</li>
+<li><strong>Refresh</strong>: Reloads the email list in the selected folder.</li>
+</ul>
+<h3>6.4. View Menu</h3>
+<ul>
+<li><strong>Font...</strong>: Changes the font used in Engelsiz Mail windows.</li>
+<li><strong>Font size...</strong>: Changes the font size.</li>
+<li><strong>Font style...</strong>: Lets you choose Normal, Bold, Italic, or Bold Italic.</li>
+<li><strong>Text color...</strong>: Changes the text color in the add-on.</li>
+<li><strong>Background color...</strong>: Changes the background color in the add-on.</li>
+<li><strong>Use system colors</strong>: Uses Windows system colors in Engelsiz Mail windows.</li>
+<li><strong>Restore default appearance</strong>: Restores the font, font size, font style, text color, and background color to their default values.</li>
+</ul>
+<p>Appearance settings affect only text displayed in Engelsiz Mail windows. They do not change the formatting of sent email. When Use system colors is enabled, text and background colors follow the current Windows system colors.</p>
+<h3>6.5. Settings Menu</h3>
+<ul>
+<li><strong>Email count...</strong>: Sets how many emails are listed in a folder. The default is 25. Accepted values range from 1 to 100.</li>
+<li><strong>Notifications...</strong>: Configures new-email notifications, sound notifications, message notifications, sender/subject announcements, and notification sounds.</li>
+<li><strong>Preview</strong>: Determines whether a short content summary is shown in the email list.</li>
+<li><strong>Group conversations</strong>: Shows emails belonging to the same Gmail conversation as a single row in the list. Editable drafts are always kept separate. Disabled by default.</li>
+<li><strong>Delete</strong>: A submenu containing Ask for confirmation before deleting and Ask for confirmation before permanent deletion. Both confirmation settings are enabled by default.</li>
+<li><strong>Automatically save recipient addresses</strong>: Determines whether recipient addresses from sent email are added automatically to the address history.</li>
+<li><strong>Close the add-on with Escape</strong>: Determines whether Escape closes the Engelsiz Mail window when you are in the main folder view.</li>
+<li><strong>Import/export...</strong>: Backs up or restores account information, the Google app password, and user preferences in a single ZIP file. The email database, message bodies, and attachment cache are not included in this backup.</li>
+<li><strong>Reset local database...</strong>: Deletes the local mail database, email bodies available for offline reading, and cached attachments, then creates a new empty database. It does not delete email in the Gmail account, account information, contacts, notification preferences, or appearance settings. If a deletion operation is pending, the reset is blocked so pending requests are not lost. After the operation completes, email information is synchronized from Gmail again.</li>
+</ul>
+<h3>6.6. Importing and Exporting Settings</h3>
+<p><strong>Settings &gt; Import/export...</strong> is used to move Engelsiz Mail settings to another computer or create a backup. The window contains <strong>Import</strong>, <strong>Export</strong> and <strong>Cancel</strong> buttons.</p>
+<p>When you activate <strong>Export</strong>, a ZIP save dialog opens. The suggested file name includes the creation date. The ZIP file contains only <code>settings.json</code> . Account information, the Google app password, notification preferences, appearance settings, signature, and other user preferences are stored in this file. The email database, offline message bodies, attachment cache, contacts, and address history are not backed up. When the success message is closed, the Import/Export window also closes.</p>
+<p>When you activate <strong>Import</strong>, a ZIP open dialog appears. Engelsiz Mail verifies that the selected file is a valid settings backup, contains only the expected settings file, and uses a supported version. If validation succeeds, the current settings are backed up for recovery and the imported settings are applied.</p>
+<p>The Google app password is decrypted from Windows DPAPI protection on the source computer and placed in the backup; during import, it is encrypted again using Windows DPAPI protection on the destination computer. This allows the backup to be transferred to another computer.</p>
+<div class="uyari">
+<p><strong>Caution:</strong> The exported ZIP file contains the Google app password in a portable form, and the ZIP file itself is not encrypted. Store the backup securely. Restart NVDA after importing so all changes take effect. Do not share your backup file.</p>
+</div>
+<h3>6.7. Help Menu</h3>
+<ul>
+<li><strong>User guide</strong>: Opens this user guide.</li>
+<li><strong>What's New</strong>: Opens the document listing changes in this version.</li>
+<li><strong>About</strong>: Shows the add-on name and version, NVDA version, developer, and license information.</li>
+<li><strong>Send feedback...</strong>: Opens an accessible form for sending suggestions, feedback, or problem reports to the developer.</li>
+</ul>
+<h2 id="kisayollar">7. Keyboard Shortcuts</h2>
+<table>
+<caption>Main keyboard shortcuts</caption>
+<thead>
+<tr>
+<th>Shortcut</th>
+<th>Function</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><kbd>NVDA</kbd> + <kbd>Shift</kbd> + <kbd>M</kbd></td>
+<td>Opens the Engelsiz Mail main window. If the window is already open, brings it to the foreground and focuses the email list.</td>
+</tr>
+<tr>
+<td><kbd>Alt</kbd></td>
+<td>Opens the main window menu bar.</td>
+</tr>
+<tr>
+<td><kbd>Alt</kbd> + <kbd>F</kbd></td>
+<td>Opens the File menu.</td>
+</tr>
+<tr>
+<td><kbd>Ctrl</kbd> + <kbd>N</kbd></td>
+<td>Opens the compose email window.</td>
+</tr>
+<tr>
+<td><kbd>Ctrl</kbd> + <kbd>O</kbd></td>
+<td>Starts the process of selecting an EML file and uploading it to Gmail Inbox.</td>
+</tr>
+<tr>
+<td><kbd>Ctrl</kbd> + <kbd>S</kbd></td>
+<td>Opens the save dialog to save the focused email in EML or TXT format.</td>
+</tr>
+<tr>
+<td><kbd>Ctrl</kbd> + <kbd>F</kbd></td>
+<td>Opens the Search Emails window to search by sender, subject, or email content.</td>
+</tr>
+<tr>
+<td><kbd>Alt</kbd> + <kbd>B</kbd></td>
+<td>Opens the account connection window.</td>
+</tr>
+<tr>
+<td><kbd>F9</kbd></td>
+<td>Checks the account connection.</td>
+</tr>
+<tr>
+<td><kbd>Ctrl</kbd> + <kbd>A</kbd></td>
+<td>Selects all emails in the list.</td>
+</tr>
+<tr>
+<td><kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>A</kbd></td>
+<td>Clears all selections in the list.</td>
+</tr>
+<tr>
+<td><kbd>Alt</kbd> + <kbd>R</kbd></td>
+<td>Sends the selected or marked emails to an archive.</td>
+</tr>
+<tr>
+<td><kbd>Alt</kbd> + <kbd>Shift</kbd> + <kbd>R</kbd></td>
+<td>Opens the archive folder management window.</td>
+</tr>
+<tr>
+<td><kbd>Alt</kbd> + <kbd>K</kbd></td>
+<td>Opens the Contacts window.</td>
+</tr>
+<tr>
+<td><kbd>Alt</kbd> + <kbd>I</kbd></td>
+<td>Opens the Signature window.</td>
+</tr>
+<tr>
+<td><kbd>Ctrl</kbd> + <kbd>R</kbd></td>
+<td>Replies to the focused email.</td>
+</tr>
+<tr>
+<td><kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>F</kbd></td>
+<td>Forwards the focused email.</td>
+</tr>
+<tr>
+<td><kbd>Alt</kbd> + <kbd>S</kbd></td>
+<td>Deletes the selected or marked emails.</td>
+</tr>
+<tr>
+<td><kbd>F5</kbd></td>
+<td>In email view, refreshes the email list; in folder view, refreshes folder names and total/unread email counts. NVDA finishes announcing the relevant update message before the operation begins.</td>
+</tr>
+<tr>
+<td><kbd>F1</kbd></td>
+<td>Opens the user guide.</td>
+</tr>
+<tr>
+<td><kbd>Delete</kbd></td>
+<td>Deletes selected or marked emails. If Ask for confirmation before deleting is enabled, a confirmation dialog appears first.</td>
+</tr>
+<tr>
+<td><kbd>Shift</kbd> + <kbd>Delete</kbd></td>
+<td>Permanently deletes selected or marked emails. If Ask for confirmation before permanent deletion is enabled, a confirmation dialog appears first.</td>
+</tr>
+<tr>
+<td><kbd>Enter</kbd></td>
+<td>Opens the selected email. In Drafts, opens the selected draft in the edit window.</td>
+</tr>
+<tr>
+<td><kbd>N</kbd></td>
+<td>In a grouped conversation reading window, moves to the beginning of the next email.</td>
+</tr>
+<tr>
+<td><kbd>P</kbd></td>
+<td>In a grouped conversation reading window, moves to the beginning of the previous email.</td>
+</tr>
+<tr>
+<td><kbd>L</kbd></td>
+<td>In the email reading window, moves to the next HTTP or HTTPS link and announces its address. After the last link, returns to the first link.</td>
+</tr>
+<tr>
+<td><kbd>Shift</kbd> + <kbd>L</kbd></td>
+<td>In the email reading window, moves to the previous HTTP or HTTPS link and announces its address.</td>
+</tr>
+<tr>
+<td><kbd>C</kbd></td>
+<td>Copies the link at the cursor position in the email reading window to the clipboard. <kbd>Ctrl</kbd> + <kbd>C</kbd> continues to perform the normal text-copy operation.</td>
+</tr>
+<tr>
+<td><kbd>T</kbd></td>
+<td>Opens the link at the cursor position in the default web browser. NVDA announces the operation before the link is opened.</td>
+</tr>
+<tr>
+<td><kbd>Space</kbd></td>
+<td>Selects or clears the selected email in the email list.</td>
+</tr>
+<tr>
+<td><kbd>Shift</kbd> + <kbd>F10</kbd> or the Applications key</td>
+<td>Opens the email list context menu.</td>
+</tr>
+<tr>
+<td><kbd>Esc</kbd></td>
+<td>Returns from the email list to folder view. In the main folder view, closes the Engelsiz Mail window when the relevant setting is enabled. In email reading, composing, or draft editing windows, closes the window; if content is present, you may be asked whether to save it to Drafts.</td>
+</tr>
+<tr>
+<td><kbd>Alt</kbd> + <kbd>F4</kbd></td>
+<td>Closes the Engelsiz Mail main window.</td>
+</tr>
+<tr>
+<td><kbd>Ctrl</kbd> + <kbd>Enter</kbd></td>
+<td>Sends the email prepared in a new-email, reply, forward, or draft-edit window.</td>
+</tr>
+</tbody>
+</table>
+<h3>7.1. Menu Access Keys</h3>
+<p>For less frequently used commands, menu access keys can be used instead of direct shortcuts. Press <kbd>Alt</kbd> together with the access key for the menu, then press the access key for the desired item. For example, to open Font size, press <kbd>Alt</kbd> + <kbd>V</kbd>, then <kbd>S</kbd>.</p>
+<ul>
+<li><strong>File — Alt+F:</strong> C compose email, O open EML, S save, X exit.</li>
+<li><strong>Account — Alt+A:</strong> C connect, H check connection, D delete account information.</li>
+<li><strong>Email — Alt+E:</strong> S search, A select all, C clear selections, R archive submenu, T contacts, I signature, D delete submenu, F refresh. In the Archive submenu, R sends to archive and M manages archive folders; in the Delete submenu, D performs normal deletion and P performs permanent deletion.</li>
+<li><strong>View — Alt+V:</strong> F font, S font size, T font style, C text color, B background color, Y system colors, R restore default appearance.</li>
+<li><strong>Settings — Alt+S:</strong> E email count, N notifications, V preview, G group conversations, D deletion settings, R automatically save recipient addresses, C close with Escape, I import/export, L reset local database. In the Delete submenu, D is normal deletion confirmation and P is permanent deletion confirmation.</li>
+<li><strong>Help — Alt+H:</strong> U user guide, W What's New, A developer's other add-ons, B About, F send feedback.</li>
+<li><strong>Email context menu:</strong> R reply, F forward, M move, D delete submenu. In the Delete submenu, D performs normal deletion and P performs permanent deletion.</li>
+<li><strong>Folder context menu:</strong> Shows options to move all messages in Sent Mail to Trash, or permanently empty Trash or Spam.</li>
+</ul>
+<div class="not">
+<p><strong>Selected emails:</strong> For delete, permanent delete, and archive operations, if any emails are selected, the operation is applied to all selected emails. If no emails are selected, the focused email is used.</p>
+</div>
+<h2 id="klasorler">8. Folders and Email Operations</h2>
+<p>The Engelsiz Mail main window provides access to the main folders in your Gmail account. The default folders are:</p>
+<ul>
+<li>Inbox</li>
+<li>All Mail</li>
+<li>Sent Mail</li>
+<li>Drafts</li>
+<li>Trash</li>
+<li>Spam</li>
+</ul>
+<p>Custom folders or labels created in your Gmail account are also shown when appropriate. When you switch folders, the most recent emails are listed up to the email count configured on the Settings menu.</p>
+<p>As you move through folders, the total number of emails and the number of unread emails in each folder are announced.</p>
+<h3>8.1. Reading Email</h3>
+<p>When you press <kbd>Enter</kbd> on an email, the email reading window opens and the email is marked as read. The reading window shows the sender, To recipients, Cc recipients when present, date, subject, number of attachments, and email body. Bcc information is not shown because it is not present in the headers of received email. Focus is placed directly at the beginning of the email body after the headers.</p>
+<p>To make reading and link navigation easier, addresses beginning with <code>http://</code> and <code>https://</code> are placed on separate lines in the reading area. Press <kbd>L</kbd> to move to the next link and <kbd>Shift</kbd> + <kbd>L</kbd> to move to the previous link. When the cursor is on a link, press <kbd>C</kbd> to copy the address to the clipboard. Press <kbd>T</kbd> to open the link in the default Windows web browser. If there is no link at the cursor position, you are informed.</p>
+<p>Technical reply and forward prefixes in subject lines are presented in a more understandable form. For example, <code>Re: Subject</code> is shown as <strong>Replied: Subject</strong>, and <code>Fwd: Subject</code> is shown as <strong>Forwarded: Subject</strong>. A chained <code>Fwd: Re: Subject</code> is displayed as <strong>Forwarded: Replied: Subject</strong>. This presentation is used in the main list, search results, reading window, grouped conversations, notifications, TXT exports, and confirmation prompts. When replying or forwarding, the actual technical subject header of the email is preserved.</p>
+<p>When <strong>Group conversations</strong> is enabled, emails in the same Gmail conversation appear as a single row in the list. The row announces the number of emails in the conversation and, when applicable, the number of unread emails. Press <kbd>Enter</kbd> to open all emails in the conversation in one reading window, with the newest email first. While reading, press <kbd>N</kbd> to move to the beginning of the next email and <kbd>P</kbd> to move to the beginning of the previous email. Opening a conversation marks all of its emails as read; delete, archive, and move operations apply to the whole conversation. Reply replies to the latest email in the conversation. Save attachments presents all cacheable attachments in the conversation together.</p>
+<p>When this option is disabled, each email is shown on a separate row and the add-on retains its previous behavior.</p>
+<p>Depending on the email, the reading window contains the <strong>Save attachments</strong>, <strong>Reply</strong>, <strong>Forward</strong>, <strong>Archive</strong>, <strong>Delete</strong> and <strong>Close</strong> buttons. The window can also be closed with <kbd>Escape</kbd> .</p>
+<h3>8.2. Selecting Emails</h3>
+<p>In the email list, use <strong>Space</strong> to select or clear an email. Use selection when you want to perform an operation on multiple emails.</p>
+<h3>8.3. Context Menu</h3>
+<p>In the email list, open the context menu with <kbd>Shift</kbd> + <kbd>F10</kbd>, the Applications key, or the right mouse button. The context menu contains the following options:</p>
+<ul>
+<li><strong>Reply</strong></li>
+<li><strong>Forward</strong></li>
+<li><strong>Move</strong>: Shows Inbox and eligible user folders as destinations.</li>
+<li><strong>Delete</strong>: A submenu containing Delete and Delete Permanently.</li>
+</ul>
+<h3>8.4. Delete Operations</h3>
+<p>In Inbox and similar standard folders, deleting moves email to Trash. In Trash, deleting means permanent deletion.</p>
+<p>In folder view, open the context menu on <strong>Sent Mail</strong> and select <strong>Move Sent Mail to Trash...</strong> . After confirmation, all sent emails in the folder are moved to Trash in a single operation. This does not permanently delete them immediately; they can be recovered until Trash is emptied. If Sent Mail is empty, you are informed.</p>
+<p>In folder view, open the context menu on <strong>Trash</strong> and select <strong>Empty Trash...</strong> . When this option is run, all emails in Trash are permanently deleted from the Gmail account in one operation; email bodies, attachment records, and cached attachment files are also removed from local storage.</p>
+<p>In folder view, open the context menu on <strong>Spam</strong> and select <strong>Empty Spam folder...</strong> to permanently delete all email in the Spam folder.</p>
+<p>Explanatory warnings are shown for operations performed in All Mail and Spam.</p>
+<p>On the Settings menu, if <strong>Ask for confirmation before deleting</strong> is enabled, a confirmation dialog appears before deletion. If this option is disabled, selected or marked emails are deleted without a confirmation dialog. The default is enabled to reduce the risk of accidental deletion.</p>
+<p><strong>Delete</strong> can be used to delete selected or marked emails.</p>
+<h3>8.5. Searching Emails</h3>
+<p>The <kbd>Ctrl</kbd> + <kbd>F</kbd> shortcut or <strong>Email &gt; Search...</strong> opens the Search Emails window. In the first combo box, choose search by sender name or address, subject, email content, unread emails, or read emails. For sender, subject, and content searches, press <kbd>Tab</kbd> to move to the Search text field, enter the text, and press <kbd>Enter</kbd> . When Read or Unread search is selected, the text field is disabled; simply press the <strong>Search</strong> button.</p>
+<p>When the search completes, the number of emails found is announced. Results are shown in the same window in a list with From, Subject, Folder, and Date columns. Press <kbd>Enter</kbd> on a result to open the email; when the email is closed, you return to the same search results. If an email opened from an unread-email search becomes read, the results list refreshes automatically. <strong>Go to folder</strong> closes the search window, opens the folder containing the email in the main window, and focuses the email if it is within the current listing limit. The <strong>Close</strong> button or <kbd>Escape</kbd> closes the search window.</p>
+<p>Searches are performed in the local email cache. Sender and subject searches use the header cache; content searches use downloaded email bodies; read-status searches use the most recently synchronized read/unread information. An email whose body has not yet been cached may therefore not appear in a content search. Drafts are excluded from search results, and the same Gmail email is shown only once even if it appears under multiple labels.</p>
+<h2 id="eposta-yazma">9. Composing, Replying to, and Forwarding Email</h2>
+<h3>9.1. Composing a New Email</h3>
+<p>To compose a new email, use <strong>File &gt; Compose email</strong> or the <kbd>Ctrl</kbd> + <kbd>N</kbd> shortcut. The window contains To, Cc, Bcc, subject, email body, and attachment fields. The <strong>To</strong> field is used for direct recipients; <strong>Cc</strong> is used for people who should be informed and whose addresses are visible to other recipients; <strong>Bcc</strong> is used for people who should receive the email without their addresses being shown to other recipients. At least one of these three fields must contain a valid email address.</p>
+<p>You can select one or more saved contacts and add them to the To field. Press <kbd>Alt</kbd> + <kbd>C</kbd> to move to Cc, and <kbd>Alt</kbd> + <kbd>B</kbd> to move to Bcc. Bcc recipients are included in the SMTP delivery list but are not shown in the headers of the sent email.</p>
+<p><strong>Email &gt; Signature...</strong> opens the Signature window, which contains a multiline signature field and <strong>Delete</strong>, <strong>Save</strong> and <strong>Cancel</strong> buttons. The saved signature is displayed in the same field; it can be edited and saved again or removed with the Delete button. Line breaks entered with Enter are preserved, and the signature is displayed line by line as written when the email is read. The saved signature is added automatically only to the body of a newly composed email; before sending, you can view, edit, or remove it for that email. The signature is not currently added automatically to reply or forward windows. If an email containing the signature is saved as a draft, the signature remains part of the body and is not added a second time when the draft is reopened.</p>
+<p>Send the email with the <strong>Send</strong> button or the <kbd>Ctrl</kbd> + <kbd>Enter</kbd> shortcut. To save without sending, use the <strong>Save to Drafts</strong> button. The window cannot be closed accidentally while sending or saving a draft is in progress.</p>
+<p>After changes are made in the compose window, if you press <kbd>Escape</kbd> or the <strong>Cancel</strong> button, you are asked whether to save the changes to Drafts. <strong>Yes</strong> saves the draft, <strong>No</strong> closes without saving, and <strong>Cancel</strong> returns to the compose window. The To, Cc, and Bcc fields are saved with the draft and restored to the corresponding fields when the draft is reopened.</p>
+<h3>9.2. Selecting Recipients from Contacts</h3>
+<p>Use the <strong>Contacts...</strong> option on the Email menu to open the Contacts window. You can create contacts with first name, last name, and email address, and edit or delete saved contacts.</p>
+<p>The compose, reply, forward, and draft-edit windows support selecting recipients from saved contacts. Multiple contacts can be selected and added to the recipient field together.</p>
+<h3>9.3. Automatically Saving Sent Addresses</h3>
+<p>When <strong>Automatically save recipient addresses</strong> is enabled on the Settings menu, valid addresses in the To, Cc, and Bcc fields are added to address history. When disabled, sent addresses are not saved automatically.</p>
+<h3>9.4. Replying</h3>
+<p>When you use the <strong>Reply</strong> option in an email reading window or the email-list context menu, the reply window opens. The recipient address and subject are prepared automatically, the original email is included in the body, and conversation-thread information is preserved. Attachments from the original email are not added automatically to the reply. If the email has a valid body cache, the reply is prepared without reconnecting to the server; if the required data is not available locally, the email is retrieved from Gmail and cached for later operations.</p>
+<h3>9.5. Forwarding</h3>
+<p>To send an email to another recipient, use the <strong>Forward</strong> option in the email reading window or email-list context menu. In the forward window, the recipient field is left empty, while the subject and original email are prepared; available attachments are carried over to the forwarded email. If the body and required attachments are complete in the cache, forwarding is prepared from local data; otherwise, the email is retrieved from Gmail. If necessary, you can also use the <strong>Add file</strong> button to add new attachments.</p>
+<h2 id="taslaklar">10. Draft Management</h2>
+<p>In Engelsiz Mail, drafts are not merely readable emails. Emails in Drafts can be edited, sent, deleted, or saved back to Drafts.</p>
+<h3>10.1. Creating a New Draft</h3>
+<p>After entering a recipient, subject, or email body in the compose window, press the <strong>Save to Drafts</strong> button to save the email to Gmail's Drafts folder.</p>
+<p>In the new-email window, when you press <strong>Esc</strong> and the content is not empty, the add-on asks whether you want to save the changes to Drafts.</p>
+<h3>10.2. Editing a Draft</h3>
+<p>In Drafts, when you press <strong>Enter</strong> on a draft, instead of the standard reading window the <strong>Edit Draft</strong> window opens. In this window, recipients, subject, email body, and attachments can be edited.</p>
+<h3>10.3. Sending, Saving, or Deleting a Draft</h3>
+<p>The draft edit window contains the <strong>Send</strong>, <strong>Save to Drafts</strong>, <strong>Delete draft</strong> and <strong>Cancel</strong> options. A sent or deleted draft is removed from Drafts when the operation succeeds. A draft saved again remains in Drafts with its updated contents.</p>
+<h2 id="arsiv">11. Archive and Move Operations</h2>
+<p>Use <strong>Manage archive folders...</strong> on the Email &gt; Archive submenu to manage archive folders.</p>
+<p>The following operations are available in this window:</p>
+<ol>
+<li>Create a new archive folder</li>
+<li>Rename an archive folder</li>
+<li>Delete an archive folder</li>
+</ol>
+<p>To send an email to an archive, use <strong>Send to archive</strong> .</p>
+<p>The <strong>Move</strong> submenu in the context menu can move the selected email to another eligible folder. Move destinations include Inbox and custom user/archive folders. Trash is not offered as a move destination; to move an email to Trash, use the delete operation. <strong>Delete</strong> .</p>
+<div class="uyari">
+<p><strong>Gmail label behavior:</strong> Archiving or moving from All Mail may behave differently from moving between folders in a traditional email client. Even after the target label is added, the email may remain visible in All Mail. Read the warnings shown by the add-on carefully.</p>
+</div>
+<h2 id="ekler">12. Attachments</h2>
+<p>The compose, reply, forward, and draft-edit windows support adding files. Use <strong>Add file</strong> to select files to send, and use <strong>Remove attachment</strong> to remove the selected attachment from the list.</p>
+<p>When an incoming email contains attachments, the <strong>Save attachments</strong> button appears in the reading window. After pressing it, you choose the folder where attachments will be saved. The folder-selection dialog opens in Downloads by default; under the selected location, a separate folder is created from the email subject in the form <code>Email_Attachments_Subject</code> .</p>
+<p>For sending and saving drafts, a single attachment may be at most 10 MB and the combined attachment size may also be at most 10 MB. The maximum raw email size for viewing or preparing a reply/forward is 30 MB, and the maximum EML import size is 50 MB. The reading cache applies a 12 MB limit per attachment and a 20 MB limit for all attachments in one email. Attachments exceeding safety limits do not prevent the email body from being read, but they may not be available for saving or forwarding from that window.</p>
+<h2 id="baglanti-denetimi">13. Check Connection</h2>
+<p>The <strong>Check connection...</strong> option on the Account menu performs a detailed check of the add-on's account and connection status.</p>
+<p>The following items are checked:</p>
+<ol>
+<li>Settings file</li>
+<li>Saved email address</li>
+<li>App password</li>
+<li>Password decryption status</li>
+<li>Internet and Gmail IMAP access</li>
+<li>IMAP authentication</li>
+<li>Gmail folder list</li>
+<li>Whether main folders can be selected</li>
+<li>SMTP port 465 SSL authentication</li>
+<li>SMTP port 587 STARTTLS authentication</li>
+</ol>
+<p>When the check finishes, a short summary is shown first. Details can be reviewed with the <strong>Show Details</strong> button.</p>
+<h2 id="kaydet-eml">14. Saving and Opening EML Files</h2>
+<p>Engelsiz Mail supports saving the selected email to a file and opening previously saved EML files.</p>
+<h3>14.1. Saving an Email</h3>
+<p>Use the <strong>Save...</strong> option on the File menu to save the focused email in EML or TXT format. TXT provides a readable text output. EML preserves the email's header and body structure.</p>
+<p>The file-save dialog opens in Documents and selects EML by default. A safe file name is suggested based on the email subject; you can change the EML/TXT file type and save location.</p>
+<h3>14.2. Opening an EML File</h3>
+<p>Use <strong>Open...</strong> on the File menu to select a previously saved EML file.</p>
+<p>The selected EML file is not merely opened temporarily on the computer. After you confirm, it is uploaded through IMAP as a new email in the Gmail Inbox. The file extension, size, and basic email headers are validated before the operation. The maximum EML import size is 50 MB.</p>
+<div class="uyari">
+<p><strong>Caution:</strong> Opening an EML file changes your Gmail account. The selected email appears in Inbox and may synchronize with your other Gmail clients.</p>
+</div>
+<h2 id="bildirim-onizleme">15. Notifications and Preview</h2>
+<h3>15.1. Preview</h3>
+<p>When <strong>Preview</strong> is enabled on the Settings menu, the email list also announces a short content preview. When disabled, the list announces only basic email information.</p>
+<p>Preview text is processed to preserve Turkish characters, remove HTML remnants, and decode MIME encodings such as Base64 and quoted-printable. For multipart email, Engelsiz Mail tries to select an appropriate text or HTML part. Some specially formatted email may still produce incomplete or unusual previews. In that case, open the email with Enter to read the full content.</p>
+<p>When Preview is enabled and a folder is loaded, only emails that will be shown in the list are checked. Short previews for newly arrived emails or emails with missing previews are prepared in the background, and when at least one preview is created, the list refreshes automatically while preserving focus. The entire folder is not downloaded again solely for preview generation.</p>
+<h3>15.2. New Email Notifications</h3>
+<p>Use <strong>Notifications...</strong> on the Settings menu to configure new-email notifications.</p>
+<p>Notification settings include:</p>
+<ol>
+<li>Enable or disable notifications</li>
+<li>Sound notification</li>
+<li>Message notification</li>
+<li>Announce sender address</li>
+<li>Announce subject</li>
+<li>Choose the default system sound or a custom WAV file</li>
+<li>Preview the selected notification sound</li>
+</ol>
+<p>While NVDA and the add-on are running, notifications monitor Inbox live through a separate IMAP IDLE connection. When Gmail reports a new-email event, Inbox is checked immediately. This removes the need to wait for the 5-to-60-minute interval used by the earlier periodic-check approach; under normal connection conditions, new-email notifications are delivered near real time.</p>
+<p>Because IMAP IDLE is used, the Notifications dialog no longer needs a separate check-interval setting. Notification settings are simplified around enabling notifications, sound and message preferences, sender and subject announcements, and notification-sound choices. If the IDLE connection is interrupted, the add-on automatically attempts to reconnect using increasing delays without showing unnecessary warnings. A notification may be briefly delayed while the connection is being re-established.</p>
+<p>When notifications are enabled for the first time or the notification baseline is reset, existing emails in Inbox are not announced as new. The add-on treats the most recent existing email as the starting point and announces later emails that are still unread when the notification check runs. If a new email is read in Engelsiz Mail or another email client before the check, no delayed new-email alert is given for it. The notification baseline still advances even when a newly arrived email is already read. If sender or subject announcements are enabled and several new unread emails arrive, those details are taken from the most recent unread email.</p>
+<p>Only WAV files can be used for custom notification sounds. When settings are saved, the file's existence and extension are checked. The selected sound can be previewed from the notification settings window. At least one of Sound notification or Message notification must be enabled.</p>
+<h2 id="gorunum">16. Appearance Settings</h2>
+<p>The View menu lets you adjust text displayed in Engelsiz Mail windows to suit your needs.</p>
+<p>The View menu contains:</p>
+<ol>
+<li>Font</li>
+<li>Font Size</li>
+<li>Font Style</li>
+<li>Text Color</li>
+<li>Background Color</li>
+<li>Use System Colors</li>
+<li>Restore Default Appearance</li>
+</ol>
+<p>These settings affect only the appearance inside Engelsiz Mail. They do not change the formatting of sent email.</p>
+<h2 id="oneri-gorus">17. Sending Feedback</h2>
+<p>Engelsiz Mail is designed to improve based on user experience. Use the <strong>Send feedback...</strong> option on the Help menu to send feedback directly to the developer.</p>
+<p>The window contains fields for first name, last name, reply email address, subject, and feedback message. Entering the reply email address correctly is important if you want a response. You can use the feedback message field to describe a problem, suggest an improvement, share your experience, or provide general feedback.</p>
+<p>Sharing your suggestions, feedback, and comments helps improve Engelsiz Mail.</p>
+<h2 id="kisayol-degistirme">18. Changing the Add-on Opening Shortcut</h2>
+<p>The default shortcut for opening Engelsiz Mail is <strong>NVDA + Shift + M</strong> . You can change this shortcut in NVDA's Input Gestures dialog.</p>
+<p>Ctrl, Alt, and function-key shortcuts belonging to the main window work only while the Engelsiz Mail window is active. They are not added to the NVDA Input Gestures list so they do not affect keys in other applications.</p>
+<ol>
+<li>Open the NVDA menu.</li>
+<li><strong>Preferences</strong> menu.</li>
+<li><strong>Input Gestures</strong> option.</li>
+<li>In the list, find the <strong>Engelsiz Mail</strong> category.</li>
+<li>Select the <strong>Opens the Engelsiz Mail window.</strong> item.</li>
+<li><strong>Add</strong> button and define your new shortcut.</li>
+<li>Confirm and close the window.</li>
+</ol>
+<h2 id="sinirlar">19. Known Limitations and Important Notes</h2>
+<ul>
+<li>Engelsiz Mail communicates with Gmail through IMAP and SMTP. IMAP access may need to be enabled for your Gmail account.</li>
+<li>If you cannot create a Google app password, check your account security settings or account type.</li>
+<li>If there is no internet connection or the app password is incorrect, the email list cannot be loaded.</li>
+<li>A single attachment and the combined attachment size for email to be sent or saved to Drafts can be at most 10 MB.</li>
+<li>The raw email processing limit is 30 MB and the EML import limit is 50 MB. Lower attachment limits may apply to the reading cache.</li>
+<li>When Preview is enabled, loading the email list may take longer because additional content parsing is performed.</li>
+<li>Folder counts, email headers, bodies, and appropriately sized attachments can be read from the local cache; server information is updated in the background.</li>
+<li>Notifications work near real time through an IMAP IDLE connection, so users do not need to choose a check interval in minutes. If the connection is interrupted, notifications may be delayed depending on the reconnection time.</li>
+<li>A WAV file must be used for custom notification sounds.</li>
+<li>Gmail's label and folder behavior may differ from traditional desktop email clients. Pay particular attention to additional warnings in All Mail and Trash.</li>
+<li>Send Feedback uses the connected Gmail account to send your submission. If no account information is available, save account information first using Connect on the Account menu.</li>
+</ul>
+<h2 id="iletisim">20. License, Contact, and Developer Information</h2>
+<p>Engelsiz Mail is released as free software under the GNU General Public License, version 2.0. You may inspect, modify, and redistribute the source code under the terms of the license. The full license text is available in the <a href="../../LICENSE">LICENSE</a> file at the package root.</p>
+<p>The CPython 3.13.12 <code>imaplib</code> and <code>smtplib</code> standard-library files distributed with the add-on are covered by the Python Software Foundation license. The relevant license text is in <a href="../../globalPlugins/mail/vendor/PYTHON_LICENSE.txt">PYTHON_LICENSE.txt</a> file at the package root.</p>
+<p><strong>Developer:</strong> Mehmet Aykurt</p>
+<p><strong>Email:</strong> <a href="mailto:m.aykurt38@gmail.com">m.aykurt38@gmail.com</a></p>
+<p><strong>Official website:</strong> <a href="https://mehmetaykurt.com.tr">https://mehmetaykurt.com.tr</a></p>
+<p><strong>Source code:</strong> <a href="https://github.com/MehmetAykurt/engelsiz-mail">https://github.com/MehmetAykurt/engelsiz-mail</a></p>
+<p>You can share suggestions, feedback, bug reports, and contributions related to Engelsiz Mail.</p>
+</body>
+</html>

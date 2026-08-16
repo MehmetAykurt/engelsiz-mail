@@ -1,12 +1,21 @@
 # -*- coding: utf-8 -*-
 
+
+# NVDA eklenti çevirilerini bu modül için etkinleştir.
+try:
+    import addonHandler
+    addonHandler.initTranslation()
+except (ImportError, AttributeError):
+    # NVDA dışındaki otomatik testlerde Türkçe kaynak metni aynen kullan.
+    _ = lambda metin: metin
+
 import ui
 import wx
 
 from ..config import IMZA_AZAMI_UZUNLUK
 from ..ui_helpers import gorunum_denetimlerine_uygula
 
-IMZA_SIL_ID = wx.NewId()
+IMZA_SIL_ID = wx.ID_DELETE
 
 
 class ImzaPenceresi(wx.Dialog):
@@ -17,7 +26,7 @@ class ImzaPenceresi(wx.Dialog):
 
         duzen = wx.BoxSizer(wx.VERTICAL)
         duzen.Add(
-            wx.StaticText(self, label="&İmza metni:"),
+            wx.StaticText(self, label=_("&İmza metni:")),
             0,
             wx.LEFT | wx.RIGHT | wx.TOP,
             8,
@@ -27,14 +36,14 @@ class ImzaPenceresi(wx.Dialog):
             value=str(mevcut_imza or ""),
             style=wx.TE_MULTILINE | wx.TE_RICH2,
         )
-        self.txt_imza.SetName("İmza metni")
+        self.txt_imza.SetName(_("İmza metni"))
         self.txt_imza.SetMaxLength(IMZA_AZAMI_UZUNLUK)
         duzen.Add(self.txt_imza, 1, wx.ALL | wx.EXPAND, 8)
 
         dugmeler = wx.BoxSizer(wx.HORIZONTAL)
-        self.btn_sil = wx.Button(self, label="&Sil")
-        self.btn_kaydet = wx.Button(self, wx.ID_OK, "&Kaydet")
-        self.btn_iptal = wx.Button(self, wx.ID_CANCEL, "İ&ptal")
+        self.btn_sil = wx.Button(self, label=_("&Sil"))
+        self.btn_kaydet = wx.Button(self, wx.ID_OK, _("&Kaydet"))
+        self.btn_iptal = wx.Button(self, wx.ID_CANCEL, _("İ&ptal"))
         self.btn_sil.Enable(bool(str(mevcut_imza or "").strip()))
         self.btn_sil.Bind(wx.EVT_BUTTON, self.sil)
         self.btn_kaydet.Bind(wx.EVT_BUTTON, self.kaydet)
@@ -55,7 +64,7 @@ class ImzaPenceresi(wx.Dialog):
 
     def kaydet(self, event=None):
         if not self.imzayi_al().strip():
-            ui.message("İmza metni boş bırakılamaz.")
+            ui.message(_("İmza metni boş bırakılamaz."))
             self.txt_imza.SetFocus()
             return
         self.EndModal(wx.ID_OK)

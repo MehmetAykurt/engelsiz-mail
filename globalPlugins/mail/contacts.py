@@ -1,5 +1,14 @@
 # -*- coding: utf-8 -*-
 
+
+# NVDA eklenti çevirilerini bu modül için etkinleştir.
+try:
+    import addonHandler
+    addonHandler.initTranslation()
+except (ImportError, AttributeError):
+    # NVDA dışındaki otomatik testlerde Türkçe kaynak metni aynen kullan.
+    _ = lambda metin: metin
+
 import email.utils
 import os
 
@@ -11,6 +20,11 @@ from .validators import eposta_adresi_gecerli_mi
 
 REHBER_DOSYASI = os.path.join(globalVars.appArgs.configPath, "engelsiz-mail", "adres.json")
 KISILER_DOSYASI = os.path.join(globalVars.appArgs.configPath, "engelsiz-mail", "kisiler.json")
+
+
+def adres_anahtari(adres):
+    """Adres geçmişini büyük/küçük harften bağımsız karşılaştırır."""
+    return str(adres or "").strip().casefold()
 
 
 def kisi_anahtari(kisi):
@@ -39,6 +53,11 @@ def kisi_eposta_basligi(kisi):
     if tam_ad:
         try:
             return email.utils.formataddr((tam_ad, eposta))
+        except UnicodeEncodeError:
+            temiz_ad = tam_ad.replace("\r", " ").replace("\n", " ").strip()
+            if any(karakter in temiz_ad for karakter in (",", ";", '"', "<", ">")):
+                temiz_ad = '"' + temiz_ad.replace("\\", "\\\\").replace('"', '\\"') + '"'
+            return f"{temiz_ad} <{eposta}>" if temiz_ad else eposta
         except Exception:
             return eposta
     return eposta
@@ -49,10 +68,14 @@ def rehberi_yukle():
     if not isinstance(adresler, list):
         return []
     temiz = []
+    gorulen = set()
     for adres in adresler:
         adres = str(adres).strip()
-        if adres and adres not in temiz:
-            temiz.append(adres)
+        anahtar = adres_anahtari(adres)
+        if not anahtar or anahtar in gorulen:
+            continue
+        gorulen.add(anahtar)
+        temiz.append(adres)
     return temiz[:200]
 
 
@@ -60,9 +83,11 @@ def rehbere_ekle(yeni_adres):
     yeni_adres = str(yeni_adres or "").strip()
     if not yeni_adres:
         return False
-    adresler = rehberi_yukle()
-    if yeni_adres in adresler:
-        adresler.remove(yeni_adres)
+    yeni_anahtar = adres_anahtari(yeni_adres)
+    adresler = [
+        adres for adres in rehberi_yukle()
+        if adres_anahtari(adres) != yeni_anahtar
+    ]
     adresler.insert(0, yeni_adres)
     return guvenli_json_yaz(REHBER_DOSYASI, adresler[:200])
 
@@ -124,7 +149,7 @@ def kisi_ekle_veya_guncelle(kisi, eski_eposta=None):
         "eposta": str((kisi or {}).get("eposta", "")).strip(),
     }
     if not eposta_adresi_gecerli_mi(kisi["eposta"]):
-        raise MailHatasi("Lütfen geçerli bir e-posta adresi yazın.")
+        raise MailHatasi(_("Lütfen geçerli bir e-posta adresi yazın."))
     kisiler = kisileri_yukle()
     eski_anahtar = str(eski_eposta or "").strip().lower()
     yeni_anahtar = kisi_anahtari(kisi)

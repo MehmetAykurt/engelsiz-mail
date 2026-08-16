@@ -30,6 +30,7 @@ from ..imap_client import (
 )
 from ..logger import hata_kaydet
 from ..mailbox_loader import yerel_eposta_listesi_hazirla
+from ..pending_deletions import bekleyen_toplu_klasor_bilgileri
 from ..ui_helpers import (
     arka_plan_gorev_jetonu_olustur,
     arka_planda_calistir,
@@ -57,6 +58,47 @@ def _aktif_eposta_adresi(self):
         hata_kaydet("Aktif hesap adresi alınamadı.", e)
         return ""
 
+
+def _bekleyen_toplu_islem_sayilarini_uygula(self, sayilar):
+    """Sunucu tamamlayana kadar toplu işlem kaynaklarını sıfır gösterir."""
+    if not isinstance(sayilar, dict):
+        return sayilar
+    try:
+        bekleyenler = bekleyen_toplu_klasor_bilgileri(
+            self._aktif_eposta_adresi()
+        )
+    except Exception as e:
+        hata_kaydet("Bekleyen toplu işlem klasörleri okunamadı.", e)
+        return sayilar
+    sonuc = dict(sayilar)
+    for kategori, durum in bekleyenler.items():
+        if not bool(durum.get("snapshot_complete")):
+            sonuc[kategori] = {"messages": 0, "unseen": 0}
+            continue
+        bilgi = klasor_sayisi_bilgisini_duzenle(sonuc.get(kategori))
+        if not bilgi:
+            continue
+        bekleyen = max(0, int(durum.get("pending_count") or 0))
+        bilinen_okunmamis = max(
+            0, int(durum.get("known_unseen_count") or 0)
+        )
+        if bekleyen == 0:
+            sonuc[kategori] = {"messages": 0, "unseen": 0}
+            continue
+        toplam = max(0, int(bilgi.get("messages") or 0) - bekleyen)
+        bilgi["messages"] = toplam
+        if "unseen" in bilgi:
+            bilgi["unseen"] = max(
+                0,
+                min(
+                    toplam,
+                    int(bilgi.get("unseen") or 0) - bilinen_okunmamis,
+                ),
+            )
+        sonuc[kategori] = bilgi
+    return sonuc
+
+
 def _klasor_sayisi_onbellegi_yukle(self):
     """Pencere açılışında son bilinen klasör sayılarını ve klasör adlarını kalıcı JSON dosyasından belleğe alır."""
     try:
@@ -66,6 +108,9 @@ def _klasor_sayisi_onbellegi_yukle(self):
             return
         cache = klasor_sayisi_onbellegi_yukle(eposta)
         if isinstance(cache, dict) and cache:
+            # Kalıcı önbellek her zaman sunucudan alınmış son ham sayıları
+            # saklar. Bekleyen yerel silmeler yalnız gösterim sırasında
+            # uygulanır; böylece aynı düzeltme birden fazla kez düşülmez.
             self._klasor_sayisi_cache.update(cache)
 
         klasor_verisi = klasor_adlari_onbellegi_yukle(eposta)
@@ -114,7 +159,25 @@ def _klasor_sayisi_cache_guncelle(self, kategori_adi, klasor_bilgisi, kaydet=Tru
     if not kategori_adi or not temiz:
         return False
     try:
+        mevcut = klasor_sayisi_bilgisini_duzenle(
+            self._klasor_sayisi_cache.get(kategori_adi)
+        )
+        mevcut_degerler = (
+            mevcut.get("messages"),
+            mevcut.get("unseen"),
+        )
+        yeni_degerler = (
+            temiz.get("messages"),
+            temiz.get("unseen"),
+        )
+        if mevcut_degerler == yeni_degerler:
+            return False
         self._klasor_sayisi_cache[kategori_adi] = temiz
+        kirli_klasorler = getattr(self, "_baslik_senkronu_gereken_klasorler", None)
+        if not isinstance(kirli_klasorler, set):
+            kirli_klasorler = set()
+            self._baslik_senkronu_gereken_klasorler = kirli_klasorler
+        kirli_klasorler.add(kategori_adi)
         if kaydet:
             self._klasor_sayisi_onbellegi_kaydet()
         return True
@@ -232,6 +295,23 @@ def gonderim_sonrasi_esitle_tetikle(self, onceki_gonderilen_toplam=None, deneme=
         if not self.hesap_bilgisi_var_mi():
             return
         self._gonderim_sonrasi_esitleme_guncelleniyor = True
+        onceki_sayilar = {
+            kategori: klasor_sayisi_bilgisini_duzenle(
+                getattr(self, "_klasor_sayisi_cache", {}).get(kategori)
+            )
+            for kategori in (
+                "Gönderilen E-postalar",
+                "Tüm Postalar",
+                "Gelen Kutusu",
+                "Taslaklar",
+            )
+        }
+        zorunlu_basliklar = tuple(
+            kategori
+            for kategori in ("Gönderilen E-postalar", "Gelen Kutusu")
+            if kategori
+            in getattr(self, "_baslik_senkronu_gereken_klasorler", set())
+        )
         jeton = arka_plan_gorev_jetonu_olustur(
             self,
             "gonderim_sonrasi_esitleme",
@@ -246,20 +326,30 @@ def gonderim_sonrasi_esitle_tetikle(self, onceki_gonderilen_toplam=None, deneme=
             jeton,
             onceki_gonderilen_toplam,
             int(deneme or 1),
+            onceki_sayilar,
+            zorunlu_basliklar,
         )
     except Exception as e:
         self._gonderim_sonrasi_esitleme_guncelleniyor = False
         hata_kaydet("Gönderim sonrası eşitleme başlatılamadı.", e)
 
 
-def gonderim_sonrasi_esitle_thread(self, jeton, onceki_gonderilen_toplam=None, deneme=1):
-    """Gönderilenler klasörünü ve bütün klasör sayaçlarını tek IMAP oturumunda günceller."""
+def gonderim_sonrasi_esitle_thread(
+    self,
+    jeton,
+    onceki_gonderilen_toplam=None,
+    deneme=1,
+    onceki_sayilar=None,
+    zorunlu_basliklar=(),
+):
+    """Gönderimden etkilenebilen klasörleri tek IMAP oturumunda günceller."""
     sonuc = {
         "hesap": "",
         "harita": None,
         "ozeller": None,
         "sayilar": {},
         "yeniden_dene": False,
+        "senkronlanan_basliklar": [],
         "onceki_gonderilen_toplam": onceki_gonderilen_toplam,
         "deneme": int(deneme or 1),
     }
@@ -273,11 +363,12 @@ def gonderim_sonrasi_esitle_thread(self, jeton, onceki_gonderilen_toplam=None, d
             sonuc["harita"] = yeni_harita
             sonuc["ozeller"] = yeni_ozeller
 
-            kategoriler = []
-            for kategori_adi in list(SISTEM_KLASORLERI) + list((yeni_harita or {}).keys()):
-                kategori_adi = str(kategori_adi or "").strip()
-                if kategori_adi and kategori_adi not in kategoriler:
-                    kategoriler.append(kategori_adi)
+            kategoriler = [
+                "Gönderilen E-postalar",
+                "Tüm Postalar",
+                "Gelen Kutusu",
+                "Taslaklar",
+            ]
             for kategori_adi in kategoriler:
                 klasor = str(
                     (yeni_harita or {}).get(kategori_adi)
@@ -316,6 +407,10 @@ def gonderim_sonrasi_esitle_thread(self, jeton, onceki_gonderilen_toplam=None, d
                     )
                     if bool((senkron_sonucu or {}).get("atlandi")):
                         sonuc["yeniden_dene"] = True
+                    else:
+                        sonuc["senkronlanan_basliklar"].append(
+                            "Gönderilen E-postalar"
+                        )
                     try:
                         onceki_toplam = int(onceki_gonderilen_toplam)
                     except (TypeError, ValueError):
@@ -327,6 +422,49 @@ def gonderim_sonrasi_esitle_thread(self, jeton, onceki_gonderilen_toplam=None, d
                         guncel_toplam = len(uidler)
                     if onceki_toplam is not None and guncel_toplam <= onceki_toplam:
                         sonuc["yeniden_dene"] = True
+
+            onceki_gelen = klasor_sayisi_bilgisini_duzenle(
+                (onceki_sayilar or {}).get("Gelen Kutusu")
+            )
+            guncel_gelen = klasor_sayisi_bilgisini_duzenle(
+                sonuc["sayilar"].get("Gelen Kutusu")
+            )
+            gelen_degerleri_degisti = (
+                onceki_gelen.get("messages"),
+                onceki_gelen.get("unseen"),
+            ) != (
+                guncel_gelen.get("messages"),
+                guncel_gelen.get("unseen"),
+            )
+            if (
+                gelen_degerleri_degisti
+                or "Gelen Kutusu" in set(zorunlu_basliklar or ())
+            ):
+                gelen_klasoru = str(
+                    (yeni_harita or {}).get("Gelen Kutusu")
+                    or VARSAYILAN_KLASOR_HARITASI["Gelen Kutusu"]
+                ).strip()
+                tip, _veri = imap.select(gelen_klasoru, readonly=True)
+                if tip != "OK":
+                    sonuc["yeniden_dene"] = True
+                else:
+                    tip, uid_verisi = imap.uid("SEARCH", "ALL")
+                    if tip != "OK":
+                        sonuc["yeniden_dene"] = True
+                    else:
+                        senkron_sonucu = klasor_basliklarini_senkronize_et(
+                            imap,
+                            ayarlar.get("eposta", ""),
+                            "Gelen Kutusu",
+                            gelen_klasoru,
+                            sunucu_uidleri=uidleri_ayristir(uid_verisi),
+                        )
+                        if bool((senkron_sonucu or {}).get("atlandi")):
+                            sonuc["yeniden_dene"] = True
+                        else:
+                            sonuc["senkronlanan_basliklar"].append(
+                                "Gelen Kutusu"
+                            )
 
         gorev_icin_guvenli_call_after(jeton, self.gonderim_sonrasi_esitle_sonuc, sonuc)
     except Exception as e:
@@ -350,16 +488,22 @@ def gonderim_sonrasi_esitle_sonuc(self, sonuc):
         yuklu_kategori_guncelle=False,
     )
     sayilar = sonuc.get("sayilar")
-    degisti = False
+    degisen_kategoriler = []
     if isinstance(sayilar, dict):
         for kategori_adi, bilgi in sayilar.items():
             if self._klasor_sayisi_cache_guncelle(kategori_adi, bilgi, kaydet=False):
-                degisti = True
-    if degisti:
+                degisen_kategoriler.append(kategori_adi)
+    if degisen_kategoriler:
         self._klasor_sayisi_onbellegi_kaydet()
+    try:
+        self._baslik_senkronu_gereken_klasorler.difference_update(
+            sonuc.get("senkronlanan_basliklar") or ()
+        )
+    except Exception:
+        pass
 
     if getattr(self, "liste_modu", LISTE_MODU_KLASOR) == LISTE_MODU_KLASOR:
-        self.klasor_gorunumunu_goster(self.secili_kategori, odak_ver=False)
+        self.klasor_sayilarini_gorunumde_guncelle(degisen_kategoriler)
     elif self.secili_kategori == "Gönderilen E-postalar":
         try:
             ayarlar = ayarlari_yukle()
@@ -400,34 +544,84 @@ def gonderim_sonrasi_esitle_bitti(self):
     if bekleyen and pencere_kullanilabilir_mi(self):
         self.gonderim_sonrasi_esitle_tetikle(*bekleyen)
 
-def sistem_klasor_sayilarini_guncelle_tetikle(self):
-    """Eklenti açılışında bilinen klasörlerin güncel toplam/okunmamış sayılarını arka planda alır."""
+def sistem_klasor_sayilarini_guncelle_tetikle(self, hedef_kategoriler=None):
+    """Bütün klasörlerin veya yalnızca verilen hedeflerin sayılarını yeniler."""
     try:
         if getattr(self, "_sistem_klasor_sayisi_guncelleniyor", False):
+            self._sistem_klasor_sayisi_bekleyen_var = True
+            if hedef_kategoriler is None:
+                self._sistem_klasor_sayisi_bekleyen_kategoriler = None
+            elif getattr(
+                self, "_sistem_klasor_sayisi_bekleyen_kategoriler", ()
+            ) is not None:
+                bekleyenler = set(
+                    getattr(
+                        self,
+                        "_sistem_klasor_sayisi_bekleyen_kategoriler",
+                        (),
+                    )
+                    or ()
+                )
+                bekleyenler.update(
+                    str(kategori or "").strip()
+                    for kategori in hedef_kategoriler
+                    if str(kategori or "").strip()
+                )
+                self._sistem_klasor_sayisi_bekleyen_kategoriler = tuple(
+                    bekleyenler
+                )
             return
         if not self.hesap_bilgisi_var_mi():
             return
+        if hedef_kategoriler is None:
+            kategoriler = None
+        else:
+            kategoriler = tuple(
+                dict.fromkeys(
+                    str(kategori or "").strip()
+                    for kategori in hedef_kategoriler
+                    if str(kategori or "").strip()
+                )
+            )
+            if not kategoriler:
+                return
         self._sistem_klasor_sayisi_guncelleniyor = True
         harita = dict(getattr(self, "klasor_haritasi", {}) or {})
         jeton = arka_plan_gorev_jetonu_olustur(
             self,
             "sistem_klasor_sayilari",
-            {"hesap": self._aktif_eposta_adresi(), "harita": harita},
+            {
+                "hesap": self._aktif_eposta_adresi(),
+                "harita": harita,
+                "kategoriler": kategoriler,
+            },
         )
-        arka_planda_calistir(self.sistem_klasor_sayilarini_guncelle_thread, harita, jeton)
+        arka_planda_calistir(
+            self.sistem_klasor_sayilarini_guncelle_thread,
+            harita,
+            kategoriler,
+            jeton,
+        )
     except Exception as e:
         self._sistem_klasor_sayisi_guncelleniyor = False
         hata_kaydet("Klasör sayı güncellemesi başlatılamadı.", e)
 
-def sistem_klasor_sayilarini_guncelle_thread(self, klasor_haritasi, jeton):
-    """Sistem ve özel klasörlerin STATUS bilgilerini tek IMAP bağlantısıyla günceller."""
+def sistem_klasor_sayilarini_guncelle_thread(
+    self, klasor_haritasi, hedef_kategoriler, jeton
+):
+    """İstenen klasörlerin STATUS bilgilerini tek IMAP bağlantısıyla günceller."""
     sonuc = {}
     try:
         ayarlar = ayarlari_yukle()
         if not ayarlar.get("eposta") or not ayarlar.get("sifre"):
             return
+        kategori_kaynagi = (
+            list(hedef_kategoriler)
+            if hedef_kategoriler is not None
+            else list(SISTEM_KLASORLERI) + list((klasor_haritasi or {}).keys())
+        )
         kategoriler = []
-        for kategori_adi in list(SISTEM_KLASORLERI) + list((klasor_haritasi or {}).keys()):
+        for kategori_adi in kategori_kaynagi:
             kategori_adi = str(kategori_adi or "").strip()
             if kategori_adi and kategori_adi not in kategoriler:
                 kategoriler.append(kategori_adi)
@@ -455,17 +649,24 @@ def sistem_klasor_sayilarini_guncelle_sonuc(self, sonuc):
     """Arka planda alınan klasör sayılarını bellek, JSON önbellek ve klasör görünümüne aktarır."""
     if not isinstance(sonuc, dict):
         return
-    degisti = False
+    degisen_kategoriler = []
     for kategori_adi, bilgi in sonuc.items():
         if self._klasor_sayisi_cache_guncelle(kategori_adi, bilgi, kaydet=False):
-            degisti = True
-    if degisti:
+            degisen_kategoriler.append(kategori_adi)
+    if degisen_kategoriler:
         self._klasor_sayisi_onbellegi_kaydet()
         if getattr(self, "liste_modu", LISTE_MODU_KLASOR) == LISTE_MODU_KLASOR:
-            self.klasor_gorunumunu_goster(self.secili_kategori, odak_ver=False)
+            self.klasor_sayilarini_gorunumde_guncelle(degisen_kategoriler)
 
 def sistem_klasor_sayilarini_guncelle_bitti(self):
     self._sistem_klasor_sayisi_guncelleniyor = False
+    if getattr(self, "_sistem_klasor_sayisi_bekleyen_var", False):
+        hedefler = getattr(
+            self, "_sistem_klasor_sayisi_bekleyen_kategoriler", None
+        )
+        self._sistem_klasor_sayisi_bekleyen_var = False
+        self._sistem_klasor_sayisi_bekleyen_kategoriler = ()
+        self.sistem_klasor_sayilarini_guncelle_tetikle(hedefler)
 
 
 def klasor_haritasini_hazirla(self, imap):

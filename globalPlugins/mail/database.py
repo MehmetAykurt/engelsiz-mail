@@ -19,9 +19,15 @@ _HAZIR_VERITABANLARI = {}
 
 
 def _veritabani_dosya_kimligi(yol):
+    """Dosya değişimini, aynı inode yeniden kullanılsa bile algılayan imza döndürür."""
     try:
         durum = os.stat(yol)
-        return int(durum.st_dev), int(durum.st_ino)
+        return (
+            int(durum.st_dev),
+            int(durum.st_ino),
+            int(durum.st_size),
+            int(getattr(durum, "st_mtime_ns", int(durum.st_mtime * 1_000_000_000))),
+        )
     except OSError:
         return None
 
@@ -111,7 +117,7 @@ def _sema_yapisini_dogrula(baglanti):
     zorunlu_tablolar = {
         "accounts", "folders", "messages", "folder_messages",
         "message_bodies", "attachments", "sync_state", "schema_migrations",
-        "pending_deletions",
+        "pending_deletions", "pending_bulk_operations",
     }
     mevcut_tablolar = {
         str(satir[0])
@@ -131,7 +137,14 @@ def _sema_yapisini_dogrula(baglanti):
         "pending_deletions": {
             "operation_type", "source_folder", "source_uid", "gmail_message_id",
             "source_uidvalidity", "trash_folder", "attempt_count", "last_error",
-            "permanent_delete_started", "request_token",
+            "permanent_delete_started", "request_token", "bulk_operation_id",
+            "remote_completed", "remote_completed_at", "remote_verified",
+        },
+        "pending_bulk_operations": {
+            "operation_type", "source_folder", "source_category",
+            "deletion_type", "trash_folder", "snapshot_complete",
+            "source_uidvalidity", "attempt_count", "last_error",
+            "request_token", "settlement_verified_at",
         },
     }
     for tablo, beklenenler in zorunlu_sutunlar.items():
@@ -228,8 +241,9 @@ def veritabani_hazirla(veritabani_yolu=None):
 @contextlib.contextmanager
 def veritabani_baglantisi(veritabani_yolu=None, yazma=False):
     """Her çağrıda thread'e bağlı olmayan kısa ömürlü bir bağlantı sağlar."""
-    veritabani_hazirla(veritabani_yolu)
-    baglanti = _baglanti_ac(veritabani_yolu)
+    yol = _veritabani_yolunu_hazirla(veritabani_yolu)
+    veritabani_hazirla(yol)
+    baglanti = _baglanti_ac(yol)
     try:
         if yazma:
             baglanti.execute("BEGIN IMMEDIATE")
@@ -241,7 +255,19 @@ def veritabani_baglantisi(veritabani_yolu=None, yazma=False):
             baglanti.rollback()
         raise
     finally:
+        acik_dosya_kimligi = _veritabani_dosya_kimligi(yol)
         baglanti.close()
+        kapanis_dosya_kimligi = _veritabani_dosya_kimligi(yol)
+        hazirlik_anahtari = os.path.normcase(yol)
+        with _SEMA_KILIDI:
+            if (
+                acik_dosya_kimligi is not None
+                and kapanis_dosya_kimligi is not None
+                and acik_dosya_kimligi[:2] == kapanis_dosya_kimligi[:2]
+            ):
+                _HAZIR_VERITABANLARI[hazirlik_anahtari] = kapanis_dosya_kimligi
+            else:
+                _HAZIR_VERITABANLARI.pop(hazirlik_anahtari, None)
 
 
 def veritabani_butunluk_denetle(veritabani_yolu=None):

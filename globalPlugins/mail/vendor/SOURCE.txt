@@ -4,11 +4,18 @@ Kaynak arşivi SHA-256: 2a84cd31dd8d8ea8aaff75de66fc1b4b0127dd5799aa50a64ae9a313
 
 Dosyalar:
 - Lib/imaplib.py
-  SHA-256: cd802a08cac105fb3093dae5f960b54c32d773e5ac2ccf95992d6d0bb38b42d4
+  SHA-256: 1b73aee9080c178bb72caa94631eed20649ad91fe7242c2657acd0f9a4781e16
+  Resmî CPython dosyasının SHA-256 özeti:
+  cd802a08cac105fb3093dae5f960b54c32d773e5ac2ccf95992d6d0bb38b42d4
+  Değişiklik: NVDA'nın paketlenmiş Python ortamında kullanılmak üzere IMAP IDLE
+  desteği eklenmiştir. IMAP4.idle() yöntemi ile Idler yardımcı sınıfı bu amaçla
+  pakete dâhil edilmiştir.
 - Lib/smtplib.py
   SHA-256: a679204d3b432bedb1bd8406b5501ed4264809bc04ac026a358b9893cfe84a68
 - LICENSE
   Paket adı: PYTHON_LICENSE.txt
   SHA-256: 78b12c3a81360b357002334f0e70ea0e92eebf7a9b358805c03c48484945f3bb
 
-Bu üç dosya resmî CPython 3.13.12 kaynak arşivinden değiştirilmeden alınmıştır.
+smtplib.py ve PYTHON_LICENSE.txt resmî CPython 3.13.12 kaynak arşivinden
+değiştirilmeden alınmıştır. imaplib.py ise yukarıda açıklanan IMAP IDLE
+bütünleştirmesi nedeniyle değiştirilmiş bir paket kopyasıdır.
