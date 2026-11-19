@@ -327,6 +327,22 @@ def gmail_mesajlarini_yerelde_pasif_yap(eposta, gmail_mesaj_idleri):
     return toplam
 
 
+def klasor_bekleyen_silme_uidleri(eposta, imap_klasoru):
+    """Bir klasörde silinmek üzere kuyruğa alınmış UID'leri metin kümesi olarak döndürür."""
+    with veritabani_baglantisi() as db:
+        satirlar = db.execute(
+            """
+            SELECT pd.source_uid
+            FROM pending_deletions AS pd
+            JOIN accounts AS a ON a.id = pd.account_id
+            WHERE a.email = ? COLLATE NOCASE
+              AND pd.source_folder = ?
+            """,
+            (str(eposta or "").strip(), str(imap_klasoru or "").strip()),
+        ).fetchall()
+    return {str(satir[0]) for satir in satirlar}
+
+
 def klasor_basliklarini_listele(eposta, imap_klasoru, sinir):
     """Bir klasörün güncel başlıklarını en yeni UID önce olacak şekilde döndürür."""
     try:
