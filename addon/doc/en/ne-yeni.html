@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Engelsiz Mail 2026.11.19 - What's New</title>
+<style>
+body { max-width: 52rem; margin: 2rem auto; padding: 0 1rem; font-family: system-ui, sans-serif; line-height: 1.7; color: #202020; background: #fff; }
+h1, h2, h3 { line-height: 1.35; } h2 { margin-top: 2rem; border-bottom: 1px solid #ccc; padding-bottom: 0.25rem; }
+a { color: #00478f; text-underline-offset: .2em; }
+a:focus-visible { outline: 3px solid #202020; outline-offset: 4px; }
+li { margin-bottom: .7rem; } kbd { font-family: inherit; font-weight: bold; border: 1px solid #999; border-radius: 0.2rem; padding: 0.05rem 0.3rem; background: #f7f7f7; }
+code { background-color: #f2f4f7; padding: 2px 6px; border-radius: 4px; font-size: 0.95em; }
+.license-box { background-color: #fff8c5; border: 1px solid #d4a72c; border-left: 5px solid #9a6700; border-radius: 6px; padding: 18px 20px; margin-top: 40px; }
+@media print { body { max-width: none; margin: 0; color: #000; } h2, h3 { break-after: avoid; } }
+</style>
+</head>
+<body>
+<header>
+<h1>Engelsiz Mail NVDA Add-on</h1>
+<p>Add-on version: 2026.11.19<br>NVDA Version: 2026.3</p>
+<p><strong>Developer</strong><br>
+<a href="https://mehmetaykurt.com.tr">Mehmet Aykurt</a><br>
+Official NVDA Add-on Store Reviewer and Turkey Representative</p>
+<p>For suggestions, feedback, and comments:<br>
+Email: <a href="mailto:m.aykurt38@gmail.com">m.aykurt38@gmail.com</a><br>
+Telegram: <a href="https://t.me/mehmetaykurt">@mehmetaykurt</a></p>
+<p><a href="readme.html">Open User Guide</a> | <a href="../tr/ne-yeni.html" lang="tr" hreflang="tr">Türkçe Yenilikler</a></p>
+</header>
+
+<main>
+<h2>What's New in Engelsiz Mail 2026.11.19</h2>
+
+<ul>
+    <li><strong>Comprehensive HTML Email &amp; Rich Content Support:</strong>
+        <ul>
+            <li><strong>HTML Email Reading View:</strong> Incoming emails can now be viewed with their original layout and styling using NVDA's virtual cursor (browse mode). Navigate effortlessly between headings (<kbd>H</kbd>), tables (<kbd>T</kbd>), lists (<kbd>L</kbd>), and hyperlinks (<kbd>K</kbd>).</li>
+            <li><strong>Rapid View Toggle (<kbd>F7</kbd>):</strong> Pressing <kbd>F7</kbd> inside the email reader instantly switches back and forth between rich HTML web view and clean plain text view.</li>
+            <li><strong>Rich Text Composing:</strong> Compose messages with true WYSIWYG simplicity without dealing with raw HTML markup. Use <kbd>Ctrl+B</kbd> for bold, <kbd>Ctrl+I</kbd> for italic, and <kbd>Ctrl+U</kbd> for underline; verify typography with <kbd>NVDA+F</kbd>.</li>
+            <li><strong>Advanced Hyperlink Management (<kbd>Ctrl+K</kbd>):</strong> Easily insert web hyperlinks, inspect/modify existing URLs, or convert links back to plain text with the "Remove Link" button.</li>
+            <li><strong>Clipboard Image Pasting (<kbd>Ctrl+V</kbd>):</strong> Paste images directly into the message body from web browsers, Paint, screenshots, or File Explorer. An accessible description dialog allows screen reader users to set descriptive alt text, embedding the image inline (CID).</li>
+            <li><strong>Table Creation &amp; Pasting:</strong> Insert structured tables from scratch (<kbd>Ctrl+Shift+T</kbd> / context menu) with customizable row/column counts, or paste copied spreadsheet data from Microsoft Excel and web pages via <kbd>Ctrl+V</kbd>.</li>
+            <li><strong>Text Alignment (Left, Center, Right):</strong> Align selected lines or current paragraph to the left with <kbd>Ctrl+L</kbd>, center with <kbd>Ctrl+E</kbd>, and right with <kbd>Ctrl+R</kbd>.</li>
+            <li><strong>Heading Levels (Heading 1 - Heading 6):</strong> Promote lines to heading levels using <kbd>Ctrl+Alt+1</kbd> through <kbd>Ctrl+Alt+6</kbd> and revert back to normal paragraph with <kbd>Ctrl+Alt+0</kbd>; automatically converts to semantic `&lt;h1&gt;`-`&lt;h6&gt;` headings for browse mode navigation (<kbd>H</kbd>).</li>
+            <li><strong>Bulleted &amp; Numbered Lists:</strong> Cycle through bulleted list (`•`), numbered list (`1.`), and plain text using <kbd>Ctrl+Shift+L</kbd>; rendered as standard `&lt;ul&gt;` and `&lt;ol&gt;` lists for recipients.</li>
+            <li><strong>Smart Multipart MIME Delivery:</strong> Messages with styling, images, or tables are dispatched as RFC-compliant multipart MIME packages, ensuring perfect visual rendering for all recipients.</li>
+        </ul>
+    </li>
+    <li><strong>Automatic Draft Saving:</strong> To prevent data loss from accidental closures, system restarts, or power interruptions while composing, drafts are now automatically and silently synced to Gmail's Drafts folder in the background without stealing focus (configurable between 1–60 seconds in Settings; default: 60 seconds).</li>
+    <li>The add-on's <strong>overall execution speed was improved</strong>, with performance enhancements across email listing, cached reading, and background tasks.</li>
+    <li>Overall <strong>stability was enhanced</strong>; background tasks, notifications, window lifecycles, and shutdown routines were made significantly more reliable.</li>
+    <li><strong>Code optimization and refactoring</strong> reduced redundant operations, improving concurrency safety and error handling.</li>
+    <li>Reading and background processing of emails with complex MIME structures were improved.</li>
+    <li>Compatibility with NVDA and current wxPython versions, as well as startup stability, was improved.</li>
+    <li><strong>Security and privacy:</strong>
+        <ul>
+            <li><strong>Email content is now cleaned before it is displayed.</strong> Scripts, frames, forms, and redirects are blocked. By default, images and external content are hidden, so opening an email does not send a tracking request to the sender.</li>
+            <li><strong>New setting: "Show email content as is"</strong> (Settings menu). When on, images and formatting are loaded from the internet. Scripts and frames stay blocked in that case too.</li>
+            <li>Links inside emails open only if they use <code>http</code>, <code>https</code>, or <code>mailto</code>. Link types that could launch files or programs on your computer are now blocked.</li>
+            <li>When you delete your account details, you are now <strong>asked whether to delete the local email cache as well</strong>. The guide now states that the cache is not encrypted and how to clear it on shared computers.</li>
+        </ul>
+    </li>
+    <li><strong>Data safety:</strong>
+        <ul>
+            <li>When another program (for example an antivirus scanner) temporarily locks the settings file, your account details and settings are no longer lost or overwritten with empty data. The same protection applies to contacts and address history.</li>
+            <li><strong>Deleting from Trash always asks for the permanent deletion confirmation</strong>, even if you turned off the ordinary delete confirmation.</li>
+            <li>If an "Empty Trash" or "Empty Spam" request given while offline is processed hours later, emails that arrived in the folder after your request are not deleted.</li>
+            <li>When the contact limit (1000) is reached, you now get a warning instead of extra contacts being silently dropped.</li>
+            <li>The archive deletion confirmation now states clearly that the emails in the archive are not deleted.</li>
+        </ul>
+    </li>
+    <li><strong>Composing email:</strong>
+        <ul>
+            <li>Hyperlinks, headings, and alignment stay in the right place as you edit the text. A situation that could make a hyperlink read as two lines in a screen reader was fixed.</li>
+            <li>You are asked for confirmation before sending an email with an empty subject.</li>
+            <li>Inline images in an email saved as a draft are now preserved. When you open a draft that contains formatting (such as links, images, or headings), you are warned that editing and saving it in the add-on will remove that formatting.</li>
+            <li>A 10 MB limit and a clear warning were added for images pasted from the clipboard.</li>
+            <li>If "First row is a table header" is unchecked, the table is now really sent without a header.</li>
+            <li>Very long attachment file names keep their file extension; names reserved by Windows, such as <code>CON</code> and <code>NUL</code>, are saved safely.</li>
+            <li>When saving attachments from several emails, you are now told if some of them could not be retrieved.</li>
+            <li>If the app password is wrong, sending is no longer retried with a second method, which avoids unnecessary failed sign-in alerts on your Google account.</li>
+        </ul>
+    </li>
+    <li><strong>Speed and stability:</strong>
+        <ul>
+            <li><strong>Opening emails is faster.</strong> When you press Enter, the email opens right away without waiting for NVDA to finish speaking; the "viewing" announcement was removed. The HTML view is prepared only when it is needed.</li>
+            <li><strong>The cache was extended.</strong> The newest 150 emails of every folder are kept ready in the background, and missing ones are completed when you open a folder. The number of emails shown in the list is unchanged (default 25, up to 100). As you delete or move emails, the next ones are already ready.</li>
+            <li>A single email whose header cannot be retrieved from the server no longer stops the whole folder from synchronizing.</li>
+            <li>In the archive, connect account, number of emails, and notification settings dialogs, <kbd>Enter</kbd> in a text field now confirms the dialog.</li>
+            <li>Unnecessary error log entries produced when windows close or connections are cut on purpose were reduced.</li>
+        </ul>
+    </li>
+</ul>
+
+<div class="license-box">
+<p><strong>Engelsiz Mail NVDA Add-on</strong><br>
+Copyright &copy; 2026 Mehmet Aykurt.<br>
+Distributed under the GNU General Public License (GPLv2).<br>
+Source Code: <a href="https://github.com/MehmetAykurt/engelsiz-mail">https://github.com/MehmetAykurt/engelsiz-mail</a></p>
+</div>
+</main>
+</body>
+</html>
