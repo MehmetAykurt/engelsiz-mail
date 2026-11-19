@@ -24,6 +24,7 @@ from .imap_client import (
 from .logger import hata_kaydet
 from .header_sync import klasor_basliklarini_senkronize_et
 from .mail_store import (
+    klasor_bekleyen_silme_uidleri,
     klasor_basliklarini_listele,
     klasor_konusma_basliklarini_listele,
     klasor_onizleme_haritasi_al,
@@ -170,7 +171,19 @@ def eposta_listesi_hazirla(
                 }
 
         yeni_mailler = []
-        secili_uidler = [str(uid) for uid in reversed(uidler[-mesaj_sayisi:])]
+        # Silinmek üzere kuyruğa alınan iletiler sunucuda henüz duruyor olabilir.
+        # En yeni N UID'yi seçmeden önce bunları dışlamazsak liste, arayüzde
+        # süzüldükten sonra boş kalır ve kalan iletiler hiç gösterilmez.
+        try:
+            bekleyen_uidler = klasor_bekleyen_silme_uidleri(
+                ayarlar.get("eposta", ""), aktif_klasor
+            )
+        except Exception as e:
+            hata_kaydet("Bekleyen silme UID'leri okunamadı.", e)
+            bekleyen_uidler = set()
+        secili_uidler = [
+            str(uid) for uid in reversed(uidler) if str(uid) not in bekleyen_uidler
+        ][:mesaj_sayisi]
         baslik_haritasi = imap_toplu_uid_fetch(
             imap,
             secili_uidler,
