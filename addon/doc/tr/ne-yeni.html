@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Engelsiz Mail 2026.11.19 - Yenilikler</title>
+<style>
+body { max-width: 52rem; margin: 2rem auto; padding: 0 1rem; font-family: system-ui, sans-serif; line-height: 1.7; color: #202020; background: #fff; }
+h1, h2, h3 { line-height: 1.35; } h2 { margin-top: 2rem; border-bottom: 1px solid #ccc; padding-bottom: 0.25rem; }
+a { color: #00478f; text-underline-offset: .2em; }
+a:focus-visible { outline: 3px solid #202020; outline-offset: 4px; }
+li { margin-bottom: .7rem; } kbd { font-family: inherit; font-weight: bold; border: 1px solid #999; border-radius: 0.2rem; padding: 0.05rem 0.3rem; background: #f7f7f7; }
+code { background-color: #f2f4f7; padding: 2px 6px; border-radius: 4px; font-size: 0.95em; }
+.license-box { background-color: #fff8c5; border: 1px solid #d4a72c; border-left: 5px solid #9a6700; border-radius: 6px; padding: 18px 20px; margin-top: 40px; }
+@media print { body { max-width: none; margin: 0; color: #000; } h2, h3 { break-after: avoid; } }
+</style>
+</head>
+<body>
+<header>
+<h1>Engelsiz Mail NVDA Eklentisi</h1>
+<p>Eklenti sürümü: 2026.11.19<br>NVDA Sürümü: 2026.3</p>
+<p><strong>Geliştirici</strong><br>
+<a href="https://mehmetaykurt.com.tr">Mehmet Aykurt</a><br>
+NVDA Eklenti Mağazası Resmi Denetçisi ve Türkiye Temsilcisi</p>
+<p>Her türlü öneri, görüş ve düşünceleriniz için:<br>
+E-posta: <a href="mailto:m.aykurt38@gmail.com">m.aykurt38@gmail.com</a><br>
+Telegram: <a href="https://t.me/mehmetaykurt">@mehmetaykurt</a></p>
+<p><a href="readme.html">Kullanım Kılavuzuna Git</a> | <a href="../en/ne-yeni.html" lang="en" hreflang="en">English What's New</a></p>
+</header>
+
+<main>
+<h2>Engelsiz Mail 2026.11.19 Sürümündeki Yenilikler</h2>
+
+<ul>
+    <li><strong>Kapsamlı HTML E-posta ve Zengin İçerik Desteği Kazandırıldı:</strong>
+        <ul>
+            <li><strong>HTML E-posta Okuma Görünümü:</strong> Gelen e-postalar artık orijinal görsel tasarımı korunarak NVDA sanal imleci (tarama kipi) eşliğinde tam bir web sayfası gibi okunabilir. Başlıklar (<kbd>H</kbd>), tablolar (<kbd>T</kbd>), listeler (<kbd>L</kbd>) ve bağlantılar (<kbd>K</kbd>) arasında hızlı dolaşım imkânı sağlandı.</li>
+            <li><strong>Hızlı Görünüm Geçişi (<kbd>F7</kbd>):</strong> E-posta okurken <kbd>F7</kbd> tuşuna basarak anında zengin HTML görünümü ile sade düz metin görünümü arasında geçiş yapabilme özelliği eklendi.</li>
+            <li><strong>Zengin Metin Biçimlendirme:</strong> Yeni e-posta yazarken hiçbir ham kodla uğraşmadan kelime işlemci sadeliğinde <kbd>Ctrl+B</kbd> ile kalın, <kbd>Ctrl+I</kbd> ile italik ve <kbd>Ctrl+U</kbd> ile altı çizili metin yazabilme; <kbd>NVDA+F</kbd> ile anında yazı tipi ve stilini sorgulayabilme desteği getirildi.</li>
+            <li><strong>Gelişmiş Bağlantı (Köprü) Yönetimi (<kbd>Ctrl+K</kbd>):</strong> Metin içerisine kolayca web bağlantısı ekleme, mevcut bir bağlantının adresini düzenleme ve "Bağlantıyı Kaldır" düğmesiyle tek tuşla sade metne dönüştürebilme özelliği eklendi.</li>
+            <li><strong>Panodan Resim Yapıştırma (<kbd>Ctrl+V</kbd>):</strong> Web tarayıcısından, Paint'ten, ekran görüntüsünden veya Dosya Gezgini'nden kopyalanan resimlerin doğrudan e-posta metnine yapıştırılabilmesi sağlandı. Ekran okuyucu kullanıcıları için isteğe bağlı açıklama penceresi sunuldu ve resim iletinin içine satır içi (inline CID) olarak yerleştirildi.</li>
+            <li><strong>Tablo Oluşturma ve Yapıştırma:</strong> <kbd>Ctrl+Shift+T</kbd> kısayolu veya bağlam menüsüyle satır ve sütun sayıları belirlenerek sıfırdan tablo şablonu oluşturma ile Excel veya web sayfalarından kopyalanan tabloları <kbd>Ctrl+V</kbd> ile doğrudan tablo yapısına dönüştürerek yapıştırma özelliği kazandırıldı.</li>
+            <li><strong>Metin Hizalama (Sola, Ortala, Sağa Yasla):</strong> Seçili satırları veya imlecin bulunduğu paragrafı <kbd>Ctrl+L</kbd> ile sola, <kbd>Ctrl+E</kbd> ile ortaya ve <kbd>Ctrl+R</kbd> ile sağa hizalayabilme özelliği eklendi.</li>
+            <li><strong>Başlık Seviyeleri (Başlık 1 - Başlık 6):</strong> <kbd>Ctrl+Alt+1</kbd> ile <kbd>Ctrl+Alt+6</kbd> arası kısayollarla satırları başlık seviyelerine yükseltebilme ve <kbd>Ctrl+Alt+0</kbd> ile normal paragrafa dönebilme imkânı sağlandı; alıcıda semantik `&lt;h1&gt;`-`&lt;h6&gt;` başlıklarına dönüşerek sanal imleçle (<kbd>H</kbd>) hızlı dolaşım desteği kazandırıldı.</li>
+            <li><strong>Madde İşaretli ve Numaralı Liste:</strong> <kbd>Ctrl+Shift+L</kbd> kısayoluyla seçili satırları döngüsel olarak madde işaretli listeye (`•`), numaralı listeye (`1.`) dönüştürebilme veya listeyi kaldırabilme özelliği eklendi; alıcıya standart `&lt;ul&gt;` ve `&lt;ol&gt;` listesi olarak iletilmesi sağlandı.</li>
+            <li><strong>Akıllı Çok Parçalı (MIME) Gönderim:</strong> Biçimlendirme, resim veya tablo içeren iletilerin alıcıya uluslararası standartlarda eksiksiz ve görsel düzeni tam bir HTML e-posta olarak ulaştırılması sağlandı.</li>
+        </ul>
+    </li>
+    <li><strong>Otomatik Taslak Kaydı:</strong> Mail yazarken herhangi bir kesintiye, elektrik kesintisine veya kazara kapanmaya karşılık veri kaybını önlemek amacıyla taslağın odak bozulmadan arka planda Gmail Taslaklar klasörüne otomatik olarak kaydedilmesi sağlandı (Ayarlar menüsünden 1–60 saniye aralığında seçilebilir; varsayılan: 60 saniye).</li>
+    <li>Eklentinin <strong>çalışma hızı artırıldı</strong>; e-posta listeleme, önbellekten okuma ve arka plan işlemlerinde performans iyileştirmeleri yapıldı.</li>
+    <li>Genel <strong>kararlılık artırıldı</strong>; arka plan görevleri, bildirimler, pencere yaşam döngüsü ve kapanış işlemleri daha güvenli hâle getirildi.</li>
+    <li>Kaynak kodda <strong>optimizasyon ve bakım çalışmaları</strong> yapılarak gereksiz işlemler azaltıldı, eşzamanlı çalışan görevlerin güvenliği ve hata yönetimi geliştirildi.</li>
+    <li>Karmaşık MIME yapısına sahip e-postaların okunması ve arka planda işlenmesi iyileştirildi.</li>
+    <li>NVDA ve güncel wxPython sürümleriyle uyumluluk ve açılış kararlılığı geliştirildi.</li>
+    <li><strong>Güvenlik ve gizlilik:</strong>
+        <ul>
+            <li><strong>E-posta içeriği artık gösterilmeden önce temizleniyor.</strong> Betikler, çerçeveler, formlar ve yönlendirmeler engellenir. Varsayılan olarak resimler ve harici içerik gizlenir; böylece bir e-postayı açmak göndericiye izleme isteği göndermez.</li>
+            <li><strong>Yeni ayar: "E-posta içeriğini olduğu gibi göster"</strong> (Ayarlar menüsü). Açıkken resimler ve biçim internetten yüklenir. Betikler ve çerçeveler bu durumda da engellenir.</li>
+            <li>E-posta içindeki bağlantılar yalnızca <code>http</code>, <code>https</code> ve <code>mailto</code> ise açılır. Bilgisayarda dosya veya program çalıştırabilecek bağlantı türleri engellendi.</li>
+            <li>Hesap bilgilerini silerken <strong>yerel e-posta önbelleğinin de silinmesi</strong> artık soruluyor. Kılavuza, önbelleğin şifrelenmediği ve ortak bilgisayarlarda nasıl temizleneceği eklendi.</li>
+        </ul>
+    </li>
+    <li><strong>Veri güvenliği:</strong>
+        <ul>
+            <li>Ayar dosyası başka bir program tarafından geçici olarak kilitlendiğinde (ör. virüs tarayıcı) hesap bilgileri ve ayarlar artık yanlışlıkla silinmiyor veya boş verilerle üzerine yazılmıyor. Aynı koruma kişiler ve adres geçmişi için de geçerli.</li>
+            <li><strong>Çöp Kutusu'ndan silme her zaman kalıcı silme onayı ister</strong>; sıradan silme onayını kapatmış olsanız bile.</li>
+            <li>İnternet yokken verilen "Çöp Kutusunu boşalt" veya "Spam'i boşalt" isteği saatler sonra işlenirse, isteğinizden sonra klasöre gelen e-postalar silinmez.</li>
+            <li>Kişi sayısı sınırına (1000) ulaşıldığında fazla kişiler sessizce atılmak yerine uyarı verilir.</li>
+            <li>Arşiv silme onayı, arşivdeki e-postaların silinmediğini açıkça belirtir.</li>
+        </ul>
+    </li>
+    <li><strong>E-posta yazma:</strong>
+        <ul>
+            <li>Köprü, başlık ve hizalama, metni düzenledikçe doğru yerinde kalır. Bir köprünün ekran okuyucuda iki satır gibi okunmasına yol açabilen durum giderildi.</li>
+            <li>Konu boşsa göndermeden önce onay istenir.</li>
+            <li>Taslağa kaydedilen e-postadaki satır içi resimler artık korunur. Biçimlendirme içeren (köprü, resim, başlık gibi) bir taslağı açarken, düzenleyip kaydederseniz bu biçimlendirmenin kaybolacağı konusunda uyarılırsınız.</li>
+            <li>Panodan yapıştırılan resimler için 10 MB sınırı ve açık bir uyarı eklendi.</li>
+            <li>Tabloda "İlk satır tablo başlığı olsun" seçeneği işaretli değilse tablo artık gerçekten başlıksız gönderilir.</li>
+            <li>Çok uzun ek dosya adlarında dosya uzantısı korunur; <code>CON</code>, <code>NUL</code> gibi Windows'a ayrılmış adlar güvenle kaydedilir.</li>
+            <li>Birkaç e-postanın eklerini kaydederken bazıları alınamazsa bu artık size bildirilir.</li>
+            <li>Uygulama şifresi yanlışsa gönderim ikinci bir yöntemle yeniden denenmez; Google hesabında gereksiz başarısız giriş uyarısı oluşmaz.</li>
+        </ul>
+    </li>
+    <li><strong>Hız ve kararlılık:</strong>
+        <ul>
+            <li><strong>E-posta açma hızlandı.</strong> Enter'a bastığınızda e-posta, NVDA'nın bir şey söylemesini beklemeden hemen açılır; "görüntüleniyor" duyurusu kaldırıldı. HTML görünümü yalnızca gerektiğinde hazırlanır.</li>
+            <li><strong>Önbellek genişletildi.</strong> Her klasörün en yeni 150 e-postası arka planda hazır tutulur ve klasör açıldığında eksikler tamamlanır. Listede gösterilen e-posta sayısı değişmedi (varsayılan 25, en çok 100). E-posta silip taşıdıkça sıradakiler de hazır olur.</li>
+            <li>Başlığı sunucudan alınamayan tek bir e-posta artık klasörün tamamının eşitlenmesini durdurmaz.</li>
+            <li>Arşiv, hesaba bağlanma, e-posta sayısı ve bildirim ayarları pencerelerinde metin kutusundayken <kbd>Enter</kbd> tuşu işlemi onaylar.</li>
+            <li>Pencere kapatılırken veya bağlantı bilerek kesilirken oluşan gereksiz hata kayıtları azaltıldı.</li>
+        </ul>
+    </li>
+</ul>
+
+<div class="license-box">
+<p><strong>Engelsiz Mail NVDA Eklentisi</strong><br>
+Telif Hakkı &copy; 2026 Mehmet Aykurt.<br>
+Bu yazılım, GNU Genel Kamu Lisansı (GPLv2) kapsamında dağıtılmaktadır.<br>
+Kaynak Kod: <a href="https://github.com/MehmetAykurt/engelsiz-mail">https://github.com/MehmetAykurt/engelsiz-mail</a></p>
+</div>
+</main>
+</body>
+</html>
