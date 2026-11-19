@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Engelsiz Mail NVDA Add-on - User Guide</title>
+<style>
+body { max-width: 52rem; margin: 2rem auto; padding: 0 1rem; font-family: system-ui, sans-serif; line-height: 1.7; color: #202020; background: #fff; }
+h1, h2, h3, h4 { line-height: 1.35; } h2 { margin-top: 2rem; border-bottom: 1px solid #ccc; padding-bottom: 0.25rem; }
+a { color: #00478f; text-underline-offset: .2em; }
+a:focus-visible { outline: 3px solid #202020; outline-offset: 4px; }
+li { margin-bottom: .6rem; } kbd { font-family: inherit; font-weight: bold; border: 1px solid #999; border-radius: 0.2rem; padding: 0.05rem 0.3rem; background: #f7f7f7; }
+table { width: 100%; border-collapse: collapse; margin: 1rem 0; }
+caption { text-align: left; font-weight: bold; margin-bottom: .6rem; }
+th, td { text-align: left; vertical-align: top; padding: .65rem; border: 1px solid #777; }
+th { background: #f1f1f1; } section { scroll-margin-top: 1rem; }
+code { background-color: #f2f4f7; padding: 2px 6px; border-radius: 4px; font-size: 0.95em; }
+.not { border-left: 4px solid #555; padding-left: 1rem; margin: 1rem 0; background-color: #f9f9f9; padding: 0.5rem 1rem; }
+.uyari { border-left: 4px solid #8a5a00; padding-left: 1rem; margin: 1rem 0; background-color: #fff9ee; padding: 0.5rem 1rem; }
+.license-box { background-color: #fff8c5; border: 1px solid #d4a72c; border-left: 5px solid #9a6700; border-radius: 6px; padding: 18px 20px; margin-top: 40px; }
+@media print { body { max-width: none; margin: 0; color: #000; } h2, h3 { break-after: avoid; } }
+</style>
+</head>
+<body>
+<header>
+<h1>Engelsiz Mail NVDA Add-on - User Guide</h1>
+<p>Add-on version: 2026.11.19<br>NVDA Version: 2026.3</p>
+<p><strong>Developer</strong><br>
+<a href="https://mehmetaykurt.com.tr">Mehmet Aykurt</a><br>
+Official NVDA Add-on Store Reviewer and Turkey Representative</p>
+<p>For suggestions, feedback, and comments:<br>
+Email: <a href="mailto:m.aykurt38@gmail.com">m.aykurt38@gmail.com</a><br>
+Telegram: <a href="https://t.me/mehmetaykurt">@mehmetaykurt</a></p>
+<h2>About</h2>
+<p>This add-on:<br>
+<br>
+Has been developed to deliver a modern, rapid, and entirely accessible email client experience for blind and visually impaired NVDA screen reader users.<br>
+<br>
+Completely eliminating the complex, cluttered, and cumbersome layout of standard webmail interfaces; it brings essential desktop email features directly into NVDA: reading and searching messages, composing rich formatted emails, replying, forwarding, background auto-saving of drafts, contact and signature management, archiving, moving, permanent deletion, conversation grouping, instant folder announcements of total and unread message counts, one-key switching between rich HTML web view and plain text (<kbd>F7</kbd>), inline image pasting directly at the cursor, creating tables with customizable rows and columns or pasting spreadsheets from Excel.<br>
+<br>
+You can open the Engelsiz Mail main window using the shortcut <kbd>NVDA + Shift + M</kbd> or through the NVDA menu &gt; Tools &gt; Engelsiz Mail;<br>
+For feature requests, suggestions, or bug reports, please write to <a href="mailto:m.aykurt38@gmail.com">m.aykurt38@gmail.com</a>.</p>
+<p><a href="../tr/readme.html" lang="tr" hreflang="tr">Türkçe kullanım kılavuzu</a></p>
+</header>
+
+<nav aria-label="Contents">
+<h2>Contents</h2>
+<ol>
+    <li><a href="#amac">1. Purpose of the Add-on</a></li>
+    <li><a href="#one-cikanlar">2. Highlights of the Current Version</a></li>
+    <li><a href="#guvenlik">3. Security and Privacy</a></li>
+    <li><a href="#baglanti">4. Connecting a Google Account</a></li>
+    <li><a href="#ana-pencere">5. Main Window and Menu Structure</a></li>
+    <li><a href="#kisayollar">6. Keyboard Shortcuts</a></li>
+    <li><a href="#klasorler">7. Folders and Email Reading Operations</a></li>
+    <li><a href="#eposta-yazma">8. Composing Email, Formatting, Alignment, Headings, Lists, Images, and Tables</a></li>
+    <li><a href="#taslaklar">9. Draft Management and Automatic Saving</a></li>
+    <li><a href="#arsiv">10. Archive and Move Operations</a></li>
+    <li><a href="#ekler">11. Attachments</a></li>
+    <li><a href="#baglanti-denetimi">12. Check Connection</a></li>
+    <li><a href="#kaydet-eml">13. Saving and Opening EML Files</a></li>
+    <li><a href="#bildirim-onizleme">14. Notifications and Preview</a></li>
+    <li><a href="#gorunum">15. Appearance Settings</a></li>
+    <li><a href="#oneri-gorus">16. Sending Suggestions and Feedback</a></li>
+    <li><a href="#kisayol-degistirme">17. Customizing the Opening Shortcut</a></li>
+    <li><a href="#sinirlar">18. Known Limitations and Important Notes</a></li>
+    <li><a href="#iletisim">19. License, Contact, and Developer Information</a></li>
+</ol>
+</nav>
+
+<main>
+
+<h2 id="amac">1. Purpose of the Add-on</h2>
+
+<p>The core objective of Engelsiz Mail is to enable blind NVDA users to perform all email workflows in their Gmail accounts through a clean, fast, intuitive, and fully keyboard-accessible interface.</p>
+
+<p>The add-on is designed to:</p>
+
+<ol>
+    <li>Provide rapid and streamlined keyboard access to email folders.</li>
+    <li>Announce total and unread message counts in folders clearly.</li>
+    <li>Allow reading incoming emails both in original HTML web view (using NVDA browse mode) and clean plain text view with a single key (<kbd>F7</kbd>).</li>
+    <li>Enable bold, italic, and underline character formatting with standard word processor simplicity without exposing raw HTML tags.</li>
+    <li>Insert hyperlinks (<kbd>Ctrl+K</kbd>), clipboard images (<kbd>Ctrl+V</kbd>), and structured tables at the current cursor position.</li>
+    <li>Silently auto-save drafts to Gmail's Drafts folder in the background to prevent data loss in case of unexpected shutdowns.</li>
+    <li>Facilitate recipient selection via an integrated address book and contact management.</li>
+    <li>Provide clear, unambiguous workflows for draft, archive, move, and deletion actions.</li>
+    <li>Offer an optional inline preview in the email message list.</li>
+    <li>Deliver real-time audio and spoken notifications when new messages arrive via IMAP IDLE.</li>
+    <li>Make saving emails as TXT or EML and opening saved EML files effortless.</li>
+    <li>Provide detailed connection diagnostics to guide users through troubleshooting.</li>
+    <li>Offer customizable appearance settings tailored to individual visual preferences.</li>
+</ol>
+
+<h2 id="one-cikanlar">2. Highlights of the Current Version</h2>
+
+<p>In the current version:</p>
+<ul>
+    <li><strong>HTML Email Reading View:</strong> Incoming emails can now be read in their authentic web layout accompanied by NVDA's virtual cursor (browse mode). Navigate effortlessly across headings (<kbd>H</kbd>), tables (<kbd>T</kbd>), lists (<kbd>L</kbd>), and links (<kbd>K</kbd>).</li>
+    <li><strong><kbd>F7</kbd> Instant View Toggle:</strong> While reading an email, pressing <kbd>F7</kbd> instantly flips between rich HTML web view and clean plain text view.</li>
+    <li><strong>Natural Rich Text Composing:</strong> Compose emails with true WYSIWYG styling without seeing or hearing raw markup. Use <kbd>Ctrl+B</kbd> for bold, <kbd>Ctrl+I</kbd> for italic, and <kbd>Ctrl+U</kbd> for underline; verify typography anytime with <kbd>NVDA+F</kbd>.</li>
+    <li><strong>Advanced Hyperlink Management (<kbd>Ctrl+K</kbd>):</strong> Add web links at the cursor, inspect or modify existing URLs, or remove links back to plain text with a single click.</li>
+    <li><strong>Clipboard Image Pasting (<kbd>Ctrl+V</kbd>):</strong> Paste images directly from the clipboard (browser, Paint, screenshots, or File Explorer). An accessible description prompt allows screen reader users to assign descriptive alt text, and the image is embedded inline at that exact line.</li>
+    <li><strong>Table Generation and Pasting:</strong> Insert structured tables from scratch with custom row and column counts (<kbd>Ctrl+Shift+T</kbd> / context menu) or paste tabular data directly from Excel and web pages. It renders as a full, styled HTML table on the recipient's screen.</li>
+    <li><strong>Text Alignment (Left, Center, Right):</strong> Align selected lines or current paragraph to the left with <kbd>Ctrl+L</kbd>, center with <kbd>Ctrl+E</kbd>, and right with <kbd>Ctrl+R</kbd>, accompanied by NVDA speech announcements and clean inline styling.</li>
+    <li><strong>Heading Levels (Heading 1 - Heading 6):</strong> Promote lines to hierarchical headings using <kbd>Ctrl+Alt+1</kbd> .. <kbd>Ctrl+Alt+6</kbd> and revert to regular body text with <kbd>Ctrl+Alt+0</kbd>; transforms into semantic `&lt;h1&gt;`-`&lt;h6&gt;` elements allowing rapid navigation with <kbd>H</kbd> in browse mode.</li>
+    <li><strong>Bulleted and Numbered Lists:</strong> Cycle selected lines through bulleted list (`•`), numbered list (`1.`), or normal text with <kbd>Ctrl+Shift+L</kbd>; rendered as standard accessible `&lt;ul&gt;` and `&lt;ol&gt;` lists for recipients.</li>
+    <li><strong>Background Auto-Saving of Drafts:</strong> While typing, changes are periodically synced to Gmail's server Drafts folder in the background without stealing keyboard focus or interrupting the user.</li>
+    <li><strong>Smart Multipart MIME Delivery:</strong> Unformatted emails are dispatched as plain text, while messages with formatting, images, or tables are packaged as RFC-compliant multipart MIME bundles.</li>
+    <li><strong>Enhanced Appearance Options:</strong> Select default message reading mode (HTML or Plain Text) from the View menu.</li>
+</ul>
+
+<h2 id="guvenlik">3. Security and Privacy</h2>
+
+<p>Engelsiz Mail never transmits your email address, Google app password, contact history, email contents, or attachments to any third-party server. All communication is established directly between your computer and official Google servers over encrypted TLS/SSL channels.</p>
+
+<p>The add-on requires a dedicated <strong>Google App Password</strong> instead of your primary Google password. An App Password is a 16-character access key generated for Google accounts with 2-Step Verification enabled. The saved credentials on your local machine are encrypted using Windows DPAPI (Data Protection API) tied specifically to your user account.</p>
+
+<p>Cached email headers, the contents of emails you have read, and downloaded attachments are stored in the local database and attachment folder and are not encrypted; they are protected only by your Windows user account's file permissions. On shared computers, choose to delete the local cache when you delete your account details, or reset the local database from the Settings menu.</p>
+
+<h2 id="baglanti">4. Connecting a Google Account</h2>
+
+<p>To use Engelsiz Mail, 2-Step Verification must be enabled on your Google account and an app password must be created. The add-on connects to Gmail over secure IMAP (port 993) and SMTP (port 465 SSL / 587 STARTTLS).</p>
+
+<p>Step-by-step setup:</p>
+<ol>
+    <li>Sign in to your Google Account in your web browser and open the <strong>Security</strong> section.</li>
+    <li>Verify that <strong>2-Step Verification</strong> is turned on.</li>
+    <li>Type <em>"App passwords"</em> in the search box to navigate to the App Passwords configuration page.</li>
+    <li>Enter <em>"Engelsiz Mail"</em> as the app name and click <strong>Create</strong>.</li>
+    <li>Copy the 16-character password generated by Google.</li>
+    <li>In Engelsiz Mail, press <kbd>Alt + B</kbd> to open the <strong>Account Connection</strong> dialog.</li>
+    <li>Enter your email address and paste the 16-character app password, then click <strong>Connect</strong>.</li>
+</ol>
+
+<h2 id="ana-pencere">5. Main Window and Menu Structure</h2>
+
+<p>When the Engelsiz Mail main window opens, the title bar announces your connected Gmail address. The interface is optimized for screen reader ergonomics in the following Tab order:</p>
+
+<ol>
+    <li><strong>Folders List:</strong> Displays Inbox, All Mail, Sent Mail, Drafts, Trash, Spam, and custom user labels. While navigating with arrow keys, total and unread message counts are announced.</li>
+    <li><strong>Email Message List:</strong> Lists messages within the selected folder showing From, Subject, and Date. If preview is enabled, the snippet text is also read aloud.</li>
+    <li><strong>Menu Bar (Alt key):</strong> Organized main menus (<strong>File</strong>, <strong>Account</strong>, <strong>Email</strong>, <strong>View</strong>, <strong>Settings</strong>, and <strong>Help</strong>).</li>
+</ol>
+
+<h3>5.1. View Menu</h3>
+
+<ul>
+    <li><strong>Email view:</strong> Submenu to choose whether incoming emails open in HTML web view or classic plain text view by default. Contains <em>Plain text view</em> and <em>HTML view</em>.</li>
+    <li><strong>Font...:</strong> Changes the font family used across Engelsiz Mail windows.</li>
+    <li><strong>Font size...:</strong> Adjusts the font size.</li>
+    <li><strong>Font style...:</strong> Selects regular, bold, italic, or bold italic styling.</li>
+    <li><strong>Text color...:</strong> Changes text color inside the add-on windows.</li>
+    <li><strong>Background color...:</strong> Changes window background color.</li>
+    <li><strong>Use system colors:</strong> Adopts Windows high contrast and theme colors.</li>
+    <li><strong>Reset to default view:</strong> Restores visual styles to defaults.</li>
+</ul>
+
+<h3>5.2. Settings Menu</h3>
+
+<ul>
+    <li><strong>Message count...:</strong> Sets how many emails are loaded per folder (between 1 and 100; default: 25).</li>
+    <li><strong>Draft auto-save interval...:</strong> Configures how frequently composer changes are silently synced to Gmail Drafts (1-60 seconds; default: 60 seconds).</li>
+    <li><strong>Notifications...:</strong> Configures new-email alerts, audio chimes, speech announcements, and custom sound effects.</li>
+    <li><strong>Preview:</strong> Toggles short message snippet announcements in the email list.</li>
+    <li><strong>Group conversations:</strong> Groups related email threads onto a single list item.</li>
+    <li><strong>Show email content as is:</strong> When off (the default), images and external content in emails are hidden, so opening an email does not send a tracking request to the sender. When on, images and formatting are loaded from the internet. Scripts and frames are blocked in both cases.</li>
+    <li><strong>Deletion:</strong> Configures confirmation dialogs prior to moving items to Trash or permanently purging.</li>
+    <li><strong>Automatically save sent recipients:</strong> Saves outgoing email addresses into your local contact history.</li>
+    <li><strong>Close add-on with Escape key:</strong> Enables or disables closing the main window with the Escape key.</li>
+    <li><strong>Import/Export...:</strong> Backs up or restores account settings and history via a single ZIP archive.</li>
+    <li><strong>Reset local database...:</strong> Clears the local SQLite cache and rebuilds message indexes from the server.</li>
+</ul>
+
+<h2 id="kisayollar">6. Keyboard Shortcuts</h2>
+
+<table>
+    <caption>Essential and Advanced Keyboard Shortcuts</caption>
+    <thead>
+        <tr>
+            <th>Shortcut</th>
+            <th>Location</th>
+            <th>Function</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><kbd>NVDA</kbd> + <kbd>Shift</kbd> + <kbd>M</kbd></td>
+            <td>Everywhere</td>
+            <td>Opens the Engelsiz Mail main window or brings it to the foreground.</td>
+        </tr>
+        <tr>
+            <td><kbd>Ctrl</kbd> + <kbd>N</kbd></td>
+            <td>Main Window</td>
+            <td>Opens a new compose window.</td>
+        </tr>
+        <tr>
+            <td><kbd>Enter</kbd></td>
+            <td>Email List</td>
+            <td>Opens the selected email in the reader; if in Drafts, opens it in compose mode.</td>
+        </tr>
+        <tr>
+            <td><kbd>F7</kbd></td>
+            <td>Email Reader</td>
+            <td>Instantly toggles between rich HTML view and plain text view.</td>
+        </tr>
+        <tr>
+            <td><kbd>Ctrl</kbd> + <kbd>R</kbd></td>
+            <td>Email List / Reader</td>
+            <td>Replies to the focused email.</td>
+        </tr>
+        <tr>
+            <td><kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>F</kbd></td>
+            <td>Email List / Reader</td>
+            <td>Forwards the focused email.</td>
+        </tr>
+        <tr>
+            <td><kbd>Ctrl</kbd> + <kbd>B</kbd></td>
+            <td>Compose Message Body</td>
+            <td>Toggles bold formatting on the selected text or for upcoming text.</td>
+        </tr>
+        <tr>
+            <td><kbd>Ctrl</kbd> + <kbd>I</kbd></td>
+            <td>Compose Message Body</td>
+            <td>Toggles italic formatting on the selected text or for upcoming text.</td>
+        </tr>
+        <tr>
+            <td><kbd>Ctrl</kbd> + <kbd>U</kbd></td>
+            <td>Compose Message Body</td>
+            <td>Toggles underline formatting on the selected text or for upcoming text.</td>
+        </tr>
+        <tr>
+            <td><kbd>Ctrl</kbd> + <kbd>L</kbd></td>
+            <td>Compose Message Body</td>
+            <td>Aligns selected lines or current paragraph to the left.</td>
+        </tr>
+        <tr>
+            <td><kbd>Ctrl</kbd> + <kbd>E</kbd></td>
+            <td>Compose Message Body</td>
+            <td>Centers selected lines or current paragraph.</td>
+        </tr>
+        <tr>
+            <td><kbd>Ctrl</kbd> + <kbd>R</kbd></td>
+            <td>Compose Message Body</td>
+            <td>Aligns selected lines or current paragraph to the right.</td>
+        </tr>
+        <tr>
+            <td><kbd>Ctrl</kbd> + <kbd>Alt</kbd> + <kbd>1</kbd> ... <kbd>6</kbd></td>
+            <td>Compose Message Body</td>
+            <td>Converts current line to Heading 1 through Heading 6.</td>
+        </tr>
+        <tr>
+            <td><kbd>Ctrl</kbd> + <kbd>Alt</kbd> + <kbd>0</kbd></td>
+            <td>Compose Message Body</td>
+            <td>Clears heading formatting and reverts line to normal paragraph.</td>
+        </tr>
+        <tr>
+            <td><kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>L</kbd></td>
+            <td>Compose Message Body</td>
+            <td>Cycles selected lines through bulleted list, numbered list, or normal text.</td>
+        </tr>
+        <tr>
+            <td><kbd>Ctrl</kbd> + <kbd>K</kbd></td>
+            <td>Compose Message Body</td>
+            <td>Opens the dialog to insert a new link or edit/remove an existing link.</td>
+        </tr>
+        <tr>
+            <td><kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>T</kbd></td>
+            <td>Compose Message Body</td>
+            <td>Opens the table creation dialog with customizable rows and columns.</td>
+        </tr>
+        <tr>
+            <td><kbd>Ctrl</kbd> + <kbd>V</kbd></td>
+            <td>Compose Message Body</td>
+            <td>Pastes clipboard image (with description prompt), spreadsheet table, or plain text.</td>
+        </tr>
+        <tr>
+            <td><kbd>Shift</kbd> + <kbd>F10</kbd> or <kbd>Applications Key</kbd></td>
+            <td>Compose Message Body</td>
+            <td>Opens the context menu containing table, link, font formatting, and clipboard options.</td>
+        </tr>
+        <tr>
+            <td><kbd>Ctrl</kbd> + <kbd>Enter</kbd></td>
+            <td>Compose Window</td>
+            <td>Sends the composed email to recipients.</td>
+        </tr>
+        <tr>
+            <td><kbd>Ctrl</kbd> + <kbd>F</kbd></td>
+            <td>Main Window</td>
+            <td>Opens the search dialog across emails.</td>
+        </tr>
+        <tr>
+            <td><kbd>Ctrl</kbd> + <kbd>S</kbd></td>
+            <td>Main Window</td>
+            <td>Saves the focused email to disk as EML or TXT.</td>
+        </tr>
+        <tr>
+            <td><kbd>Ctrl</kbd> + <kbd>O</kbd></td>
+            <td>Main Window</td>
+            <td>Uploads an EML file from disk to your Gmail account.</td>
+        </tr>
+        <tr>
+            <td><kbd>F5</kbd></td>
+            <td>Main Window</td>
+            <td>Refreshes the current folder and message list from the server.</td>
+        </tr>
+        <tr>
+            <td><kbd>F9</kbd></td>
+            <td>Main Window</td>
+            <td>Performs comprehensive network and server connection diagnostics.</td>
+        </tr>
+        <tr>
+            <td><kbd>Delete</kbd></td>
+            <td>Email List</td>
+            <td>Moves selected email to Trash.</td>
+        </tr>
+        <tr>
+            <td><kbd>Shift</kbd> + <kbd>Delete</kbd></td>
+            <td>Email List</td>
+            <td>Permanently deletes selected email.</td>
+        </tr>
+        <tr>
+            <td><kbd>Esc</kbd></td>
+            <td>All Windows</td>
+            <td>Safely closes the current dialog or returns up one level in the main window.</td>
+        </tr>
+    </tbody>
+</table>
+
+<h2 id="klasorler">7. Folders and Email Reading Operations</h2>
+
+<p>The folders pane gives quick access to Gmail system folders (Inbox, All Mail, Sent Mail, Drafts, Trash, Spam) and custom labels. While navigating with arrow keys, NVDA reports the total and unread count for each folder.</p>
+
+<h3>7.1. Email Reading and HTML View</h3>
+
+<p>Pressing <kbd>Enter</kbd> on a message opens the reader dialog. The header fields (From, To, Cc, Date, Subject, Attachments count) precede the message body.</p>
+
+<p><strong>HTML Web View and NVDA Browse Mode:</strong> Messages can now be read in their original rich layout just like a web page. NVDA automatically switches into virtual buffer (browse mode), allowing quick navigation via single-letter keys: <kbd>H</kbd> for headings, <kbd>T</kbd> for tables, <kbd>L</kbd> for lists, and <kbd>K</kbd> for hyperlinks.</p>
+
+<p><strong><kbd>F7</kbd> Rapid View Toggle:</strong> Pressing <kbd>F7</kbd> inside the reader instantly flips between HTML web view and clean plain text view. NVDA announces <em>"Switched to HTML view"</em> or <em>"Switched to plain text view"</em>. Your preference is remembered across subsequent reads.</p>
+
+<p><strong>External Link Security:</strong> Clicking or pressing Enter on hyperlinks inside the HTML view opens the destination securely inside your default Windows internet browser, never inside the add-on window. Only <code>http</code>, <code>https</code>, and <code>mailto</code> links are opened.</p>
+
+<p><strong>Show email content as is:</strong> You can control how images and external content in emails are handled from the Settings menu with the <em>Show email content as is</em> option. When it is off (the default), images, external styles, and similar content are hidden, so opening an email never sends a tracking request to the sender. When it is on, images and formatting are loaded from the internet as the sender designed them. Scripts, frames, and forms are blocked in both cases. The setting applies the next time you open an email.</p>
+
+<h2 id="eposta-yazma">8. Composing Email, Formatting, Alignment, Headings, Lists, Images, and Tables</h2>
+
+<p>Press <kbd>Ctrl + N</kbd> or choose <em>File &gt; New email</em> from the menu to open the compose window.</p>
+
+<p>The window contains To, Cc (<kbd>Alt+B</kbd>), Bcc (<kbd>Alt+G</kbd>), Subject, Message body, and Attachments fields, traversed with the <kbd>Tab</kbd> key.</p>
+
+<h3>8.1. Rich Text and Character Formatting</h3>
+
+<p>While typing, you never encounter raw HTML markup (`&lt;b&gt;`, `&lt;i&gt;`, etc.). The text editor behaves just like Microsoft Word:</p>
+
+<ul>
+    <li><strong>Bold Text (<kbd>Ctrl+B</kbd>):</strong> Select text and press <kbd>Ctrl+B</kbd> to toggle bold; NVDA announces the change. Pressing without selection sets the mode for upcoming text.</li>
+    <li><strong>Italic Text (<kbd>Ctrl+I</kbd>):</strong> Applies or removes italic formatting.</li>
+    <li><strong>Underline Text (<kbd>Ctrl+U</kbd>):</strong> Applies or removes underline formatting.</li>
+    <li><strong>Format Inspection (<kbd>NVDA+F</kbd>):</strong> Pressing <kbd>NVDA+F</kbd> on any word announces its exact font style, bold, italic, or underline status.</li>
+</ul>
+
+<h3>8.2. Hyperlink Insertion, Editing, and Removal (<kbd>Ctrl+K</kbd>)</h3>
+
+<p>To insert a hyperlink:</p>
+<ol>
+    <li>Select text (or place the cursor anywhere) and press <kbd>Ctrl+K</kbd>.</li>
+    <li>Fill in the <strong>Display text</strong> and <strong>Web address (URL)</strong> fields, then press <kbd>Enter</kbd>.</li>
+    <li>Only the human-readable text appears in the editor; no raw HTML is exposed.</li>
+    <li><strong>Editing and Inspecting Links:</strong> Pressing <kbd>Ctrl+K</kbd> while the cursor is inside an existing link opens the dialog in <em>"Edit Link"</em> mode with the URL pre-populated. Pressing <kbd>Tab</kbd> brings you directly to the <strong>"Remove Link"</strong> button to revert it back to normal text with one tap.</li>
+</ol>
+
+<h3>8.3. Clipboard Image Pasting (<kbd>Ctrl+V</kbd>)</h3>
+
+<p>You no longer need to browse through file dialogs to embed images in your message:</p>
+<ol>
+    <li>Copy an image from a web browser (via right-click <em>Copy Image</em>), Paint, take a screenshot (<kbd>PrintScreen</kbd>), or copy an image file (PNG, JPG, JPEG, GIF, BMP, WEBP) from File Explorer with <kbd>Ctrl+C</kbd>.</li>
+    <li>Place your cursor where the image belongs in Engelsiz Mail and press <kbd>Ctrl+V</kbd>.</li>
+    <li>The system detects the image on the clipboard and displays the <strong>"Image Description"</strong> dialog.</li>
+    <li>Enter an accessible description (e.g. <em>Book Cover</em>, <em>School Yard</em>) for screen readers and press <kbd>Enter</kbd> (leaving it blank assigns a default label).</li>
+    <li>A clean inline placeholder appears at the cursor: <code>[Image: Book Cover]</code>.</li>
+    <li>When sent, the image is embedded directly into the email body as an inline MIME attachment (CID), rendered seamlessly on the recipient's screen.</li>
+</ol>
+
+<h3>8.4. Table Generation and Pasting</h3>
+
+<p>Engelsiz Mail supports two intuitive table workflows:</p>
+<ol>
+    <li><strong>Create Table from Scratch (<kbd>Ctrl+Shift+T</kbd> or Context Menu):</strong> Press <kbd>Ctrl+Shift+T</kbd> (or press the Applications key and choose <em>Insert Table...</em>). Specify row count, column count, and whether to include a header row. A clean, screen-reader-friendly template is placed at your cursor:
+    <pre><code>[Table Start]
+| Header 1 | Header 2 |
+| Cell 1   | Cell 2   |
+| Cell 3   | Cell 4   |
+[Table End]</code></pre>
+    You can freely navigate and edit cells using arrow keys or add new rows.</li>
+    <li><strong>Paste Table from Clipboard (<kbd>Ctrl+V</kbd>):</strong> When copying cells from Microsoft Excel, Google Sheets, or web tables, pressing <kbd>Ctrl+V</kbd> automatically detects tabular data, converts it into an accessible table template, and NVDA announces <em>"Table pasted."</em>.</li>
+    <li><strong>Delivery:</strong> Upon dispatch, this template is translated into a fully styled, bordered HTML table for the recipient.</li>
+</ol>
+
+<h3>8.5. Text Alignment (Left, Center, Right)</h3>
+
+<p>You can quickly align selected text or the current line/paragraph with standard word processor simplicity:</p>
+
+<ul>
+    <li><strong>Align Left (<kbd>Ctrl+L</kbd>):</strong> Reverts text to standard left-aligned layout. NVDA announces <em>"Aligned left."</em>.</li>
+    <li><strong>Center (<kbd>Ctrl+E</kbd>):</strong> Centers text. Especially ideal for poetic stanzas, event announcements, or headlines. NVDA announces <em>"Centered."</em>.</li>
+    <li><strong>Align Right (<kbd>Ctrl+R</kbd>):</strong> Aligns text to the right margin. Useful for dates, signatures, or footnotes. NVDA announces <em>"Aligned right."</em>.</li>
+    <li><strong>Context Menu:</strong> For users who prefer menu navigation, an <em>"Align"</em> submenu is available in the right-click or <kbd>Applications Key</kbd> context menu.</li>
+    <li><strong>HTML Output:</strong> In the sent message, centered lines are rendered as <code>&lt;p style="text-align: center;"&gt;</code> and right-aligned lines as <code>&lt;p style="text-align: right;"&gt;</code>, ensuring perfect visual fidelity for the recipient.</li>
+</ul>
+
+<h3>8.6. Heading Levels (Heading 1 - Heading 6 and Normal Text)</h3>
+
+<p>Structure your email into hierarchical sections to make it fully accessible for screen reader users and webmail readers:</p>
+
+<ul>
+    <li><strong>Heading Shortcuts (<kbd>Ctrl+Alt+1</kbd> ... <kbd>Ctrl+Alt+6</kbd>):</strong> Promotes the current line directly to any heading level from Heading 1 (primary title) down to Heading 6. NVDA immediately announces <em>"Heading 1 applied."</em> .. <em>"Heading 6 applied."</em>. (Numpad 1..6 keys are also supported.)</li>
+    <li><strong>Revert to Normal Text (<kbd>Ctrl+Alt+0</kbd>):</strong> Clears heading styling and converts the line back to a standard paragraph. NVDA announces <em>"Normal text applied."</em>.</li>
+    <li><strong>Context Menu:</strong> All heading levels can be applied via the <em>"Headings"</em> submenu inside the editor context menu.</li>
+    <li><strong>Semantic HTML and Virtual Cursor:</strong> Sent emails are structured with standard <code>&lt;h1&gt;</code> - <code>&lt;h6&gt;</code> tags. When reading, NVDA users can instantly jump between these headings using the <kbd>H</kbd> key in browse mode. If a heading is also centered (e.g. <kbd>Ctrl+Alt+1</kbd> and <kbd>Ctrl+E</kbd>), both the heading tag and the alignment style are combined cleanly.</li>
+</ul>
+
+<h3>8.7. Creating Lists (Bulleted and Numbered Lists)</h3>
+
+<p>Convert sequential items or selected lines into formatted lists with a single keystroke:</p>
+
+<ul>
+    <li><strong>Cycling List Shortcut (<kbd>Ctrl+Shift+L</kbd>):</strong>
+        <ul>
+            <li><strong>1st Press:</strong> Converts selected lines to a bulleted list (prefixes lines with <code>• </code>). NVDA announces <em>"Bulleted list applied."</em>.</li>
+            <li><strong>2nd Press:</strong> Converts the list to a numbered list (prefixes lines with <code>1. </code>, <code>2. </code>, <code>3. </code>). NVDA announces <em>"Numbered list applied."</em>.</li>
+            <li><strong>3rd Press:</strong> Clears the list prefixes and reverts back to plain text. NVDA announces <em>"List removed."</em>.</li>
+        </ul>
+    </li>
+    <li><strong>Context Menu:</strong> Use the <em>"List"</em> submenu from the context menu to directly pick Bulleted List, Numbered List, or Remove List.</li>
+    <li><strong>Screen Reader and HTML Compatibility:</strong> While drafting, literal <code>• </code> or <code>1. </code> prefixes allow NVDA to speak bullets and numbers naturally while reading line by line. In the dispatched email, bulleted lines are rendered as <code>&lt;ul&gt;&lt;li&gt;...&lt;/li&gt;&lt;/ul&gt;</code> and numbered lines as <code>&lt;ol&gt;&lt;li&gt;...&lt;/li&gt;&lt;/ol&gt;</code>. In NVDA browse mode, recipients can jump straight to lists with <kbd>L</kbd> and navigate list items with <kbd>I</kbd>. For plain text clients, bullets and numbering remain cleanly formatted.</li>
+</ul>
+
+<h2 id="taslaklar">9. Draft Management and Automatic Saving</h2>
+
+<p>Drafts in Engelsiz Mail are not merely kept locally; they are synchronized directly with your Gmail server account.</p>
+
+<h3>9.1. Background Draft Auto-Save</h3>
+
+<p>While drafting or editing a message, changes are silently synced to Gmail's server <strong>Drafts</strong> folder at the interval defined under <strong>Settings &gt; Draft auto-save interval...</strong> (default: 60 seconds).</p>
+
+<p>Key advantages:</p>
+<ul>
+    <li>Typing focus is completely preserved without any interruption or cursor jumps.</li>
+    <li>Your work is safeguarded against unexpected power outages, system restarts, or accidental closures.</li>
+    <li>When no modifications are made, redundant network sync requests are skipped.</li>
+</ul>
+
+<h3>9.2. Editing, Sending, and Deleting Drafts</h3>
+
+<p>Opening a draft from the Drafts folder opens the compose window with all recipients, subject, text formatting, inline images, and attachments fully restored. Sending with <kbd>Ctrl+Enter</kbd> automatically removes the obsolete draft from the server; the <strong>Delete draft</strong> button moves it directly to Trash.</p>
+
+<h2 id="arsiv">10. Archive and Move Operations</h2>
+
+<p>Selected emails can be archived with <kbd>Alt+R</kbd> or via <em>Email &gt; Send to archive</em>. Manage custom archive folders with <strong>Email &gt; Archive &gt; Manage archive folders...</strong>.</p>
+
+<p>Use the context menu (<kbd>Shift+F10</kbd>) <strong>Move</strong> action to transfer messages between any custom label or the Inbox.</p>
+
+<h2 id="ekler">11. Attachments</h2>
+
+<p>In compose, reply, and forward windows, use the <strong>Attach file</strong> button to attach local files. Single and total attachment limits are 10 MB per email.</p>
+
+<p>When an incoming message includes attachments, the reader window displays a <strong>Save attachments</strong> button, saving files into a dedicated subject-named folder inside your Downloads directory.</p>
+
+<h2 id="baglanti-denetimi">12. Check Connection (<kbd>F9</kbd>)</h2>
+
+<p>The <strong>Check connection...</strong> option on the Account menu (<kbd>F9</kbd>) tests internet reachability, Gmail IMAP/SMTP services, app password validity, and port connectivity, generating a comprehensive report to help resolve any configuration issues.</p>
+
+<h2 id="kaydet-eml">13. Saving and Opening EML Files</h2>
+
+<p>Save any selected email to disk as EML or TXT with <kbd>Ctrl+S</kbd>. Import and upload an existing EML file into your Gmail Inbox with <kbd>Ctrl+O</kbd>.</p>
+
+<h2 id="bildirim-onizleme">14. Notifications and Preview</h2>
+
+<p><strong>Preview:</strong> When turned on in Settings, navigating the email list reads the first few sentences of each message following the subject line.</p>
+
+<p><strong>Live Notifications (IMAP IDLE):</strong> Engelsiz Mail listens to your Inbox in real time in the background. Incoming emails trigger instant audio chimes and speech notifications without polling delays. You may use built-in alerts or select custom WAV audio files.</p>
+
+<h2 id="gorunum">15. Appearance Settings</h2>
+
+<p>Customize the interface typography, font sizes, styles, text colors, and window backgrounds via the View menu. Full support for Windows High Contrast and system themes ensures accessibility for low-vision users.</p>
+
+<h2 id="oneri-gorus">16. Sending Suggestions and Feedback</h2>
+
+<p>Under the Help menu, use <strong>Send suggestions and feedback...</strong> to send feature requests, thoughts, bug reports, or appreciations directly to the developer Mehmet Aykurt.</p>
+
+<h2 id="kisayol-degistirme">17. Customizing the Opening Shortcut</h2>
+
+<p>To change the default <kbd>NVDA + Shift + M</kbd> shortcut:</p>
+<ol>
+    <li>Open NVDA Menu &gt; Preferences &gt; <strong>Input Gestures</strong>.</li>
+    <li>Expand the <strong>Engelsiz Mail</strong> category.</li>
+    <li>Select <em>"Opens Engelsiz Mail main window"</em>, click <strong>Add</strong>, and press your preferred key combination.</li>
+</ol>
+
+<h2 id="sinirlar">18. Known Limitations and Important Notes</h2>
+
+<ul>
+    <li>Engelsiz Mail connects via the Gmail infrastructure; 2-Step Verification and an App Password are required on your Google account.</li>
+    <li>Single and cumulative attachment sizes are capped at 10 MB.</li>
+    <li>If internet connectivity drops, background notifications pause and reconnect automatically once connection is restored.</li>
+</ul>
+
+<h2 id="iletisim">19. License, Contact, and Developer Information</h2>
+
+<div class="license-box">
+<p><strong>Engelsiz Mail NVDA Add-on</strong><br>
+Copyright &copy; 2026 Mehmet Aykurt.<br>
+This software is distributed under the terms of the <strong>GNU General Public License (GPLv2)</strong> version 2.0 or later as published by the Free Software Foundation.</p>
+
+<p><strong>Developer Contact Information:</strong><br>
+Developer: Mehmet Aykurt<br>
+Website: <a href="https://mehmetaykurt.com.tr">https://mehmetaykurt.com.tr</a><br>
+Email: <a href="mailto:m.aykurt38@gmail.com">m.aykurt38@gmail.com</a><br>
+Telegram: <a href="https://t.me/mehmetaykurt">@mehmetaykurt</a><br>
+Source Code Repository: <a href="https://github.com/MehmetAykurt/engelsiz-mail">https://github.com/MehmetAykurt/engelsiz-mail</a></p>
+</div>
+
+</main>
+</body>
+</html>
